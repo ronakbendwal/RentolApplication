@@ -1,6 +1,7 @@
 
 import { Link,} from "react-router-dom";
 import { useState } from "react";
+import CategoryDropdown from "./CategoryDropDown";
 const Header = () => {
 
   const [profileOpen,setProfileOpen]=useState(false)
@@ -22,10 +23,16 @@ const Header = () => {
           <input
             type="text"
             placeholder="Search items to rent..."
-            className="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          />
+            className="flex-1 px-4 py-2 border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+           />
 
-          <select className="px-5 py-2 border rounded-130 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
+          <button
+           className="px-4 py-2 bg-blue-600 rounded-full text-white text-sm font-medium hover:bg-blue-700 transition"
+           >
+           Search
+          </button>
+
+          <select className=" px-4 py-2 border rounded-130 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
             <option>Your Location</option>
             <option>Indore</option>
             <option>Bhopal</option>
@@ -79,17 +86,11 @@ const Header = () => {
       </div>
 
       {/* Bottom Category Bar */}
-       <div className="flex gap-6 px-6 py-2 text-sm bg-gray-50 border-t overflow-x-auto">
-        {["Home","About","Category"].map(
-          (item) => (
-            <button
-              key={item}
-              className="hover:text-blue-600 font-medium whitespace-nowrap">
-              {item}
-            </button>
-          )
-        )}
+      <div className="border-t bg-gray-50 px-4 py-2">
+        <CategoryDropdown/>
       </div>
+      
+       
       </header>
     // <header>
     //   <nav className="bg-white border-b fixed w-full top-0 z-50">
