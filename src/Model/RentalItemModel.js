@@ -21,6 +21,13 @@ const RentalItemSchema=new Schema({
     type:String,
     required:true
   },
+  Category:{
+    type:String,
+    required:true
+  },
+  ContactNumber:{
+    type:Number,
+  },
   Owner:{
     type:mongoose.Types.ObjectId,
     ref:"USER"
