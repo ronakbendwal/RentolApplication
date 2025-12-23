@@ -19,6 +19,7 @@ const Header = () => {
         </div>
 
         {/* Search + Location */}
+          
         <div className="flex items-center gap-3 w-[45%]">
           <input
             type="text"
@@ -83,55 +84,14 @@ const Header = () => {
             </div>
           )}
         </div>
-      </div>
+        </div>
 
-      {/* Bottom Category Bar */}
-      <div className="border-t bg-gray-50 px-4 py-2">
-        <CategoryDropdown/>
-      </div>
-      
-       
+<div className="border-t bg-gray-50 px-4 py-2">
+      <CategoryDropdown/>
+</div>
+    
+
       </header>
-    // <header>
-    //   <nav className="bg-white border-b fixed w-full top-0 z-50">
-    //     <div className="max-w-7xl mx-auto px-4">
-    //       <div className="flex justify-between items-center h-16">
-
-    //         {/* Logo */}
-    //         <Link to="/" className="text-2xl font-bold text-blue-600">
-    //           Rentol
-    //         </Link>
-
-    //         {/* Nav Items */}
-    //         <ul className="flex items-center gap-6">
-    //           {navItem.map((item) =>
-    //             item.activate ? (
-    //               <li key={item.name}>
-    //                 <button
-    //                   onClick={() => navigate(item.url)}
-    //                   className="text-gray-700 font-medium hover:text-blue-600 transition"
-    //                 >
-    //                   {item.name}
-    //                 </button>
-    //               </li>
-    //             ) : null
-    //           )}
-
-    //           {/* Logout */}
-    //           {Authstatus && (
-    //             <>
-                
-                
-    //             <button onClick={()=>{navigate('/postform')}}>RentOut</button>
-    //               <LogoutButton />
-    //           </>
-    //           )}
-    //         </ul>
-
-    //       </div>
-    //     </div>
-    //   </nav>
-    // </header>
   );
 };
 
