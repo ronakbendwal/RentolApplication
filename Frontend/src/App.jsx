@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import './App.css'
-import HeaderComponent from './Components/Header.Component'
+import { HeaderComponent,FooterComponent } from './Components'
 function App() {
   return (
     <>
     <HeaderComponent/>
+    <FooterComponent/>
     </>
   )
 }
