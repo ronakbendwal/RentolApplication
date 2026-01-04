@@ -1,7 +1,8 @@
-import FooterComponent from "./Footer.Component";
-import HeaderComponent from "./Header.Component";
-
+import FooterComponent from "./Layout/Footer.Component.jsx";
+import HeaderComponent from ".//Layout/Header.Component.jsx";
+import Header4 from "./Layout/Header.Component.jsx";
 export {
   HeaderComponent,
-  FooterComponent
+  FooterComponent,
+  Header4
 }
