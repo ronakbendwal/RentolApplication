@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
-
+import useForm from 'react-hook-form';
+import Input from '../UtilFields/Input';
 const SignupForm = ({ onToggle }) => {
-  const [email,setemail]=useState("");
-  const [passward,setpassward]=useState("");
-  const [username,setusername]=useState("");
-  const [fullname,setfullname]=useState("");
-  const dataobject={
-    email,
-    passward,
-    username,
-    fullname
-  }
-  const submit=()=>{
-    console.log(dataobject)
+  const {
+    register,
+    handleSubmit
+  }=useForm();
+
+  const submit=(data)=>{
+  
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -23,48 +19,38 @@ const SignupForm = ({ onToggle }) => {
           <p className="text-gray-500 font-medium">Join Rentol to start renting today.</p>
         </div>
 
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-4" onSubmit={submit}>
           <div className="relative">
             <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Full Name"
-              value={fullname}
-              onChange={(e)=>{setfullname(e.target.value)}}
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
-            />
+            <Input
+            placeholder="Full Name"
+            {...register('fullname')}/>
           </div>
 
           <div className="relative">
             <Mail className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input 
+            <Input 
               type="email" 
-              value={email}
-              placeholder="Email address"
-              onChange={(e)=>{setemail(e.target.value)}}
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              placeholder="Enter Email"
+              {...register('email')}
             />
           </div>
 
           <div className="relative">
             <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input 
+            <Input 
               type="text" 
               placeholder="User Name"
-              value={username}
-              onChange={(e)=>{setusername(e.target.value)}}
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              {...register('username')}
             />
           </div>
 
           <div className="relative">
             <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input 
+            <Input 
               type="passward" 
-              value={passward}
               placeholder="Create Password"
-              onChange={(e)=>{setpassward(e.target.value)}}
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              {...register('passward')}
             />
           </div>
 
@@ -83,7 +69,7 @@ const SignupForm = ({ onToggle }) => {
         <div className="mt-8 pt-6 border-t border-gray-50 text-center">
           <p className="text-sm text-gray-600">
             Already have an account? 
-            <button onClick={onToggle} className="ml-1 font-bold text-blue-600 hover:underline">Log in here</button>
+            <Link  className="ml-1 font-bold text-blue-600 hover:underline">Log in here</Link>
           </p>
         </div>
       </div>
