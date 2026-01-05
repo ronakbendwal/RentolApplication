@@ -6,10 +6,13 @@ import Input from '../UtilFields/Input';
 const SignupForm = ({ onToggle }) => {
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    formState:{errors,isSubmitting}
   }=useForm();
-
+  const [error,seterror]=useState("");
   const submit=(data)=>{
+    seterror("");
+    //api call comes here for creating user account 
   console.log(data)
   }
   return (
@@ -25,7 +28,11 @@ const SignupForm = ({ onToggle }) => {
             <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
             <Input
             placeholder="Full Name"
-            {...register('fullname')}/>
+            {...register('fullname',{
+              required:true,
+              minLength:{value:3, message:"Enter Correct Name"}
+            })}/>
+            {errors.fullname && <p>{errors.fullname.message}</p>}
           </div>
 
           <div className="relative">
@@ -33,8 +40,13 @@ const SignupForm = ({ onToggle }) => {
             <Input 
               type="email" 
               placeholder="Enter Email"
-              {...register('email')}
+              {...register('email',{
+              required:true,
+              validate:(value)=>/^([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/.
+                test(value) || "Enter Correct Email Address",
+            })}
             />
+            {errors.email && <p>{errors.email.message}</p> }
           </div>
 
           <div className="relative">
@@ -42,8 +54,12 @@ const SignupForm = ({ onToggle }) => {
             <Input 
               type="text" 
               placeholder="User Name"
-              {...register('username')}
+              {...register('username',{
+              required:true,
+              minLength:{value:3, message:"Use Long Username"}
+            })}
             />
+            {errors.username && <p>{errors.username.message}</p>}
           </div>
 
           <div className="relative">
@@ -51,7 +67,9 @@ const SignupForm = ({ onToggle }) => {
             <Input 
               type="passward" 
               placeholder="Create Password"
-              {...register('passward')}
+              {...register('passward',{
+              required:true,
+            })}
             />
           </div>
 
@@ -62,7 +80,7 @@ const SignupForm = ({ onToggle }) => {
             </p>
           </div>
 
-          <button  type='submit' className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+          <button disabled={isSubmitting} type='submit' className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
             Create Account
           </button>
         </form>
