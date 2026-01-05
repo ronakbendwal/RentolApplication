@@ -4,7 +4,7 @@ import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
 import {useForm} from 'react-hook-form'
 import Input from '../UtilFields/Input';
 
-const SignupForm = ({ onToggle }) => {
+const SignupForm = () => {
   const {
     register,
     handleSubmit,

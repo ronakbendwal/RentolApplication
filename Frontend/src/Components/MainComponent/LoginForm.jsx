@@ -3,7 +3,7 @@ import { Mail, Lock, Chrome, Apple } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Input from '../UtilFields/Input';
 import { Link } from 'react-router-dom';
-const LoginForm = ({ onToggle }) => {
+const LoginForm = () => {
   const {
     register,
     handleSubmit,
