@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
 
 const SignupForm = ({ onToggle }) => {
+  const [email,setemail]=useState("");
+  const [passward,setpassward]=useState("");
+  const [username,setusername]=useState("");
+  const [fullname,setfullname]=useState("");
+  const dataobject={
+    email,
+    passward,
+    username,
+    fullname
+  }
+  const submit=()=>{
+    console.log(dataobject)
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
@@ -16,6 +29,8 @@ const SignupForm = ({ onToggle }) => {
             <input 
               type="text" 
               placeholder="Full Name"
+              value={fullname}
+              onChange={(e)=>{setfullname(e.target.value)}}
               className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
             />
           </div>
@@ -24,7 +39,20 @@ const SignupForm = ({ onToggle }) => {
             <Mail className="absolute left-4 top-3.5 text-gray-400" size={18} />
             <input 
               type="email" 
+              value={email}
               placeholder="Email address"
+              onChange={(e)=>{setemail(e.target.value)}}
+              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+            />
+          </div>
+
+          <div className="relative">
+            <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
+            <input 
+              type="text" 
+              placeholder="User Name"
+              value={username}
+              onChange={(e)=>{setusername(e.target.value)}}
               className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
             />
           </div>
@@ -32,8 +60,10 @@ const SignupForm = ({ onToggle }) => {
           <div className="relative">
             <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
             <input 
-              type="password" 
+              type="passward" 
+              value={passward}
               placeholder="Create Password"
+              onChange={(e)=>{setpassward(e.target.value)}}
               className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
             />
           </div>
@@ -45,7 +75,7 @@ const SignupForm = ({ onToggle }) => {
             </p>
           </div>
 
-          <button className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+          <button  onClick={submit} className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
             Create Account
           </button>
         </form>
