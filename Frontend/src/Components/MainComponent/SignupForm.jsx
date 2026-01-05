@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
-import useForm from 'react-hook-form';
+import {useForm} from 'react-hook-form'
 import Input from '../UtilFields/Input';
+
 const SignupForm = ({ onToggle }) => {
   const {
     register,
@@ -9,7 +10,7 @@ const SignupForm = ({ onToggle }) => {
   }=useForm();
 
   const submit=(data)=>{
-  
+  console.log(data)
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -19,7 +20,7 @@ const SignupForm = ({ onToggle }) => {
           <p className="text-gray-500 font-medium">Join Rentol to start renting today.</p>
         </div>
 
-        <form className="space-y-4" onSubmit={submit}>
+        <form className="space-y-4" onSubmit={handleSubmit(submit)}>
           <div className="relative">
             <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
             <Input
@@ -61,7 +62,7 @@ const SignupForm = ({ onToggle }) => {
             </p>
           </div>
 
-          <button  onClick={submit} className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+          <button  type='submit' className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
             Create Account
           </button>
         </form>
@@ -69,7 +70,7 @@ const SignupForm = ({ onToggle }) => {
         <div className="mt-8 pt-6 border-t border-gray-50 text-center">
           <p className="text-sm text-gray-600">
             Already have an account? 
-            <Link  className="ml-1 font-bold text-blue-600 hover:underline">Log in here</Link>
+            <button  className="ml-1 font-bold text-blue-600 hover:underline">Log in here</button>
           </p>
         </div>
       </div>

@@ -4,6 +4,7 @@ const Input =forwardRef(function input({
   type='text',
   className="",
   placeholder,
+  ...props
 },referance) {
   const id=useId();
   return (
@@ -14,6 +15,7 @@ const Input =forwardRef(function input({
     focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all ${className}`}
     ref={referance}
     id={id}
+    {...props}
     />
   )
 })
