@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Link} from 'react-router-dom'
 import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
 import {useForm} from 'react-hook-form'
 import Input from '../UtilFields/Input';
@@ -88,7 +89,7 @@ const SignupForm = ({ onToggle }) => {
         <div className="mt-8 pt-6 border-t border-gray-50 text-center">
           <p className="text-sm text-gray-600">
             Already have an account? 
-            <button  className="ml-1 font-bold text-blue-600 hover:underline">Log in here</button>
+            <Link to="/login" className="ml-1 font-bold text-blue-600 hover:underline">Log in here</Link>
           </p>
         </div>
       </div>

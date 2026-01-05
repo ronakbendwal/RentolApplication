@@ -2,6 +2,7 @@ import React from 'react';
 import { Mail, Lock, Chrome, Apple } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Input from '../UtilFields/Input';
+import { Link } from 'react-router-dom';
 const LoginForm = ({ onToggle }) => {
   const {
     register,
@@ -70,7 +71,7 @@ const LoginForm = ({ onToggle }) => {
 
         <p className="text-center text-sm text-gray-600">
           Don't have an account? 
-          <button onClick={onToggle} className="ml-1 font-bold text-blue-600 hover:underline">Sign up for free</button>
+          <Link to="/signup" className="ml-1 font-bold text-blue-600 hover:underline">Create Account</Link>
         </p>
       </div>
     </div>
