@@ -65,7 +65,7 @@ const SignupForm = ({ onToggle }) => {
           <div className="relative">
             <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
             <Input 
-              type="passward" 
+              type="password" 
               placeholder="Create Password"
               {...register('passward',{
               required:true,

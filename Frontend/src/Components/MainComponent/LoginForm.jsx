@@ -1,7 +1,19 @@
 import React from 'react';
-import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
-
+import { Mail, Lock, Chrome, Apple } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import Input from '../UtilFields/Input';
 const LoginForm = ({ onToggle }) => {
+  const {
+    register,
+    handleSubmit,
+    formState:{
+      errors,
+      isSubmitting
+    }
+  }=useForm()
+  const submit=(data)=>{
+    console.log(data)
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
@@ -10,22 +22,26 @@ const LoginForm = ({ onToggle }) => {
           <p className="text-gray-500 font-medium">Welcome back! Please enter your details.</p>
         </div>
 
-        <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-5" onSubmit={handleSubmit(submit)}>
           <div className="relative">
             <Mail className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input 
+            <Input 
               type="email" 
               placeholder="Email address"
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              {...register('email',{
+                required:true
+              })}
             />
           </div>
 
           <div className="relative">
             <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input 
+            <Input 
               type="password" 
               placeholder="Password"
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              {...register('passward',{
+                required:true
+              })}
             />
           </div>
 
@@ -33,7 +49,7 @@ const LoginForm = ({ onToggle }) => {
             <button className="text-sm font-bold text-blue-600 hover:underline">Forgot password?</button>
           </div>
 
-          <button className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+          <button type='submit' disabled={isSubmitting} className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
             Sign In
           </button>
         </form>
