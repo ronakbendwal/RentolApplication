@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import MainLayout from './Outlet/MainLayout.jsx';
-import { LoginForm,SignupForm,ItemsPreviewSection } from './Components/index.js';
+import { LoginForm,SignupForm,ItemsPreviewSection} from './Components/index.js';
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import App from './App.jsx';
 
 
 const router=createBrowserRouter(
@@ -22,5 +23,8 @@ const router=createBrowserRouter(
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <RouterProvider router={router}/>
+      {/* <BrowserRouter>
+      <App/>
+      </BrowserRouter> */}
   </StrictMode>
 )

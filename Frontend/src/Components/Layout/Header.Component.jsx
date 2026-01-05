@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {Link} from'react-router-dom';
-
+import LogoutModal from '../index.js';
 import { Search, MapPin, User, Menu, Target, ChevronDown,X,Package,ShoppingCart,Settings,Heart,LogOut } from 'lucide-react';
 const Header4 = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [show,setShow]=useState(false)
+  const [showLogoutConfirm,setShowLogoutConfirm]=useState(false)
   const iscurrentuser=true;
   return (
     <>
@@ -52,14 +54,20 @@ const Header4 = () => {
 
           {/* Logout */}
           <div className="pt-6 border-t border-gray-100">
-            <button className="flex items-center gap-3 w-full p-3 text-red-500 font-semibold hover:bg-red-50 rounded-xl transition-colors">
+            <button onClick={()=>setShowLogoutConfirm(prev=> !prev)} className="flex items-center gap-3 w-full p-3 text-red-500 font-semibold hover:bg-red-50 rounded-xl transition-colors">
               <LogOut size={20} />
               Logout
             </button>
           </div>
         </div>
       </div>
-
+       {showLogoutConfirm && <LogoutModal isOpen={showLogoutConfirm} 
+       onCancel={() => setShowLogoutConfirm(false)}
+       onConfirm={() => {
+       console.log("Logged out!");
+            // Add your logout logic here
+       setShowLogoutConfirm(false);
+       }}/>}
       {/* 3. MAIN HEADER */}
       <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
