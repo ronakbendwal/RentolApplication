@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import {Link} from'react-router-dom';
+
 import { Search, MapPin, User, Menu, Target, ChevronDown,X,Package,ShoppingCart,Settings,Heart,LogOut } from 'lucide-react';
 const Header4 = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const iscurrentuser=true;
   return (
     <>
       {/* 1. SIDEBAR OVERLAY (Background Dim) */}
@@ -119,12 +122,12 @@ const Header4 = () => {
             </div>
 
             {/* USER ACTIONS (Clicking this opens sidebar) */}
-            <div className="flex items-center gap-4">
+           { iscurrentuser && <div className="flex items-center gap-4">
               <button className="hidden lg:block text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">
                 Rent out your gear
               </button>
               
-              <div 
+                <div 
                 onClick={() => setIsSidebarOpen(true)}
                 className="flex items-center gap-2 border border-gray-200 rounded-full p-1.5 pl-3 hover:shadow-md transition-all cursor-pointer bg-white"
               >
@@ -133,7 +136,21 @@ const Header4 = () => {
                   <User size={20} fill="currentColor" />
                 </div>
               </div>
-            </div>
+            </div>}
+
+
+            {!iscurrentuser && <div className="flex items-center gap-3">
+                  <Link
+                  to="/login"
+                   className="px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-xl transition-all"
+                  >Log in  </Link>
+                 <Link
+                 to="/signup"
+                 className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-100 transition-all active:scale-95"
+                  > Sign up </Link>
+             </div>}
+          
+
 
           </div>
         </div>
@@ -149,6 +166,99 @@ const SidebarLink = ({ icon, label }) => (
     {label}
   </button>
 );
+
+export default Header4;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const HeaderComponent = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
 
@@ -236,4 +346,3 @@ const HeaderComponent = () => {
   );
 };
 
-export default Header4;
