@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+
 import {Link} from'react-router-dom';
+
+import { setIsThemeOpen } from '../../redux/Feature/Theme.js';
+
 import {
   LogoutPremissionComponent,
   UserPreview,
   Logout,
-  Theme
+  ThemePermission
 } from '../index.js';
+
 import { 
   Search, 
   MapPin,
@@ -21,7 +26,11 @@ import {
   SunMoon
  } from 'lucide-react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 const Header4 = () => {
+  const dispatch=useDispatch()
+  const {isThemeOpen}=useSelector((state)=>state.theme)
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const iscurrentuser=true;
@@ -60,17 +69,23 @@ const Header4 = () => {
 
           {/* Sidebar Links */}
           <nav className="space-y-2 flex-grow">
-            <SidebarLink  icon={<Package size={20}/>} label="Your Items" />
-            <SidebarLink icon={<ShoppingCart size={20}/>} label="Cart Items" />
-            <SidebarLink icon={<User size={20}/>} label="Profile" />
-            <SidebarLink icon={<Settings size={20}/>} label="Preferences" />
+
+            <SidebarLink onclick={()=>setActiveComponent('YourItem')} icon={<Package size={20}/>} label="Your Items" />
+
+            <SidebarLink onclick={()=>setActiveComponent('CartItem')} icon={<ShoppingCart size={20}/>} label="Cart Items" />
+
+            <SidebarLink  onclick={()=>setActiveComponent('Profile')} icon={<User size={20}/>} label="Profile" />
+
+            <SidebarLink onclick={()=>dispatch(setIsThemeOpen(!isThemeOpen))} icon={<Settings size={20}/>} label="Preferences" />
+
             <SidebarLink icon={<Heart size={20}/>} label="Wishlist" />
           </nav>
            <Logout/>
         </div>
   
       </div>
-     <LogoutPremissionComponent/>
+      <ThemePermission/>
+      <LogoutPremissionComponent/>
 
 
       {/* 3. MAIN HEADER */}
@@ -162,9 +177,6 @@ const Header4 = () => {
                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-100 transition-all active:scale-95"
                   > Sign up </Link>
              </div>}
-          
-
-
           </div>
         </div>
       </nav>
@@ -173,8 +185,8 @@ const Header4 = () => {
 };
 
 // Simple Helper Component for Sidebar Links
-const SidebarLink = ({ icon, label}) => (
-  <button className="flex items-center gap-3 w-full p-3 text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 rounded-xl transition-all">
+const SidebarLink = ({ onclick,icon, label}) => (
+  <button onClick={onclick} className="flex items-center gap-3 w-full p-3 text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 rounded-xl transition-all">
     <span className="text-gray-400">{icon}</span>
     {label}
   </button>

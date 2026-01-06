@@ -4,7 +4,6 @@ import {useSelector, useDispatch } from 'react-redux'
 import { setIsLogoutConform } from '../../redux/Feature/LogoutUi'
 function Logout() {
   const IsLogoutConform=useSelector((state)=>state.logoutState.isLogoutConform)
-  console.log(IsLogoutConform)
   const dispatch=useDispatch()
   return (
   <div className="pt-6 border-t border-gray-100">
