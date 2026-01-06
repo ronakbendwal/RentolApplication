@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit'
-import Logout from '../../Components/UserInfo/Logout'
 
 const LogoutSlice=createSlice({
   name:"logoutState",

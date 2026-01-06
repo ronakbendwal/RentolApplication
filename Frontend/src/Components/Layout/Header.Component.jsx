@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import {Link} from'react-router-dom';
-import {LogoutModal} from '../index.js';
 import UserPreview from '../UserInfo/UserPreview.jsx';
 import Logout from '../UserInfo/Logout.jsx';
-import { Search, MapPin, User, Menu, Target, ChevronDown,X,Package,ShoppingCart,Settings,Heart,LogOut } from 'lucide-react';
+import {LogoutPremissionComponent} from '../index.js';
+import { 
+  Search, 
+  MapPin,
+  User, 
+  Menu, 
+  Target, 
+  ChevronDown,
+  X,
+  Package,
+  ShoppingCart,
+  Settings,
+  Heart
+ } from 'lucide-react';
+
 const Header4 = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [show,setShow]=useState(false)
-  const [showLogoutConfirm,setShowLogoutConfirm]=useState(false)
   const iscurrentuser=true;
   return (
     <>
@@ -50,27 +62,12 @@ const Header4 = () => {
             <SidebarLink icon={<Settings size={20}/>} label="Preferences" />
             <SidebarLink icon={<Heart size={20}/>} label="Wishlist" />
           </nav>
-
-          {/* Logout */}
-          
-          {/* <div className="pt-6 border-t border-gray-100">
-            <button onClick={()=>setShowLogoutConfirm(prev=> !prev)} className="flex items-center gap-3 w-full p-3 text-red-500 font-semibold hover:bg-red-50 rounded-xl transition-colors">
-              <LogOut size={20} />
-              Logout
-            </button>
-          </div> */}
-           <Logout status={setShowLogoutConfirm}/>
+           <Logout/>
         </div>
   
       </div>
 
-       {showLogoutConfirm && <LogoutModal isOpen={showLogoutConfirm} 
-       onCancel={() => setShowLogoutConfirm(false)}
-       onConfirm={() => {
-       console.log("Logged out!");
-            // Add your logout logic here
-       setShowLogoutConfirm(false);
-       }}/>}
+     <LogoutPremissionComponent/>
 
 
       {/* 3. MAIN HEADER */}

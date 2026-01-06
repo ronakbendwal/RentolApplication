@@ -5,6 +5,7 @@ import SignupForm from "./MainComponent/SignupForm.jsx";
 import LoginForm  from "./MainComponent/LoginForm.jsx";
 import { ItemsPreviewSection } from "./UtilComponent/ItemComponent.jsx";
 import LogoutModal from "./MainComponent/LogoutConfirmation.jsx";
+import LogoutPremissionComponent from "./UserInfo/LogoutPremission.jsx";
 export {
   HeaderComponent,
   FooterComponent,
@@ -13,4 +14,5 @@ export {
   LoginForm,
   ItemsPreviewSection,
   LogoutModal,
+  LogoutPremissionComponent,
 }
