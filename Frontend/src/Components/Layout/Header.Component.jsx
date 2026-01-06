@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import {Link} from'react-router-dom';
-import UserPreview from '../UserInfo/UserPreview.jsx';
-import Logout from '../UserInfo/Logout.jsx';
-import {LogoutPremissionComponent} from '../index.js';
+import {
+  LogoutPremissionComponent,
+  UserPreview,
+  Logout
+} from '../index.js';
 import { 
   Search, 
   MapPin,
@@ -20,7 +22,6 @@ import {
 const Header4 = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [show,setShow]=useState(false)
   const iscurrentuser=true;
   return (
     <>

@@ -4,8 +4,10 @@ import Header4 from "./Layout/Header.Component.jsx";
 import SignupForm from "./MainComponent/SignupForm.jsx";
 import LoginForm  from "./MainComponent/LoginForm.jsx";
 import { ItemsPreviewSection } from "./UtilComponent/ItemComponent.jsx";
-import LogoutModal from "./MainComponent/LogoutConfirmation.jsx";
-import LogoutPremissionComponent from "./UserInfo/LogoutPremission.jsx";
+import LogoutPremissionComponent from "./UserBarComponent/LogoutPremission.jsx";
+import UserPreview from "./UserBarComponent/UserPreview.jsx";
+import Logout from "./UserBarComponent/Logout.jsx";
+import Input from "./UtilFields/Input.jsx";
 export {
   HeaderComponent,
   FooterComponent,
@@ -13,6 +15,8 @@ export {
   SignupForm,
   LoginForm,
   ItemsPreviewSection,
-  LogoutModal,
   LogoutPremissionComponent,
+  UserPreview,
+  Logout,
+  Input,
 }

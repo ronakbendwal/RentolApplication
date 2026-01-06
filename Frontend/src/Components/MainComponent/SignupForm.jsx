@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Link} from 'react-router-dom'
 import { Mail, Lock, Chrome, Apple , User, ShieldCheck} from 'lucide-react';
 import {useForm} from 'react-hook-form'
-import Input from '../UtilFields/Input';
+import {Input} from '../index.js';
 
 const SignupForm = () => {
   const {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Mail, Lock, Chrome, Apple } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import Input from '../UtilFields/Input';
 import { Link } from 'react-router-dom';
+import {Input} from '../index.js';
 const LoginForm = () => {
   const {
     register,
