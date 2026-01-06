@@ -8,6 +8,7 @@ import LogoutPremissionComponent from "./UserBarComponent/LogoutPremission.jsx";
 import UserPreview from "./UserBarComponent/UserPreview.jsx";
 import Logout from "./UserBarComponent/Logout.jsx";
 import Input from "./UtilFields/Input.jsx";
+import ThemePermission from "./UserBarComponent/ThemePremission.jsx";
 export {
   HeaderComponent,
   FooterComponent,
@@ -19,4 +20,5 @@ export {
   UserPreview,
   Logout,
   Input,
+  ThemePermission,
 }

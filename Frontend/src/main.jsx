@@ -7,7 +7,6 @@ import { LoginForm,SignupForm,ItemsPreviewSection} from './Components/index.js';
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/Store/FeatureStore.js';
-import App from './App.jsx';
 
 
 const router=createBrowserRouter(
@@ -28,6 +27,3 @@ createRoot(document.getElementById('root')).render(
       </Provider>
   </StrictMode>
 )
-    {/* <BrowserRouter>
-      <App/>
-    </BrowserRouter> */}

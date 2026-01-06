@@ -3,7 +3,8 @@ import {Link} from'react-router-dom';
 import {
   LogoutPremissionComponent,
   UserPreview,
-  Logout
+  Logout,
+  Theme
 } from '../index.js';
 import { 
   Search, 
@@ -16,13 +17,15 @@ import {
   Package,
   ShoppingCart,
   Settings,
-  Heart
+  Heart,
+  SunMoon
  } from 'lucide-react';
 
 const Header4 = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const iscurrentuser=true;
+ 
   return (
     <>
 
@@ -57,7 +60,7 @@ const Header4 = () => {
 
           {/* Sidebar Links */}
           <nav className="space-y-2 flex-grow">
-            <SidebarLink icon={<Package size={20}/>} label="Your Items" />
+            <SidebarLink  icon={<Package size={20}/>} label="Your Items" />
             <SidebarLink icon={<ShoppingCart size={20}/>} label="Cart Items" />
             <SidebarLink icon={<User size={20}/>} label="Profile" />
             <SidebarLink icon={<Settings size={20}/>} label="Preferences" />
@@ -67,7 +70,6 @@ const Header4 = () => {
         </div>
   
       </div>
-
      <LogoutPremissionComponent/>
 
 
