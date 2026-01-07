@@ -5,7 +5,7 @@ import {
   CLoudinaryUpload,
   DeleteCloudinaryUpload
  } from "../Utils/index.js";
-import {USER} from "../Model/index.js";
+import {USER} from "../Model/User.Model.js";
 import jwt from "jsonwebtoken";
 const GenerateAccessRefreshToken= async(userId)=>{
 try{

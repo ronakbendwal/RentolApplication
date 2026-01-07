@@ -2,8 +2,6 @@ import DBconnect from './DataBase/ConnedtDB.js';
 import dotenv from 'dotenv';
 import app from './App.js';
 dotenv.config();
-const app =express();
-
 
 DBconnect().then(()=>{
   app.listen(process.env.PORT,()=>{

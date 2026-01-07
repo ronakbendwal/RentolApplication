@@ -3,7 +3,7 @@ import {
   AsyncHandle,
   ApiError
  } from '../Utils/index.js';
-import { USER } from '../Model/index.js';
+import { USER } from '../Model/User.Model.js';
 
 const VerifyUser=AsyncHandle(async(req,res,next)=>{
 console.log('in the auth middleware')
