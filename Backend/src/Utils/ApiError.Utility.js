@@ -9,7 +9,7 @@ super(message)
 this.statuscode=statuscode,
 this.errors=errors,
 this.data=null,
-this.sucess=false,
+this.success=false,
 this.message=message
 
 }
