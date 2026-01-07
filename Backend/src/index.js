@@ -1,12 +1,17 @@
 import express from 'express';
+import DBconnect from './DataBase/ConnedtDB.js';
+import dotenv from 'dotenv';
+dotenv.config();
 const app =express();
-const port =3000;
-
-app.get("/",(req,res )=>{
-  res.send("helllo from backend")
-})
 
 
-app.listen(port,()=>{
-  console.log("app start at port :",port)
+DBconnect().then(()=>{
+  app.listen(process.env.PORT,()=>{
+    console.log("Server Started")
+  }),
+  app.on("error",()=>{
+    console.log("Error In App Listening")
+  })
+}).catch((error)=>{
+  console.log("MongoDB Connection Error ::",error)
 })
