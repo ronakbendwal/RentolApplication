@@ -1,10 +1,8 @@
 import MainLayout from './Outlet/MainLayout.jsx';
-import MyListedItems from './Pages/YourItem.jsx';
-
+import { useEffect } from 'react';
 function App() {
   return (
     <MainLayout/>
-    // <MyListedItems/>
   )
 }
 
