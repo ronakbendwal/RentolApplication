@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Lock, Chrome, Apple } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import {Input} from '../index.js';
+import { useSelector,useDispatch } from 'react-redux';
+import { login,logout } from '../../redux/Feature/Auth.js';
+import axios from 'axios';
 const LoginForm = () => {
   const {
     register,
@@ -12,8 +15,23 @@ const LoginForm = () => {
       isSubmitting
     }
   }=useForm()
-  const submit=(data)=>{
-    console.log(data)
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+  const [error,setError]=useState("")
+  //api calling for login user
+  const submit=async(data)=>{
+    setError("")
+    try{
+      const response=await axios.post('/api/user/login',data)
+      const LoginUserData=response.data;
+      console.log(LoginUserData)
+      dispatch(login(LoginUserData))
+      navigate('/');
+    //use when api call
+    }catch(error){
+      setError(   error?.response?.data?.message || "Invalid credentials")
+      dispatch(logout());
+    }
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import {Link} from'react-router-dom';
-
 import { setIsThemeOpen } from '../../redux/Feature/Theme.js';
-
 import {
   LogoutPremissionComponent,
   UserPreview,
   Logout,
   ThemePermission
 } from '../index.js';
-
 import { 
   Search, 
   MapPin,
@@ -25,25 +21,24 @@ import {
   Heart,
   SunMoon
  } from 'lucide-react';
-
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useDispatch,useSelector} from 'react-redux';
+import {setIsSidebarOpen }from '../../redux/Feature/SideBar.js'
 const Header4 = () => {
   const dispatch=useDispatch()
   const {isThemeOpen}=useSelector((state)=>state.theme)
+  const {status}=useSelector((state)=>state.auth)
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const iscurrentuser=true;
+  const {isSidebarOpen}=useSelector((state)=>state.sidebarstate)
+
+  
  
   return (
     <>
-
-
       {/* 1. SIDEBAR OVERLAY (Background Dim) */}
        {isSidebarOpen && (
         <div 
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] transition-opacity"
-          onClick={() => setIsSidebarOpen(false)}
+          onClick={() => dispatch(setIsSidebarOpen(false))}
         />
       )}
 
@@ -57,7 +52,7 @@ const Header4 = () => {
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-xl font-bold text-gray-900">Account</h2>
             <button 
-              onClick={() => setIsSidebarOpen(false)}
+              onClick={() => dispatch(setIsSidebarOpen(false))}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
               <X size={20} />
@@ -150,13 +145,13 @@ const Header4 = () => {
             </div>
 
             {/* USER ACTIONS (Clicking this opens sidebar) */}
-           { iscurrentuser && <div className="flex items-center gap-4">
+           { status && <div className="flex items-center gap-4">
               <button className="hidden lg:block text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">
                 Rent out your gear
               </button>
               
                 <div 
-                onClick={() => setIsSidebarOpen(true)}
+                onClick={() => dispatch(setIsSidebarOpen(true))}
                 className="flex items-center gap-2 border border-gray-200 rounded-full p-1.5 pl-3 hover:shadow-md transition-all cursor-pointer bg-white"
               >
                 <Menu size={18} className="text-gray-600" />
@@ -167,7 +162,7 @@ const Header4 = () => {
             </div>}
 
 
-            {!iscurrentuser && <div className="flex items-center gap-3">
+            {!status && <div className="flex items-center gap-3">
                   <Link
                   to="/login"
                    className="px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-xl transition-all"

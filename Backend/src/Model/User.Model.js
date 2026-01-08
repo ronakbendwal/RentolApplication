@@ -29,11 +29,12 @@ const UserSchema=new Schema({
 
 
 //it is an middleware hash the bassward before save and safe the passward from unuseal hashing
-UserSchema.pre("save",async function(next){
-  if(!this.isModified("passward")) return ;
+UserSchema.pre("save", async function () {
+  if (!this.isModified("passward")) return ;
 
-  this.passward=await bcrypt.hash(this.passward,10)
-})
+  this.passward=await bcrypt.hash(this.passward,10);
+});
+
 
 //it is an middleware user to chect the passward is correct or not
 UserSchema.methods.IsPasswardCorrect=async function(passward){

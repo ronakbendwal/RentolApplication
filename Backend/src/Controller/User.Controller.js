@@ -3,10 +3,11 @@ import {
   ApiError,
   ApiResponse,
   CLoudinaryUpload,
-  DeleteCloudinaryUpload
+  DeleteCloudinaryUpload,
  } from "../Utils/index.js";
 import {USER} from "../Model/User.Model.js";
 import jwt from "jsonwebtoken";
+
 const GenerateAccessRefreshToken= async(userId)=>{
 try{
   
@@ -17,6 +18,7 @@ try{
   console.log("secont half complete")
   user.refreshtoken=refreshToken;
   await user.save({validateBeforeSave:false});
+  console.log("all complete")
   return {accessToken,refreshToken}
 }catch(error){
   console.log(error)
@@ -28,25 +30,23 @@ const CreateUser=AsyncHandle(async(req,res)=>{
   const {username,email,passward,fullname}=req.body;
 
   let uploadedfilepath="";
+  console.log(username, email , passward , fullname)
+  if (!username || !email || !passward || !fullname) {
+  throw new ApiError(400, "All Fields Are Required");
+}
+
+  const existedUser=await USER.findOne({
+    $or:[{email},{username:username.toLowerCase()}]
+  })
+
+  if(existedUser){
+    throw new ApiError(400,"User Already Exist")
+  }
 
   if(req.file && req.file?.path){
 
     uploadedfilepath=await CLoudinaryUpload(req.file?.path);
 
-  }
-   
-  if([username,email,passward,fullname].some((field)=>{
-    field?.trim()===""
-  }) ){
-    throw new ApiError(400,"All Field Are Required");
-  }
-
-  const existedUser=await USER.findOne({
-    $or:[{email},{username}]
-  })
-
-  if(existedUser){
-    throw new ApiError(400,"User Already Exist")
   }
 
   const userObject=await USER.create({
@@ -54,11 +54,11 @@ const CreateUser=AsyncHandle(async(req,res)=>{
     email,
     fullname,
     passward,
-    image:uploadedfilepath?.url
+    image:uploadedfilepath?.url || ""
   })
 
   const userObjectReferance=await USER.findById(userObject._id)
-  .select("-passward -refreshtoken")
+  .select("-passward")
 
   if(!userObjectReferance){
     throw new ApiError(500,"Error While Creating User")
@@ -92,7 +92,10 @@ json(
 })
 
 const LogOutUser=AsyncHandle(async(req,res)=>{
+  
+  console.log("in logout user")
   await USER.findByIdAndUpdate(
+    
     req.user?._id,
     {
       $set:{
@@ -102,9 +105,11 @@ const LogOutUser=AsyncHandle(async(req,res)=>{
 
     const options={
       httpOnly:true,
-      secure:true
+      secure: false,        // ⭐ localhost ke liye false
+      sameSite: "lax"
     }
 
+    console.log("complete logout")
     return res.status(200)
     .clearCookie("refreshToken",options)
     .clearCookie("accessToken",options)
@@ -153,18 +158,18 @@ const LoginUser=AsyncHandle(async(req,res)=>{
 
   const options={
     secure:true,
-    httpOnly:true
+    httpOnly:false,
+    sameSite: "lax"
   }
 
+  console.log("all complete from login")
   return res.status(200)
   .cookie("accessToken",accessToken,options)
   .cookie("refreshToken",refreshToken, options)
   .json(
     new ApiResponse(
       200,
-      {
-        user:loggedInUser
-      },
+      loggedInUser,
       "User SucessFully Login" 
     )
   )

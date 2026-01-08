@@ -7,11 +7,11 @@ const AuthSlice=createSlice({
     status:false
   },
   reducers:{
-    loginUser:(state,action)=>{
+    login:(state,action)=>{
       state.data=action.payload,
       state.status=true
     },
-    logout:()=>{
+    logout:(state,action)=>{
       state.data=null,
       state.status=false
     }
