@@ -26,6 +26,7 @@ createRoot(document.getElementById('root')).render(
         <RouterProvider router={router}/>
       </Provider>
       {/* <BrowserRouter>
-      <App/></BrowserRouter> */}
+      <App/>
+      </BrowserRouter> */}
   </StrictMode>
 )
