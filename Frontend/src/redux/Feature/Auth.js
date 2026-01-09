@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { storeData } from "../../LocalStorage/localStorage";
 const AuthSlice=createSlice({
   name:"auth",
   initialState:{
@@ -10,10 +10,12 @@ const AuthSlice=createSlice({
     login:(state,action)=>{
       state.data=action.payload,
       state.status=true
+      storeData("auth",state.data);
     },
     logout:(state,action)=>{
       state.data=null,
       state.status=false
+      storeData("auth",state.data);
     }
   }
 })
