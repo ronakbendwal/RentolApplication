@@ -10,6 +10,7 @@ import Logout from "./UserBarComponent/Logout.jsx";
 import Input from "./UtilFields/Input.jsx";
 import ThemePermission from "./UserBarComponent/ThemePremission.jsx";
 import SignupForm2 from "./MainComponent/SignupForm.jsx";
+import AddItemButton from "./MainComponent/AddItemButton.jsx";
 export {
   HeaderComponent,
   FooterComponent,
@@ -22,5 +23,6 @@ export {
   Logout,
   Input,
   ThemePermission,
-  SignupForm2
+  SignupForm2,
+  AddItemButton,
 }

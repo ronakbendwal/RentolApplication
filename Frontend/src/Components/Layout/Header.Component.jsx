@@ -5,9 +5,11 @@ import {
   LogoutPremissionComponent,
   UserPreview,
   Logout,
-  ThemePermission
+  ThemePermission,
+  AddItemButton
 } from '../index.js';
 import { 
+  Plus,
   Search, 
   MapPin,
   User, 
@@ -146,10 +148,7 @@ const Header4 = () => {
 
             {/* USER ACTIONS (Clicking this opens sidebar) */}
            { status && <div className="flex items-center gap-4">
-              <button className="hidden lg:block text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">
-                Rent out your gear
-              </button>
-              
+                 <AddItemButton/>
                 <div 
                 onClick={() => dispatch(setIsSidebarOpen(true))}
                 className="flex items-center gap-2 border border-gray-200 rounded-full p-1.5 pl-3 hover:shadow-md transition-all cursor-pointer bg-white"
