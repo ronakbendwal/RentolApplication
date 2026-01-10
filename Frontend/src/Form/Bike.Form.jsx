@@ -4,7 +4,7 @@ import {
   Bike, DollarSign, Image as ImageIcon, 
   Upload, X, ArrowRight, ShieldCheck, MessageCircle, 
   Info, Star, ArrowLeft, MapPin, Calendar, Tag, Navigation,
-  Layers
+  Layers, Map // Added Map icon
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 
@@ -17,7 +17,6 @@ const BikeForm = () => {
 
   const conditions = ["Brand New", "Excellent", "Good", "Used"];
   
-  // Comprehensive list of bike types
   const bikeTypes = [
     "Mountain Bike (MTB)", "Road Bike", "Hybrid/City Bike", 
     "Electric Bike (e-Bike)", "Electric Scooter", "Cruiser", 
@@ -107,14 +106,16 @@ const BikeForm = () => {
             </div>
           </div>
 
-          {/* 2. OPTIMIZED 3-COLUMN UTILITY ROW */}
+          {/* 2. RENTAL & PICKUP DETAILS */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <DollarSign size={20} className="text-emerald-600" /> Rental Details
+              <DollarSign size={20} className="text-emerald-600" /> Rental & Pickup Details
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* 3-Column Utility Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase">Price / Day</label>
+                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
                   <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-black text-lg" />
@@ -122,7 +123,7 @@ const BikeForm = () => {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase">Contact WhatsApp</label>
+                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Contact WhatsApp</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
                   <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
@@ -130,11 +131,20 @@ const BikeForm = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase">Pickup Location</label>
+                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City / Area</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
                   <input type="text" placeholder="City / Area" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
                 </div>
+              </div>
+            </div>
+
+            {/* Full Street Address Field Added Here */}
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Full Pickup Address</label>
+              <div className="relative">
+                <Map className="absolute left-5 top-4 text-gray-400" size={18} />
+                <input type="text" placeholder="House No, Street Name, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
               </div>
             </div>
           </div>
@@ -169,7 +179,7 @@ const BikeForm = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 border border-emerald-100"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Safety is priority. Ensure brakes and tires are checked.</p>
+              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Safety is priority. Ensure brakes and tires are checked before listing.</p>
             </div>
             <button className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
               List My Bike <ArrowRight size={20} />
