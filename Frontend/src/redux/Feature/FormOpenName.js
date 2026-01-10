@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit'
 const FormOpenDataSlice=createSlice({
   name:"formopendata",
   initialState:{
-    selectedCategory:null
+    selectedCategory:""
   },
   reducers:{
     setSelectedCategory:(state,action)=>{

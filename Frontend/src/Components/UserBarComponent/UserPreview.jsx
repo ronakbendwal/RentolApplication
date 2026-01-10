@@ -11,7 +11,7 @@ function UserPreview() {
               <User size={24} />
             </div>
             <div>
-              <p className="font-bold text-gray-900">{userdata.data.username}</p>
+              {/* <p className="font-bold text-gray-900">{userdata.data.username}</p> */}
               {/* <p className="text-xs text-blue-600">Premium Member</p> */}
             </div>
           </div>

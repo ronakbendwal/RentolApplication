@@ -5,7 +5,7 @@ const AuthSlice=createSlice({
   name:"auth",
   initialState:{
     data: dataFromStore || null,
-    status:dataFromStore ? true : false,
+    status:dataFromStore ? true : true,
   },
   reducers:{
     login:(state,action)=>{

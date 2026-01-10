@@ -6,7 +6,8 @@ import {
   Home, Tent, Music, Search, Zap, ArrowRight,
   Sparkles, ShieldCheck, ChevronRight, TrendingUp,Image as ImageIcon
 } from 'lucide-react';
-import setSelectedCategory from '../redux/Feature/FormOpenName.js'
+import {setSelectedCategory} from '../redux/Feature/FormOpenName.js'
+import {VehicleForm,PowerToolForm} from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
 // import { 
@@ -18,6 +19,7 @@ const ItemCategoryPage= () => {
   
   const {selectedCategory}=useSelector((state)=>state.formopendata)
   const [searchTerm, setSearchTerm] = useState("");
+  const dispatch=useDispatch()
 
   const categories = [
     { id: 'cars', name: 'Vehicles', icon: <Car />, color: 'from-blue-500 to-cyan-500', desc: 'Cars, Trucks & Vans' },
@@ -55,7 +57,7 @@ const ItemCategoryPage= () => {
 
           <div className="grid grid-cols-1 gap-4">
             {filteredCategories.map((cat) => (
-              <div key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`group relative rounded-[2rem] p-5 border-2 transition-all cursor-pointer flex items-center gap-5 ${selectedCategory===cat.id ? 'bg-blue-50/50 border-blue-600 shadow-lg' : 'bg-white border-transparent shadow-sm hover:border-blue-100'}`}>
+              <div key={cat.id} onClick={() => dispatch(setSelectedCategory(cat.id))} className={`group relative rounded-[2rem] p-5 border-2 transition-all cursor-pointer flex items-center gap-5 ${selectedCategory===cat.id ? 'bg-blue-50/50 border-blue-600 shadow-lg' : 'bg-white border-transparent shadow-sm hover:border-blue-100'}`}>
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-white`}>{cat.icon}</div>
                 <div className="flex-grow"><h3 className="text-lg font-black text-gray-900">{cat.name}</h3></div>
                 <ChevronRight size={20} className={selectedCategory === cat.id ? 'text-blue-600' : 'text-gray-300'} />
@@ -65,7 +67,9 @@ const ItemCategoryPage= () => {
         </div>
 
         {/* RIGHT SIDE: FORMS */}
-
+        <VehicleForm/>
+        <PowerToolForm/>
+ 
       </div>
     </div>
   );
