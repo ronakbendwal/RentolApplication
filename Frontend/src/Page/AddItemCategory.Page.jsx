@@ -10,7 +10,8 @@ import {setSelectedCategory} from '../redux/Feature/FormOpenName.js'
 import {
   VehicleForm,
   PowerToolForm,
-  BikeForm
+  BikeForm,
+  SpaceForm
 } from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
@@ -74,6 +75,7 @@ const ItemCategoryPage= () => {
         <VehicleForm/>
         <PowerToolForm/>
         <BikeForm/>
+        <SpaceForm/>
  
       </div>
     </div>
