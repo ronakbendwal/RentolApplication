@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useDispatch,useSelector} from 'react-redux'
 import { 
   Car, Hammer, Bike, Camera, Smartphone, 
   Home, Tent, Music, Search, Zap, ArrowRight,
   Sparkles, ShieldCheck, ChevronRight, TrendingUp,Image as ImageIcon
 } from 'lucide-react';
+import setSelectedCategory from '../redux/Feature/FormOpenName.js'
 ///
 // import React, { useState, useEffect } from 'react';
 // import { 
@@ -13,10 +15,9 @@ import {
 // } from 'lucide-react';
 
 const ItemCategoryPage= () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-
   
+  const {selectedCategory}=useSelector((state)=>state.formopendata)
+  const [searchTerm, setSearchTerm] = useState("");
 
   const categories = [
     { id: 'cars', name: 'Vehicles', icon: <Car />, color: 'from-blue-500 to-cyan-500', desc: 'Cars, Trucks & Vans' },
