@@ -16,7 +16,8 @@ import {
   CameraForm,
   MusicForm,
   OutdoorForm,
-  HelperForm
+  HelperForm,
+  TechForm
 } from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
@@ -87,7 +88,7 @@ const ItemCategoryPage= () => {
         <MusicForm/>
         <OutdoorForm/>
         <HelperForm/>
- 
+        <TechForm/>
       </div>
     </div>
   );

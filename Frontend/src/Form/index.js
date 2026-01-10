@@ -6,6 +6,7 @@ import CameraForm from "./Camera.Form";
 import MusicForm from "./Music.Form";
 import OutdoorForm from "./Outdoor.Form";
 import HelperForm from "./Helper.Form";
+import TechForm from "./Tech.Form";
 export {
   PowerToolForm,
   VehicleForm,
@@ -15,4 +16,5 @@ export {
   MusicForm,
   OutdoorForm,
   HelperForm,
+  TechForm,
 }
