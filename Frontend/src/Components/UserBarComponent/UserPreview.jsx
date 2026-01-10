@@ -2,7 +2,8 @@ import React from 'react'
 import { User } from 'lucide-react';
 import {useSelector} from 'react-redux'
 function UserPreview() {
-  const userdata=useSelector((state)=>state.auth.data)
+  const {data,status}=useSelector((state)=>state.auth)
+  if(!status) return null
   console.log("from user preview")
   console.log(userdata)
   return (
@@ -11,7 +12,7 @@ function UserPreview() {
               <User size={24} />
             </div>
             <div>
-              {/* <p className="font-bold text-gray-900">{userdata.data.username}</p> */}
+              <p className="font-bold text-gray-900">{userdata.data.data}</p>
               {/* <p className="text-xs text-blue-600">Premium Member</p> */}
             </div>
           </div>

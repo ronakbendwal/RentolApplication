@@ -62,7 +62,7 @@ const Header4 = () => {
           </div>
 
           {/* User Preview */}
-          <UserPreview/>
+          {status && <UserPreview/>}
 
           {/* Sidebar Links */}
           <nav className="space-y-2 flex-grow">
@@ -92,9 +92,9 @@ const Header4 = () => {
             
             {/* LOGO */}
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-black tracking-tight text-blue-600 cursor-pointer">
+              <Link to='/' className="text-2xl font-black tracking-tight text-blue-600 cursor-pointer">
                 RENTOL<span className="text-gray-900">.</span>
-              </h1>
+              </Link>
             </div>
 
             {/* SEARCH AREA (Unchanged) */}

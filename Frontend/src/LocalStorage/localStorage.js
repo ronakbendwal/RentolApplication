@@ -25,7 +25,18 @@ const getData=(key)=>{
  }
 }
 
+const removeFromStorage=(key)=>{
+  if(!key) return null;
+  try{
+    localStorage.removeItem(key)
+  }catch(error){
+    console.log("Local Sotrage :: remove Data :: Error ::",error);
+    return null;
+  }
+}
+
 export {
   storeData,
-  getData
+  getData,
+  removeFromStorage,
 }

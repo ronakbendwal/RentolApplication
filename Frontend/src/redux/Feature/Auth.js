@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getData, storeData } from "../../LocalStorage/localStorage";
+import { getData, removeFromStorage, storeData } from "../../LocalStorage/localStorage";
 const dataFromStore=getData("auth");
 const AuthSlice=createSlice({
   name:"auth",
   initialState:{
     data: dataFromStore || null,
-    status:dataFromStore ? true : true,
+    status:dataFromStore ? true : false,
   },
   reducers:{
     login:(state,action)=>{
@@ -16,7 +16,7 @@ const AuthSlice=createSlice({
     logout:(state,action)=>{
       state.data=null,
       state.status=false
-      storeData("auth",null);
+      removeFromStorage("auth")
     }
   }
 })

@@ -43,7 +43,7 @@ const ItemCategoryPage3 = () => {
     { id: 'tools', name: 'Power Tools', icon: <Hammer />, color: 'from-orange-500 to-yellow-500', desc: 'Drills, Saws & More', popular: false },
     { id: 'bikes', name: 'Bikes', icon: <Bike />, color: 'from-green-500 to-emerald-500', desc: 'Electric & Mountain', popular: true },
     { id: 'helper', name: 'Helper', icon: <PersonStanding />, color: 'from-fuchsia-500 to-amber-400', desc: 'Helper & Labour', popular: true },
-    { id: 'tech', name: 'Tech', icon: <Smartphone />, color: 'from-purple-500 to-indigo-500', desc: 'Consoles & Gadgets', popular: true },
+    { id: 'electronics', name: 'Tech', icon: <Smartphone />, color: 'from-purple-500 to-indigo-500', desc: 'Consoles & Gadgets', popular: true },
     { id: 'photography', name: 'Cameras', icon: <Camera />, color: 'from-pink-500 to-rose-500', desc: 'Lenses & Lighting', popular: false },
     { id: 'outdoor', name: 'Outdoor', icon: <Tent />, color: 'from-teal-500 to-emerald-500', desc: 'Tents & Gear', popular: false },
     { id: 'music-instruments', name: 'Music', icon: <Music />, color: 'from-red-500 to-orange-500', desc: 'Guitars & Keyboards', popular: false },
