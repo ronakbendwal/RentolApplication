@@ -2,9 +2,11 @@ import PowerToolForm from "./PowerTools.Form";
 import VehicleForm from "./Vehicle.Form";
 import BikeForm from "./Bike.Form";
 import SpaceForm from "./Space.Form";
+import CameraForm from "./Camera.Form";
 export {
   PowerToolForm,
   VehicleForm,
   BikeForm,
-  SpaceForm
+  SpaceForm,
+  CameraForm
 }

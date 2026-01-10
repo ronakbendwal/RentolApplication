@@ -11,7 +11,8 @@ import {
   VehicleForm,
   PowerToolForm,
   BikeForm,
-  SpaceForm
+  SpaceForm,
+  CameraForm
 } from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
@@ -76,6 +77,7 @@ const ItemCategoryPage= () => {
         <PowerToolForm/>
         <BikeForm/>
         <SpaceForm/>
+        <CameraForm/>
  
       </div>
     </div>
