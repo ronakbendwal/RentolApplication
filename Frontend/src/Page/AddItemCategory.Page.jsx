@@ -7,7 +7,11 @@ import {
   Sparkles, ShieldCheck, ChevronRight, TrendingUp,Image as ImageIcon
 } from 'lucide-react';
 import {setSelectedCategory} from '../redux/Feature/FormOpenName.js'
-import {VehicleForm,PowerToolForm} from '../Form/index.js';
+import {
+  VehicleForm,
+  PowerToolForm,
+  BikeForm
+} from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
 // import { 
@@ -69,6 +73,7 @@ const ItemCategoryPage= () => {
         {/* RIGHT SIDE: FORMS */}
         <VehicleForm/>
         <PowerToolForm/>
+        <BikeForm/>
  
       </div>
     </div>
