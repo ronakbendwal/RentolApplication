@@ -12,7 +12,8 @@ import {
   PowerToolForm,
   BikeForm,
   SpaceForm,
-  CameraForm
+  CameraForm,
+  MusicForm
 } from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
@@ -34,7 +35,7 @@ const ItemCategoryPage= () => {
     { id: 'electronics', name: 'Tech', icon: <Smartphone />, color: 'from-purple-500 to-indigo-500', desc: 'Consoles & Gadgets' },
     { id: 'photography', name: 'Cameras', icon: <Camera />, color: 'from-pink-500 to-rose-500', desc: 'Lenses & Lighting' },
     { id: 'camping', name: 'Outdoor', icon: <Tent />, color: 'from-teal-500 to-emerald-500', desc: 'Tents & Gear' },
-    { id: 'instruments', name: 'Music', icon: <Music />, color: 'from-red-500 to-orange-500', desc: 'Guitars & Keyboards' },
+    { id: 'music-instruments', name: 'Music', icon: <Music />, color: 'from-red-500 to-orange-500', desc: 'Guitars & Keyboards' },
     { id: 'realestate', name: 'Spaces', icon: <Home />, color: 'from-indigo-500 to-blue-500', desc: 'Studios & Offices' },
   ];
 
@@ -78,6 +79,7 @@ const ItemCategoryPage= () => {
         <BikeForm/>
         <SpaceForm/>
         <CameraForm/>
+        <MusicForm/>
  
       </div>
     </div>
