@@ -3,9 +3,72 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Car, Hammer, Bike, Camera, Smartphone, 
   Home, Tent, Music, Search, Zap, ArrowRight,
-  Sparkles, ShieldCheck, ChevronRight, TrendingUp
+  Sparkles, ShieldCheck, ChevronRight, TrendingUp,Image as ImageIcon
 } from 'lucide-react';
 ///
+// import React, { useState, useEffect } from 'react';
+// import { 
+//   Car, Hammer, Bike, Smartphone, Camera, Tent, Music, Home,
+//   ,ChevronRight,
+// } from 'lucide-react';
+
+const ItemCategoryPage= () => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  
+
+  const categories = [
+    { id: 'cars', name: 'Vehicles', icon: <Car />, color: 'from-blue-500 to-cyan-500', desc: 'Cars, Trucks & Vans' },
+    { id: 'tools', name: 'Power Tools', icon: <Hammer />, color: 'from-orange-500 to-yellow-500', desc: 'Drills, Saws & More' },
+    { id: 'bikes', name: 'Bikes', icon: <Bike />, color: 'from-green-500 to-emerald-500', desc: 'Electric & Mountain' },
+    { id: 'electronics', name: 'Tech', icon: <Smartphone />, color: 'from-purple-500 to-indigo-500', desc: 'Consoles & Gadgets' },
+    { id: 'photography', name: 'Cameras', icon: <Camera />, color: 'from-pink-500 to-rose-500', desc: 'Lenses & Lighting' },
+    { id: 'camping', name: 'Outdoor', icon: <Tent />, color: 'from-teal-500 to-emerald-500', desc: 'Tents & Gear' },
+    { id: 'instruments', name: 'Music', icon: <Music />, color: 'from-red-500 to-orange-500', desc: 'Guitars & Keyboards' },
+    { id: 'realestate', name: 'Spaces', icon: <Home />, color: 'from-indigo-500 to-blue-500', desc: 'Studios & Offices' },
+  ];
+
+  const filteredCategories = categories.filter(cat => 
+    cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const toggleSafety = (item) => {
+    setActiveSafety(prev => prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#FAFAFB] overflow-x-hidden">
+      <div className={`flex flex-col lg:flex-row min-h-screen transition-all duration-700 ease-in-out ${selectedCategory ? 'gap-0' : 'max-w-4xl mx-auto pt-10 px-4'}`}>
+        
+        {/* LEFT SIDE: CATEGORY LIST */}
+        <div className={`transition-all duration-700 p-6 ${selectedCategory ? 'lg:w-[400px] bg-white border-r border-gray-100 h-screen overflow-y-auto' : 'w-full'}`}>
+          <div className={`${selectedCategory ? 'mb-8' : 'text-center mb-16'}`}>
+            <h1 className={`${selectedCategory ? 'text-2xl' : 'text-5xl md:text-6xl'} font-[1000] text-gray-900 leading-tight tracking-tighter`}>
+              {selectedCategory ? 'Select Category' : 'List your Item'}
+            </h1>
+            <div className="relative group mt-6">
+              <input type="text" placeholder="Search categories..." className="w-full bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm outline-none" onChange={(e) => setSearchTerm(e.target.value)} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            {filteredCategories.map((cat) => (
+              <div key={cat.id} onClick={() => setSelectedCategory(cat.id)} className={`group relative rounded-[2rem] p-5 border-2 transition-all cursor-pointer flex items-center gap-5 ${selectedCategory===cat.id ? 'bg-blue-50/50 border-blue-600 shadow-lg' : 'bg-white border-transparent shadow-sm hover:border-blue-100'}`}>
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-white`}>{cat.icon}</div>
+                <div className="flex-grow"><h3 className="text-lg font-black text-gray-900">{cat.name}</h3></div>
+                <ChevronRight size={20} className={selectedCategory === cat.id ? 'text-blue-600' : 'text-gray-300'} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT SIDE: FORMS */}
+
+      </div>
+    </div>
+  );
+};
 const EnhancedCategoryPage2 = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -273,7 +336,9 @@ const EnhancedCategoryPage = () => {
   );
 };
 
+
 export {
   EnhancedCategoryPage2,
-  EnhancedCategoryPage
+  EnhancedCategoryPage,
+  ItemCategoryPage
 };
