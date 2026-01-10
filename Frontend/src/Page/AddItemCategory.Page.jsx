@@ -4,7 +4,8 @@ import {useDispatch,useSelector} from 'react-redux'
 import { 
   Car, Hammer, Bike, Camera, Smartphone, 
   Home, Tent, Music, Search, Zap, ArrowRight,
-  Sparkles, ShieldCheck, ChevronRight, TrendingUp,Image as ImageIcon
+  Sparkles, ShieldCheck, ChevronRight, TrendingUp,Image as ImageIcon,
+  PersonStanding
 } from 'lucide-react';
 import {setSelectedCategory} from '../redux/Feature/FormOpenName.js'
 import {
@@ -13,7 +14,9 @@ import {
   BikeForm,
   SpaceForm,
   CameraForm,
-  MusicForm
+  MusicForm,
+  OutdoorForm,
+  HelperForm
 } from '../Form/index.js';
 ///
 // import React, { useState, useEffect } from 'react';
@@ -32,9 +35,11 @@ const ItemCategoryPage= () => {
     { id: 'cars', name: 'Vehicles', icon: <Car />, color: 'from-blue-500 to-cyan-500', desc: 'Cars, Trucks & Vans' },
     { id: 'tools', name: 'Power Tools', icon: <Hammer />, color: 'from-orange-500 to-yellow-500', desc: 'Drills, Saws & More' },
     { id: 'bikes', name: 'Bikes', icon: <Bike />, color: 'from-green-500 to-emerald-500', desc: 'Electric & Mountain' },
+    {id:'helper', name:'Helper', icon:<PersonStanding/>,color: 'from-fuchsia-500 to-amber-400'
+    ,desc:'Helper & Labour'},
     { id: 'electronics', name: 'Tech', icon: <Smartphone />, color: 'from-purple-500 to-indigo-500', desc: 'Consoles & Gadgets' },
     { id: 'photography', name: 'Cameras', icon: <Camera />, color: 'from-pink-500 to-rose-500', desc: 'Lenses & Lighting' },
-    { id: 'camping', name: 'Outdoor', icon: <Tent />, color: 'from-teal-500 to-emerald-500', desc: 'Tents & Gear' },
+    { id: 'outdoor', name: 'Outdoor', icon: <Tent />, color: 'from-teal-500 to-emerald-500', desc: 'Tents & Gear' },
     { id: 'music-instruments', name: 'Music', icon: <Music />, color: 'from-red-500 to-orange-500', desc: 'Guitars & Keyboards' },
     { id: 'realestate', name: 'Spaces', icon: <Home />, color: 'from-indigo-500 to-blue-500', desc: 'Studios & Offices' },
   ];
@@ -80,6 +85,8 @@ const ItemCategoryPage= () => {
         <SpaceForm/>
         <CameraForm/>
         <MusicForm/>
+        <OutdoorForm/>
+        <HelperForm/>
  
       </div>
     </div>
