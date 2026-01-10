@@ -1,6 +1,7 @@
-import { EnhancedCategoryPage,EnhancedCategoryPage2 } from "./AddItemCategory.Page";
+import { EnhancedCategoryPage,EnhancedCategoryPage2,ItemCategoryPage } from "./AddItemCategory.Page";
 
 export {
   EnhancedCategoryPage,
-  EnhancedCategoryPage2
+  EnhancedCategoryPage2,
+  ItemCategoryPage
 }
