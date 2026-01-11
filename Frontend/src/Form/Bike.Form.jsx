@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Bike, DollarSign, Image as ImageIcon, 
@@ -11,23 +11,35 @@ import { useForm } from 'react-hook-form';
 import FormInput from './Util.Field.jsx'
 const BikeForm = () => {
 
+
   const { selectedCategory } = useSelector((state) => state.formopendata);
 
   if (selectedCategory !== 'bikes') return null;
 
   const {
      register,
+     reset,
      handleSubmit,
      setValue,
      formState:{
        errors,
-       isSubmitting
+       isSubmitting,
+       isSubmitSuccessful
       }
   } =useForm({
     defaultValues:{
       category:"Bike"
     }
   })
+
+  useEffect(() => {
+  if (isSubmitSuccessful) {
+    reset();
+    dispatch(setSelectedCategory(null));
+  }
+  }, [isSubmitSuccessful]);
+
+
 
   const dispatch = useDispatch();
 
