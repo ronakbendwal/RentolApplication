@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Music, Guitar, DollarSign, Image as ImageIcon, 
   Upload, X, ArrowRight, ShieldCheck, MessageCircle, 
   Info, ArrowLeft, MapPin, Tag,
-  Map, Wallet, Search, Disc
+  Map, Wallet, Search, Disc,IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import FormInput from './Util.Field.jsx';
@@ -14,15 +14,29 @@ const MusicForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    setValue,
     formState:{
       errors,
-      isSubmitting
+      isSubmitting,
+      isSubmitSuccessful
     }
-  }=useForm()
+  }=useForm({
+    defaultValues:{
+      category:'music'
+    }
+  })
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
-  
+  useEffect(()=>{
+    if(isSubmitSuccessful){
+      reset()
+      dispatch(setSelectedCategory(null))
+    }
+  },[])
+
   const [images, setImages] = useState([]);
+  const [previewImage,setPreviewImage]=useState([]);
   const [condition, setCondition] = useState('Excellent');
   const [instrumentType, setInstrumentType] = useState('');
 
@@ -40,11 +54,22 @@ const MusicForm = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...newImages].slice(0, 6));
+    const prevImages = files.map(file => URL.createObjectURL(file));
+    setPreviewImage(prev => [...prev, ...prevImages].slice(0, 6));
+    setImages((prev)=>{
+      const uploadImage=[...prev,...files].slice(0,6);
+      setValue('images',uploadImage);
+      return uploadImage
+    })
   };
 
+  const changeCondition=(props)=>{
+    setCondition(props)
+    setValue('condition',props)
+  }
+
   const submit=(data)=>{
+    //api call comes here
     console.log(data)
   }
   return (
@@ -85,15 +110,11 @@ const MusicForm = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
-              {/* BRAND & MODEL NAME */}
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Instrument Brand & Model</label>
-                <input type="text" placeholder="e.g. Fender Stratocaster" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" />
-              </div> */}
               <FormInput
               label='Instrument Brand & Model'
               placeholder="e.g. Fender Stratocaster"
               innercolor='indigo'
+              {...register('itemname',{required:true})}
               />
               {/* INSTRUMENT CONDITION (Moved to the right) */}
               <div className="space-y-2">
@@ -103,13 +124,16 @@ const MusicForm = () => {
                     <button 
                       key={item}
                       type="button"
-                      onClick={() => setCondition(item)}
+                      onClick={() => changeCondition(item)}
                       className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                     >
                       {item}
                     </button>
                   ))}
                 </div>
+                <input
+                type='hidden'
+                {...register('condition',{required:true})}/>
               </div>
 
               {/* SEARCHABLE INSTRUMENT TYPE */}
@@ -117,10 +141,9 @@ const MusicForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Search size={14}/> Instrument Type</label>
                 <input 
                   list="music-types"
-                  value={instrumentType}
-                  onChange={(e) => setInstrumentType(e.target.value)}
                   placeholder="e.g. Guitar, Synth..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" 
+                  {...register('instrument-type',{required:true})}
                 />
                 <datalist id="music-types">
                   {instrumentSuggestions.map((type) => (
@@ -133,8 +156,9 @@ const MusicForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Wallet size={14}/> Security Deposit</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                  <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" />
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium"
+                  {...register('security-deposite',{required:true})} />
                 </div>
               </div>
             </div>
@@ -143,15 +167,16 @@ const MusicForm = () => {
           {/* 2. RENTAL TERMS & LOCATION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <DollarSign size={20} className="text-indigo-500" /> Rental & Pickup
+              <IndianRupee size={20} className="text-indigo-500" /> Rental & Pickup
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-black text-lg" />
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-black text-lg"
+                  {...register('price',{required:true})} />
                 </div>
               </div>
 
@@ -159,7 +184,8 @@ const MusicForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" />
+                  <input type="tel" placeholder="+91..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" 
+                  {...register('contact number',{required:true})}/>
                 </div>
               </div>
 
@@ -167,7 +193,8 @@ const MusicForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City / Area</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
-                  <input type="text" placeholder="e.g. Austin, TX" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" />
+                  <input type="text" placeholder="e.g. Austin, TX" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" 
+                  {...register('location',{required:true})}/>
                 </div>
               </div>
             </div>
@@ -176,7 +203,8 @@ const MusicForm = () => {
               <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Full Pickup Address</label>
               <div className="relative">
                 <Map className="absolute left-5 top-4 text-gray-400" size={18} />
-                <input type="text" placeholder="Studio/House No, Street Name, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" />
+                <input type="text" placeholder="Studio/House No, Street Name, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium"
+                {...register('address',{required:true})} />
               </div>
             </div>
           </div>
@@ -185,10 +213,10 @@ const MusicForm = () => {
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-indigo-500" /> Gear Photos</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {images.map((src, index) => (
+              {previewImage.map((src, index) => (
                 <div key={index} className="relative aspect-square rounded-3xl overflow-hidden group border border-gray-100">
                   <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Music Gear" />
-                  <button onClick={() => setImages(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
+                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
                 </div>
               ))}
               {images.length < 6 && (
@@ -199,6 +227,9 @@ const MusicForm = () => {
                 </label>
               )}
             </div>
+            <input
+            type='hidden'
+            {...register('images',{required:true})}/>
           </div>
 
           {/* 4. DESCRIPTION */}
@@ -208,6 +239,7 @@ const MusicForm = () => {
               rows="4" 
               placeholder="Include details about strings, accessories like cases/stands, or specific sound characteristics..." 
               className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium resize-none"
+              {...register('description',{required:true})}
             ></textarea>
           </div>
 
