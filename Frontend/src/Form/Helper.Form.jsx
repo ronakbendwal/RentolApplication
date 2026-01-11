@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   PersonStanding, ShieldCheck, Car, Briefcase, DollarSign, Image as ImageIcon, 
@@ -13,15 +13,26 @@ const HelperForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    setValue,
     formState:{
       errors,
-      isSubmitting
+      isSubmitting,
+      isSubmitSuccessful
     }
   }=useForm()
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
+
+  useEffect(()=>{
+    if(isSubmitSuccessful){
+      reset();
+      dispatch(setSelectedCategory(null));
+    }
+  },[isSubmitSuccessful])
   
   const [images, setImages] = useState([]);
+  const [previewImage,setPreviewImage]=useState([])
   const [gender, setGender] = useState('Male');
   const [serviceType, setServiceType] = useState('');
   const [experience, setExperience] = useState('1-2 Years');
@@ -39,11 +50,22 @@ const HelperForm = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...newImages].slice(0, 3)); // Usually fewer photos needed for profiles
+    const prevImages = files.map(file => URL.createObjectURL(file));
+    setPreviewImage((prev)=>[...prev,...prevImages])
+    setImages(prev =>{
+      const uploadedimage=[...prev, ...files].slice(0, 3)
+      setValue('images',uploadedimage)
+      return uploadedimage
+  }); 
   };
 
+  const changeGender=(props)=>{
+    setGender(props)
+    setValue('gender',props)
+  }
+
   const submit=(data)=>{
+    //api call come here
     console.log(data)
   }
 
@@ -84,17 +106,11 @@ const HelperForm = () => {
               <User size={20} className="text-fuchsia-500" /> Personal Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* SERVICE TITLE */}
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Service Title / Name</label>
-                <input type="text" placeholder="e.g. Professional Driver for Luxury Cars" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" />
-              </div> */}
-
               <FormInput
               label='Service Title / Name'
               placeholder='e.g. Professional Driver for Luxury Cars'
               innercolor='fuchsia'
+              {...register('Personname',{required:true})}
               />
 
               {/* GENDER SELECTION (On the right) */}
@@ -105,24 +121,27 @@ const HelperForm = () => {
                     <button 
                       key={item}
                       type="button"
-                      onClick={() => setGender(item)}
+                      onClick={() => changeGender(item)}
                       className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${gender === item ? 'bg-white text-fuchsia-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                     >
                       {item}
                     </button>
                   ))}
                 </div>
+                <input
+                type='hidden'
+                {...register('gender',{required:true})}/>
               </div>
 
               {/* SEARCHABLE SERVICE TYPE */}
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Search size={14}/> Primary Skill / Role</label>
                 <input 
+                  type='text'
                   list="service-types"
-                  value={serviceType}
-                  onChange={(e) => setServiceType(e.target.value)}
                   placeholder="e.g. Security, Driver..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
+                  {...register('services-have',{required:true})}
                 />
                 <datalist id="service-types">
                   {serviceSuggestions.map((type) => (
@@ -135,9 +154,8 @@ const HelperForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Experience Level</label>
                 <select 
-                  value={experience}
-                  onChange={(e) => setExperience(e.target.value)}
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium appearance-none"
+                  {...register('exprience',{required:true})}
                 >
                   {experienceLevels.map((lvl) => (
                     <option key={lvl} value={lvl}>{lvl}</option>
@@ -157,8 +175,9 @@ const HelperForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Rate / Day</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-black text-lg" />
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-black text-lg" 
+                  {...register('price',{required:true})}/>
                 </div>
               </div>
 
@@ -166,7 +185,8 @@ const HelperForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" />
+                  <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
+                  {...register('contactnumber',{required:true})}/>
                 </div>
               </div>
 
@@ -174,7 +194,8 @@ const HelperForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Service City</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
-                  <input type="text" placeholder="e.g. Miami, FL" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" />
+                  <input type="text" placeholder="e.g. Miami, FL" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
+                  {...register('location',{required:true})}/>
                 </div>
               </div>
             </div>
@@ -189,10 +210,10 @@ const HelperForm = () => {
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-fuchsia-500" /> Profile Photos</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {images.map((src, index) => (
+              {previewImage.map((src, index) => (
                 <div key={index} className="relative aspect-[3/4] rounded-3xl overflow-hidden group border border-gray-100">
                   <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Helper Profile" />
-                  <button onClick={() => setImages(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
+                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
                 </div>
               ))}
               {images.length < 3 && (
@@ -203,6 +224,9 @@ const HelperForm = () => {
                 </label>
               )}
             </div>
+            <input
+            type='hidden'
+            {...register('images',{required:true})}/>
           </div>
 
           {/* 4. ABOUT SERVICES */}
@@ -212,6 +236,7 @@ const HelperForm = () => {
               rows="4" 
               placeholder="Describe your skills, previous work experience, or specific tools you can operate..." 
               className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium resize-none"
+              {...register('description',{required:true})}
             ></textarea>
           </div>
 
