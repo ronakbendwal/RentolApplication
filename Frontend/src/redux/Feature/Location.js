@@ -13,5 +13,5 @@ const LocationSlice=createSlice({
 });
 
 
-export const {}=LocationSlice.actions;
+export const {setLocation}=LocationSlice.actions;
 export default LocationSlice.reducer;

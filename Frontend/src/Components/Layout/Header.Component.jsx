@@ -25,6 +25,7 @@ import {
  } from 'lucide-react';
 import { useDispatch,useSelector} from 'react-redux';
 import {setIsSidebarOpen }from '../../redux/Feature/SideBar.js'
+import LocationService from '../../services/LocationService.jsx';
 const Header4 = () => {
   const dispatch=useDispatch()
   const {isThemeOpen}=useSelector((state)=>state.theme)
@@ -114,7 +115,8 @@ const Header4 = () => {
               </div>
 
               {/* Location Selector */}
-              <div className="relative w-60">
+              <LocationService/>
+              {/* <div className="relative w-60">
                 <div 
                   onClick={() => setShowLocationModal(!showLocationModal)}
                   className="flex items-center gap-3 px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl cursor-pointer hover:border-gray-300 transition-all"
@@ -143,7 +145,7 @@ const Header4 = () => {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
 
             {/* USER ACTIONS (Clicking this opens sidebar) */}
