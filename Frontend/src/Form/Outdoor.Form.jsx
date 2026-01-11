@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Compass, Tent, Mountain, Wind, DollarSign, Image as ImageIcon, 
   Upload, X, ArrowRight, ShieldCheck, MessageCircle, 
-  Info, ArrowLeft, MapPin, Tag, Map, Wallet, Search, Trees
+  Info, ArrowLeft, MapPin, Tag, Map, Wallet, Search, Trees,
+  IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import FormInput from './Util.Field.jsx';
@@ -13,15 +14,28 @@ const OutdoorForm = () => {
    const {
        register,
        handleSubmit,
+       reset,
+       setValue,
        formState:{
          errors,
-         isSubmitting
+         isSubmitting,
+         isSubmitSuccessful
         }
-   } =useForm()
+   } =useForm({
+    defaultValues:{
+      category:'outdoor'
+    }
+   })
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
-  
+  useEffect(()=>{
+    if(isSubmitSuccessful){
+      reset()
+      dispatch(setSelectedCategory(null))
+    }
+  })
   const [images, setImages] = useState([]);
+  const [previewImage,setPreviewImage]=useState([])
   const [condition, setCondition] = useState('Good');
   const [equipmentType, setEquipmentType] = useState('');
 
@@ -39,11 +53,22 @@ const OutdoorForm = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...newImages].slice(0, 6));
+    const prevImages = files.map(file => URL.createObjectURL(file));
+    setPreviewImage(prev => [...prev, ...prevImages].slice(0, 6));
+    setImages((prev)=>{
+      const uploadedImage=[...prev,...files].slice(0,6);
+      setValue('images',uploadedImage);
+      return uploadedImage
+    })
   };
 
+  const changeCondition=(props)=>{
+    setCondition(props)
+    setValue('condition',props)
+  }
+
   const submit=(data)=>{
+    //api call comes here 
     console.log(data)
   }
 
@@ -84,17 +109,12 @@ const OutdoorForm = () => {
               <Compass size={20} className="text-emerald-500" /> Gear Specifications
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* BRAND & MODEL NAME */}
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Brand & Gear Name</label>
-                <input type="text" placeholder="e.g. North Face Stormbreak 2" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
-              </div> */}
-
+          
               <FormInput
               placeholder="e.g. North Face Stormbreak 2"
               label='Brand & Gear Name'
               innercolor='emerald'
+              {...register('itemname',{required:true})}
               />
 
               {/* CONDITION (On the right) */}
@@ -105,13 +125,16 @@ const OutdoorForm = () => {
                     <button 
                       key={item}
                       type="button"
-                      onClick={() => setCondition(item)}
+                      onClick={() => changeCondition(item)}
                       className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                     >
                       {item}
                     </button>
                   ))}
                 </div>
+                <input
+                type='hidden'
+                {...register('condition',{required:true})}/>
               </div>
 
               {/* SEARCHABLE TYPE FIELD */}
@@ -119,10 +142,9 @@ const OutdoorForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Search size={14}/> Equipment Type</label>
                 <input 
                   list="outdoor-types"
-                  value={equipmentType}
-                  onChange={(e) => setEquipmentType(e.target.value)}
                   placeholder="e.g. Tent, Kayak..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" 
+                  {...register('equipment-type',{required:true})}
                 />
                 <datalist id="outdoor-types">
                   {equipmentSuggestions.map((type) => (
@@ -135,8 +157,10 @@ const OutdoorForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Wallet size={14}/> Security Deposit</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                  <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" 
+                  {...register('security-amount',{required:true})}
+                  />
                 </div>
               </div>
             </div>
@@ -145,15 +169,16 @@ const OutdoorForm = () => {
           {/* 2. RENTAL TERMS & LOCATION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <DollarSign size={20} className="text-emerald-500" /> Rental & Pickup
+              <IndianRupee size={20} className="text-emerald-500" /> Rental & Pickup
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-black text-lg" />
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-black text-lg" 
+                  {...register('price',{required:true})}/>
                 </div>
               </div>
 
@@ -161,7 +186,8 @@ const OutdoorForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
+                  <input type="tel" placeholder="+91..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" 
+                  {...register('contact-number',{required:true})}/>
                 </div>
               </div>
 
@@ -169,7 +195,8 @@ const OutdoorForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City / Area</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
-                  <input type="text" placeholder="e.g. Denver, CO" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
+                  <input type="text" placeholder="e.g. Denver, CO" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
+                  {...register('location',{required:true})} />
                 </div>
               </div>
             </div>
@@ -178,7 +205,8 @@ const OutdoorForm = () => {
               <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Pickup Address</label>
               <div className="relative">
                 <Map className="absolute left-5 top-4 text-gray-400" size={18} />
-                <input type="text" placeholder="Street Name, Apt, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
+                <input type="text" placeholder="Street Name, Apt, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
+                {...register('address',{required:true})} />
               </div>
             </div>
           </div>
@@ -187,10 +215,10 @@ const OutdoorForm = () => {
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-emerald-500" /> Gear Photos</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {images.map((src, index) => (
+              {previewImage.map((src, index) => (
                 <div key={index} className="relative aspect-square rounded-3xl overflow-hidden group border border-gray-100">
                   <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Outdoor Gear" />
-                  <button onClick={() => setImages(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
+                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
                 </div>
               ))}
               {images.length < 6 && (
@@ -201,6 +229,9 @@ const OutdoorForm = () => {
                 </label>
               )}
             </div>
+            <input
+            type='hidden'
+            {...register('images',{required:true})}/>
           </div>
 
           {/* 4. DESCRIPTION */}
@@ -210,6 +241,7 @@ const OutdoorForm = () => {
               rows="4" 
               placeholder="Tell borrowers about weight limits, weather resistance, or cleaning requirements..." 
               className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium resize-none"
+              {...register('description',{required:true})}
             ></textarea>
           </div>
 
