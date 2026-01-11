@@ -207,8 +207,18 @@ import {
   Phone, Briefcase, Map, Wallet, Search // Added Wallet and Search
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
+import FormInput from './Util.Field.jsx';
+import { useForm } from 'react-hook-form';
 
 const PowerToolForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState:{
+      errors,
+      isSubmitting
+    }
+  }=useForm()
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
   
@@ -235,6 +245,11 @@ const PowerToolForm = () => {
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages(prev => [...prev, ...newImages].slice(0, 6));
   };
+
+  const submit=(data)=>{
+    //api call comes here
+    console.log(data)
+  }
 
   return (
     <div className="flex-grow bg-[#FDFCFB] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -265,7 +280,7 @@ const PowerToolForm = () => {
           </div>
         </div>
 
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-8" onSubmit={handleSubmit(submit)}>
           
           {/* 1. TOOL IDENTITY & CONDITION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
@@ -273,10 +288,15 @@ const PowerToolForm = () => {
               <Drill size={20} className="text-orange-500" /> Tool Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2 col-span-1 md:col-span-2">
+              {/* <div className="space-y-2 col-span-1 md:col-span-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Brand & Model Name</label>
                 <input type="text" placeholder="e.g. Bosch Professional Hammer Drill" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-orange-500 focus:bg-white transition-all font-medium" />
-              </div>
+              </div> */}
+              <FormInput
+              label='Brand & Model Name'
+              placeholder="e.g. Bosch Professional Hammer Drill"
+              innercolor='orange'
+              />
 
               {/* SEARCHABLE TOOL TYPE FIELD */}
               <div className="space-y-2">
@@ -416,7 +436,7 @@ const PowerToolForm = () => {
               <div className="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-600 shrink-0 border border-orange-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you agree to Rentol's machinery safety standards.</p>
             </div>
-            <button className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
+            <button disabled={isSubmitting} type='submit' className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               Confirm & List <ArrowRight size={20} />
             </button>
           </div>

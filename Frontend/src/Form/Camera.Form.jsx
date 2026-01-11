@@ -409,8 +409,18 @@ import {
   Settings, Maximize, Aperture, Briefcase, Focus, Search
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
+import FormInput from './Util.Field.jsx';
+import {useForm} from 'react-hook-form'
 
 const CameraForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState:{
+      errors,
+      isSubmitting
+    }
+  }=useForm()
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
   
@@ -443,6 +453,10 @@ const CameraForm = () => {
     setImages(prev => [...prev, ...newImages].slice(0, 6));
   };
 
+  const submit=(data)=>{
+    console.log(data)
+  }
+
   return (
     <div className="flex-grow bg-[#F9FAFB] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
       <div className="max-w-4xl mx-auto">
@@ -472,7 +486,7 @@ const CameraForm = () => {
           </div>
         </div>
 
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-8" onSubmit={handleSubmit(submit)}>
           
           {/* 1. GEAR IDENTITY */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
@@ -480,10 +494,15 @@ const CameraForm = () => {
               <Settings size={20} className="text-slate-700" /> Technical Specs
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Camera Brand & Model</label>
                 <input type="text" placeholder="e.g. Sony A7IV" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-slate-500 focus:bg-white transition-all font-medium" />
-              </div>
+              </div> */}
+              <FormInput
+              label='Camera Brand & Model'
+              placeholder="e.g. Sony A7IV"
+              innercolor='slate'
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Condition</label>
@@ -606,7 +625,7 @@ const CameraForm = () => {
               <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 border border-slate-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Ensure the sensor is clean and lenses are dust-free.</p>
             </div>
-            <button className="w-full md:w-auto px-14 py-5 bg-slate-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
+            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-slate-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
               List My Gear <ArrowRight size={20} />
             </button>
           </div>

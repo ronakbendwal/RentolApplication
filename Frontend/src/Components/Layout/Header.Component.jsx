@@ -63,7 +63,7 @@ const Header4 = () => {
           </div>
 
           {/* User Preview */}
-          {status && <UserPreview/>}
+          {/* {status && <UserPreview/>} */}
 
           {/* Sidebar Links */}
           <nav className="space-y-2 flex-grow">

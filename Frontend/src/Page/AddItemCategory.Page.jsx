@@ -19,13 +19,6 @@ import {
   HelperForm,
   TechForm
 } from '../Form/index.js';
-///
-// import React, { useState, useEffect } from 'react';
-// import { 
-//   Car, Hammer, Bike, Smartphone, Camera, Tent, Music, Home,
-//   ,ChevronRight,
-// } from 'lucide-react';
-
 
 const ItemCategoryPage3 = () => {
   const { selectedCategory } = useSelector((state) => state.formopendata);
@@ -48,6 +41,7 @@ const ItemCategoryPage3 = () => {
     { id: 'outdoor', name: 'Outdoor', icon: <Tent />, color: 'from-teal-500 to-emerald-500', desc: 'Tents & Gear', popular: false },
     { id: 'music-instruments', name: 'Music', icon: <Music />, color: 'from-red-500 to-orange-500', desc: 'Guitars & Keyboards', popular: false },
     { id: 'realestate', name: 'Spaces', icon: <Home />, color: 'from-indigo-500 to-blue-500', desc: 'Studios & Offices', popular: false },
+    { id: 'personal', name: 'Personal Item', icon: <Home />, color: 'from-indigo-500 to-blue-500', desc: 'Studios & Offices', popular: false },
   ];
 
   const filteredCategories = categories.filter(cat => 
@@ -157,15 +151,15 @@ const ItemCategoryPage3 = () => {
         {/* RIGHT SIDE: FORMS (Scrollable area) */}
         {selectedCategory && (
           <div className="flex-grow h-screen overflow-y-auto bg-white">
-            <VehicleForm />
-            <PowerToolForm />
-            <BikeForm />
-            <SpaceForm />
-            <CameraForm />
-            <MusicForm />
-            <OutdoorForm />
-            <HelperForm />
-            <TechForm />
+            {selectedCategory==='cars' && <VehicleForm />}
+            {selectedCategory==='tools' && <PowerToolForm />}
+            {selectedCategory==='bikes' && <BikeForm />}
+            {selectedCategory==='realestate' &&<SpaceForm />}
+            {selectedCategory==='photography' &&<CameraForm />}
+            {selectedCategory==='music-instruments' &&<MusicForm />}
+            {selectedCategory==='outdoor' && <OutdoorForm />}
+            {selectedCategory==='helper' && <HelperForm />}
+            {selectedCategory==='electronics' && <TechForm />}
           </div>
         )}
 

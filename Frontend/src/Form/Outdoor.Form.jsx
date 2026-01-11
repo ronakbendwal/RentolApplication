@@ -6,8 +6,18 @@ import {
   Info, ArrowLeft, MapPin, Tag, Map, Wallet, Search, Trees
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
+import FormInput from './Util.Field.jsx';
+import { useForm } from 'react-hook-form';
 
 const OutdoorForm = () => {
+   const {
+       register,
+       handleSubmit,
+       formState:{
+         errors,
+         isSubmitting
+        }
+   } =useForm()
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
   
@@ -32,6 +42,10 @@ const OutdoorForm = () => {
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages(prev => [...prev, ...newImages].slice(0, 6));
   };
+
+  const submit=(data)=>{
+    console.log(data)
+  }
 
   return (
     <div className="flex-grow bg-[#F7FCF9] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -62,7 +76,7 @@ const OutdoorForm = () => {
           </div>
         </div>
 
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-8" onSubmit={handleSubmit(submit)}>
           
           {/* 1. EQUIPMENT IDENTITY & CONDITION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
@@ -72,10 +86,16 @@ const OutdoorForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* BRAND & MODEL NAME */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Brand & Gear Name</label>
                 <input type="text" placeholder="e.g. North Face Stormbreak 2" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
-              </div>
+              </div> */}
+
+              <FormInput
+              placeholder="e.g. North Face Stormbreak 2"
+              label='Brand & Gear Name'
+              innercolor='emerald'
+              />
 
               {/* CONDITION (On the right) */}
               <div className="space-y-2">
@@ -199,7 +219,7 @@ const OutdoorForm = () => {
               <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 shrink-0 border border-emerald-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you verify gear is sanitized and safe for use.</p>
             </div>
-            <button className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
+            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               List Gear <ArrowRight size={20} />
             </button>
           </div>

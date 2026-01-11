@@ -4,11 +4,20 @@ import {
   Building, MapPin, DollarSign, Image as ImageIcon, 
   Upload, X, ArrowRight, ShieldCheck, MessageCircle, 
   Info, Star, ArrowLeft, Layers, Maximize, Tag, 
-  Lock, Landmark, Home, Map
+  Lock, Landmark, Home, Map,
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-
+import FormInput from './Util.Field.jsx';
+import {useForm} from 'react-hook-form'
 const SpaceForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState:{
+      errors,
+      isSubmitting
+    }
+  }=useForm()
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
   
@@ -27,6 +36,10 @@ const SpaceForm = () => {
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages(prev => [...prev, ...newImages].slice(0, 8));
   };
+
+  const submit=(data)=>{
+    console.log(data)
+  }
 
   return (
     <div className="flex-grow bg-[#F9FAFF] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -57,7 +70,7 @@ const SpaceForm = () => {
           </div>
         </div>
 
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-8" onSubmit={handleSubmit(submit)}>
           
           {/* 1. PROPERTY IDENTITY & AREA */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
@@ -65,10 +78,15 @@ const SpaceForm = () => {
               <Tag size={20} className="text-indigo-600" /> Basic Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Listing Title</label>
                 <input type="text" placeholder="e.g. Cozy Guest House in Downtown" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" />
-              </div>
+              </div> */}
+              <FormInput
+              label='Listing Title'
+              placeholder="e.g. Cozy Guest House in Downtown"
+              innercolor='indigo'
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Maximize size={14}/> Total Area (Sq. Ft / Sq. Yard)</label>
@@ -169,7 +187,7 @@ const SpaceForm = () => {
               <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0 border border-indigo-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you agree to our verified property standards.</p>
             </div>
-            <button className="w-full md:w-auto px-16 py-5 bg-indigo-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
+            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-16 py-5 bg-indigo-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               Post Listing <ArrowRight size={20} />
             </button>
           </div>

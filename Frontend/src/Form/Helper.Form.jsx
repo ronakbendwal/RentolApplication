@@ -6,8 +6,18 @@ import {
   User, Search, Star, Clock, Heart, CheckCircle2
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
+import FormInput from './Util.Field.jsx';
+import {useForm} from 'react-hook-form'
 
 const HelperForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState:{
+      errors,
+      isSubmitting
+    }
+  }=useForm()
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
   
@@ -32,6 +42,10 @@ const HelperForm = () => {
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages(prev => [...prev, ...newImages].slice(0, 3)); // Usually fewer photos needed for profiles
   };
+
+  const submit=(data)=>{
+    console.log(data)
+  }
 
   return (
     <div className="flex-grow bg-[#FFFBF7] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -62,7 +76,7 @@ const HelperForm = () => {
           </div>
         </div>
 
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-8" onSubmit={handleSubmit(submit)}>
           
           {/* 1. SERVICE IDENTITY & GENDER */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
@@ -72,10 +86,16 @@ const HelperForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* SERVICE TITLE */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Service Title / Name</label>
                 <input type="text" placeholder="e.g. Professional Driver for Luxury Cars" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" />
-              </div>
+              </div> */}
+
+              <FormInput
+              label='Service Title / Name'
+              placeholder='e.g. Professional Driver for Luxury Cars'
+              innercolor='fuchsia'
+              />
 
               {/* GENDER SELECTION (On the right) */}
               <div className="space-y-2">
@@ -201,7 +221,7 @@ const HelperForm = () => {
               <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 shrink-0 border border-amber-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Background check and ID verification may be required for helpers.</p>
             </div>
-            <button className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
+            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               List Profile <ArrowRight size={20} />
             </button>
           </div>
