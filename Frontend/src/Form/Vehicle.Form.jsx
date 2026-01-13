@@ -393,7 +393,7 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Car, Fuel, DollarSign, Image as ImageIcon, 
@@ -402,21 +402,36 @@ import {
   Layers, Wallet // Added Wallet for Security Deposit
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import FormInput from './Util.Field.jsx'
+import {FormInput, FormDescription} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 const VehicleForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    setValue,
     formState:{
       errors,
-      isSubmitting
+      isSubmitting,
+      isSubmitSuccessful
     }
-  }=useForm()
+  }=useForm({
+    defaultValues:{
+      category:'vehicle'
+    }
+  })
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
-  
+
+  useEffect(()=>{
+    if(isSubmitSuccessful){
+      reset()
+      dispatch(setSelectedCategory(null))
+    }
+  },[isSubmitSuccessful])
+
   const [images, setImages] = useState([]);
+  const [previewImage,setPreviewImage]=useState([])
   const [condition, setCondition] = useState('Excellent');
 
   const conditions = ["Brand New", "Excellent", "Good", "Used"];
@@ -431,11 +446,22 @@ const VehicleForm = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...newImages].slice(0, 6));
+    const prevImages = files.map(file => URL.createObjectURL(file));
+    setPreviewImage(prev => [...prev, ...prevImages].slice(0, 6));
+    setImages((prev)=>{
+      const uploadedImage=[...prev,...files].slice(0,6)
+      setValue('images',uploadedImage)
+      return uploadedImage
+    })
   };
 
+  const changeCondition=(props)=>{
+    setCondition(props)
+    setValue('condition',props)
+  }
+
   const submit =(data)=>{
+    //api call come here
     console.log(data)
   }
 
@@ -476,14 +502,11 @@ const VehicleForm = () => {
               <Tag size={20} className="text-blue-600" /> Basic Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Vehicle Name / Model</label>
-                <input type="text" placeholder="e.g. BMW M4 Competition" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" />
-              </div> */}
               <FormInput
               label="Vehicle Name / Model"
               placeholder="e.g. BMW M4 Competition"
               innercolor='blue'
+              {...register('itemname',{required:true})}
               />
 
               <div className="space-y-2">
@@ -493,18 +516,23 @@ const VehicleForm = () => {
                     <button 
                       key={item}
                       type="button"
-                      onClick={() => setCondition(item)}
+                      onClick={() => changeCondition(item)}
                       className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
                     >
                       {item}
                     </button>
                   ))}
                 </div>
+                <input
+                type='hidden'
+                {...register('condition',{required:true})}
+                />
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Vehicle Type</label>
-                <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium appearance-none">
+                <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium appearance-none"
+                {...register('type',{required:true})}>
                   <option value="">Select Category</option>
                   {vehicleTypes.map((type) => (
                     <option key={type} value={type}>{type}</option>
@@ -514,7 +542,8 @@ const VehicleForm = () => {
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Fuel size={14}/> Fuel Type</label>
-                <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium appearance-none">
+                <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium appearance-none"
+                {...register('fuel-type',{required:true})}>
                   <option>Petrol</option><option>Electric</option><option>Diesel</option><option>Hybrid</option><option>CNG</option>
                 </select>
               </div>
@@ -523,14 +552,16 @@ const VehicleForm = () => {
               <div className="grid grid-cols-2 gap-4 col-span-1 md:col-span-2">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Manufacturing Year</label>
-                  <input type="number" placeholder="2024" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" />
+                  <input type="number" placeholder="2024" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" 
+                  {...register('purchasedate',{required:true})}/>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Wallet size={14}/> Security Deposit</label>
                   <div className="relative">
                     <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                    <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" />
+                    <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium"
+                    {...register('deposite',{required:true})} />
                   </div>
                 </div>
               </div>
@@ -548,8 +579,9 @@ const VehicleForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
-                  <input type="number" placeholder="0.00" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-black text-lg" />
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <input type="number" placeholder="0.00" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-black text-lg"
+                  {...register('price',{required:true})} />
                 </div>
               </div>
               
@@ -557,7 +589,8 @@ const VehicleForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+1 (555)..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" />
+                  <input type="tel" placeholder="+91 (555)..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" 
+                  {...register('contact-number',{required:true})}/>
                 </div>
               </div>
 
@@ -565,7 +598,8 @@ const VehicleForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City or Area</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
-                  <input type="text" placeholder="e.g. New York" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" />
+                  <input type="text" placeholder="e.g. New York" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" 
+                  {...register('location',{required:true})}/>
                 </div>
               </div>
             </div>
@@ -574,7 +608,8 @@ const VehicleForm = () => {
               <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Full Pickup Address</label>
               <div className="relative">
                 <Map className="absolute left-5 top-4 text-gray-400" size={18} />
-                <input type="text" placeholder="Street name, Building No, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" />
+                <input type="text" placeholder="Street name, Building No, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium"
+                {...register('address',{required:true})} />
               </div>
             </div>
           </div>
@@ -582,10 +617,10 @@ const VehicleForm = () => {
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2"><ImageIcon size={20} className="text-blue-600" /> High-Res Gallery</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {images.map((src, index) => (
+              {previewImage.map((src, index) => (
                 <div key={index} className="relative aspect-square rounded-3xl overflow-hidden group border border-gray-100">
                   <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Preview" />
-                  <button onClick={() => setImages(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors"><X size={14} /></button>
+                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors"><X size={14} /></button>
                 </div>
               ))}
               {images.length < 6 && (
@@ -596,12 +631,27 @@ const VehicleForm = () => {
                 </label>
               )}
             </div>
+            <input
+            type='hidden'
+            {...register('images',{required:true})}/>
           </div>
 
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Info size={20} className="text-blue-600" /> Description</h2>
-            <textarea rows="4" placeholder="Tell us about the vehicle features, AC, mileage, or special rental rules..." className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-blue-500 focus:bg-white transition-all font-medium resize-none"></textarea>
-          </div>
+            <textarea rows="4" placeholder="Tell us about the vehicle features, AC, mileage, or special rental rules..." className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-blue-500 focus:bg-white transition-all font-medium resize-none"
+            {...register('description',{required:true})}></textarea>
+          </div> */}
+
+          <FormDescription
+          heading="Description"
+          placeholder="Tell us about the vehicle features, AC, mileage, or special rental rules..."
+          innercolor="blue"
+          logoclass="text-blue-600"
+          {...register('description',{required:true})}
+          />
+
+
+
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
             <div className="flex items-center gap-3">

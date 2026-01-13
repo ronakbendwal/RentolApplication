@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import { useForm } from 'react-hook-form';
-import FormInput from './Util.Field.jsx'
+import {FormInput,FormDescription} from './Utils/index.js'
 const BikeForm = () => {
 
 
@@ -253,13 +253,24 @@ const BikeForm = () => {
           </div>
 
           {/* 4. DESCRIPTION */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Info size={20} className="text-emerald-600" /> Gear & Details</h2>
             <textarea rows="4" placeholder="Mention frame size, included accessories (helmet, lock), and any usage rules..." className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium resize-none"
             {...register('descreption',{
               required:true
             })}></textarea>
-          </div>
+          </div> */}
+
+          <FormDescription
+          heading="Gear & Details"
+          placeholder="Mention frame size, included accessories (helmet, lock), and any usage rules..."
+          innercolor="emerald"
+          logoclass="text-emerald-600"
+          {...register('descreption',{
+              required:true
+            })}
+          />
+
 
           {/* SUBMIT */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">

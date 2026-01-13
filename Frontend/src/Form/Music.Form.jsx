@@ -7,7 +7,7 @@ import {
   Map, Wallet, Search, Disc,IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import FormInput from './Util.Field.jsx';
+import {FormDescription,FormInput} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const MusicForm = () => {
@@ -233,7 +233,7 @@ const MusicForm = () => {
           </div>
 
           {/* 4. DESCRIPTION */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Info size={20} className="text-indigo-500" /> Item Description</h2>
             <textarea 
               rows="4" 
@@ -241,7 +241,15 @@ const MusicForm = () => {
               className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium resize-none"
               {...register('description',{required:true})}
             ></textarea>
-          </div>
+          </div> */}
+
+          <FormDescription
+          heading="Item Description"
+          placeholder="Include details about strings, accessories like cases/stands, or specific sound characteristics..."
+          innercolor="indigo"
+          logoclass="text-indigo-500"
+          {...register('description',{required:true})}
+          />
 
           {/* 5. SUBMIT */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">

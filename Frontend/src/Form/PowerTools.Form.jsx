@@ -208,7 +208,7 @@ import {
   IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import FormInput from './Util.Field.jsx';
+import {FormDescription,FormInput} from './Utils/index.js'
 import { useForm } from 'react-hook-form';
 
 const PowerToolForm = () => {
@@ -467,6 +467,13 @@ const PowerToolForm = () => {
               {...register('description',{required:true})}
             ></textarea>
           </div>
+
+          <FormDescription
+          heading="Technical Description"
+          placeholder="Describe condition, battery life, included bits, and usage rules..."
+          innercolor="orange"
+          logoclass="text-orange-500"
+          />
 
           {/* 6. SUBMIT */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">

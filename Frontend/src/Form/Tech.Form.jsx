@@ -8,7 +8,7 @@ import {
   IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import FormInput from './Util.Field.jsx';
+import {FormInput,FormDescription} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const TechForm = () => {
@@ -242,6 +242,14 @@ const TechForm = () => {
               {...register('description',{required:true})}
             ></textarea>
           </div>
+
+          <FormDescription
+          heading="Additional Details"
+          placeholder="List accessories included (chargers, cases, cables) and any software details..."
+          innercolor="cyan"
+          logoclass="text-cyan-600"
+          {...register('description',{required:true})}
+          />
 
           {/* 5. SUBMIT */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">

@@ -7,7 +7,7 @@ import {
   Settings, Maximize, Aperture, Briefcase, Focus, Search
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import FormInput from './Util.Field.jsx';
+import {FormInput,FormDescription} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const CameraForm = () => {
@@ -253,11 +253,21 @@ const CameraForm = () => {
           </div>
 
           {/* 4. DESCRIPTION */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Briefcase size={20} className="text-slate-700" /> Bundle Details</h2>
+          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Briefcase size={20} className="text-slate-700" 
+            /> Bundle Details</h2>
             <textarea rows="4" placeholder="Mention extra batteries, memory cards, or tripod..." className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-slate-500 focus:bg-white transition-all font-medium resize-none"
             {...register('description',{required:true})}></textarea>
-          </div>
+          </div> */}
+
+          <FormDescription
+          heading="Bundle Details"
+          placeholder="Mention extra batteries, memory cards, or tripod..."
+          innercolor="slate"
+          logoclass="text-slate-700"
+          {...register('description',{
+          required:true})}
+          />
 
           {/* SUBMIT */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
