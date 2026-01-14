@@ -7,7 +7,7 @@ import {
   Lock, Landmark, Home, Map,
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput,FormDescription} from './Utils/index.js'
+import {FormInput,FormDescription, Price} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 const SpaceForm = () => {
   const {
@@ -134,14 +134,19 @@ const SpaceForm = () => {
             
             {/* 3-Column Utility Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Rent Amount</label>
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
                   <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-black text-lg"
                   {...register('price',{required:true})} />
                 </div>
-              </div>
+              </div> */}
+
+              <Price
+              innercolor="indigo"
+              {...register('price',{required:true})}
+              />
               
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Contact WhatsApp</label>

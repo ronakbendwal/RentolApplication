@@ -8,7 +8,8 @@ import {
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import { useForm } from 'react-hook-form';
-import {FormInput,FormDescription} from './Utils/index.js'
+import {FormInput,FormDescription,Price} from './Utils/index.js'
+
 const BikeForm = () => {
 
 
@@ -46,7 +47,6 @@ const BikeForm = () => {
   const [images, setImages] = useState([]);
   const [previews,setPreview]=useState([]);
   const [condition, setCondition] = useState('Excellent');
-  
   const conditions = ["Brand New", "Excellent", "Good", "Used"];
   
   const bikeTypes = [
@@ -180,7 +180,9 @@ const BikeForm = () => {
             
             {/* 3-Column Utility Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="space-y-2">
+
+
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
@@ -189,7 +191,17 @@ const BikeForm = () => {
                     required:true
                   })}/>
                 </div>
-              </div>
+              </div> */}
+
+              <Price
+              innercolor="emerald"
+              {...register('price',{
+                    required:true
+                    })}
+              />
+
+
+
               
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Contact WhatsApp</label>
@@ -212,8 +224,9 @@ const BikeForm = () => {
                   })} />
                 </div>
               </div>
-            </div>
 
+
+            </div>
             {/* Full Street Address Field Added Here */}
             <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Full Pickup Address</label>
@@ -225,6 +238,8 @@ const BikeForm = () => {
                 })}/>
               </div>
             </div>
+
+
           </div>
 
           {/* 3. GALLERY */}

@@ -5,10 +5,11 @@ import {
   Upload, X, ArrowRight, ShieldCheck, MessageCircle, 
   Info, ArrowLeft, MapPin, Tag, Map, Wallet, Search, 
   Zap, HardDrive, ShieldAlert,
-  IndianRupee
+  IndianRupee,
+  IndianRupeeIcon
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput,FormDescription} from './Utils/index.js'
+import {FormInput,FormDescription,Price} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const TechForm = () => {
@@ -171,14 +172,19 @@ const TechForm = () => {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
+                  <span className="absolute left-5 top-4 text-gray-400 font-bold"><IndianRupee size={15}/></span>
                   <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-black text-lg"
                   {...register('price',{required:true})} />
                 </div>
-              </div>
+              </div> */}
+
+              <Price
+              innercolor="cyan"
+              {...register('price',{required:true})} 
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>

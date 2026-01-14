@@ -38,20 +38,3 @@ handleImageUpload
 })
 
 export default Images
-
-
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-fuchsia-500" /> Profile Photos</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {previewImage.map((src, index) => (
-                <div key={index} className="relative aspect-[3/4] rounded-3xl overflow-hidden group border border-gray-100">
-                  <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Helper Profile" />
-                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
-                </div>
-              ))}
-              {images.length < 3 && (
-              )}
-            </div>
-            <input
-            type='hidden'
-            {...register('images',{required:true})}/>
-          </div>

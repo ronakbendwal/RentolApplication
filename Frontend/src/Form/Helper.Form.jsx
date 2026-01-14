@@ -6,7 +6,7 @@ import {
   User, Search, Star, Clock, Heart, CheckCircle2
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormDescription,FormInput} from './Utils/index.js'
+import {FormDescription,FormInput,Price} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const HelperForm = () => {
@@ -172,14 +172,20 @@ const HelperForm = () => {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Rate / Day</label>
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
                   <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-black text-lg" 
                   {...register('price',{required:true})}/>
                 </div>
-              </div>
+              </div> */}
+              <Price
+              innercolor="fuchsia"
+              {...register('price',{
+                    required:true
+                    })}
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>

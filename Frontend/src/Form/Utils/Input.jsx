@@ -4,7 +4,7 @@ const FormInput=forwardRef(function input({
   placeholder,
   label,
   type='text',
-  className,
+  className="",
   innercolor,
   ...props
 },referance){
