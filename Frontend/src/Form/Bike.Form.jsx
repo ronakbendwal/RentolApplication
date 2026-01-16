@@ -127,7 +127,7 @@ const BikeForm = () => {
               placeholder="e.g. Trek Marlin 7"
               innercolor='emerald'
               {...register('itemname',{
-                // required:tru
+                required:true
               })}
               />
 
@@ -147,7 +147,7 @@ const BikeForm = () => {
                 </div>
                   <input
                   type="hidden"
-                  {...register('condition', {})}
+                  {...register('condition', {required:true})}
                   />
               </div>
 
@@ -155,7 +155,7 @@ const BikeForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Purchase Year</label>
                 <input type="number" placeholder="2024" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
                 {...register('purchaseyear',{
-                  // required:true
+                  required:true
                 })} />
               </div>
 
@@ -163,7 +163,7 @@ const BikeForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Bike Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium appearance-none"
                 {...register('biketype',{
-                  // required:true
+                  required:true
                 })}>
                   <option value="">Select Type</option>
                   {bikeTypes.map((type) => (
@@ -284,7 +284,7 @@ const BikeForm = () => {
             </div>
             <input
             type='hidden'
-            {...register('images')}
+            {...register('images',{required:true})}
             />
           </div>
 
@@ -303,7 +303,7 @@ const BikeForm = () => {
           innercolor="emerald"
           logoclass="text-emerald-600"
           {...register('descreption',{
-              // required:true
+              required:true
             })}
           />
 
