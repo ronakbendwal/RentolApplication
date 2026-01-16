@@ -7,7 +7,15 @@ import {
   Map, Wallet, Search, Disc,IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormDescription,FormInput,Price,Location,Address,Contact} from './Utils/index.js'
+import {
+  FormDescription,
+  FormInput,
+  Price,
+  Location,
+  Address,
+  Contact,
+  Condition
+} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const MusicForm = () => {
@@ -16,6 +24,7 @@ const MusicForm = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState:{
       errors,
       isSubmitting,
@@ -23,7 +32,8 @@ const MusicForm = () => {
     }
   }=useForm({
     defaultValues:{
-      category:'music'
+      category:'music',
+      condition:"Excellent"
     }
   })
   const dispatch = useDispatch();
@@ -37,10 +47,8 @@ const MusicForm = () => {
 
   const [images, setImages] = useState([]);
   const [previewImage,setPreviewImage]=useState([]);
-  const [condition, setCondition] = useState('Excellent');
   const [instrumentType, setInstrumentType] = useState('');
 
-  const conditions = ["Brand New", "Excellent", "Good", "Vintage"];
   
   const instrumentSuggestions = [
     "Acoustic Guitar", "Electric Guitar", "Bass Guitar", "Digital Piano",
@@ -62,11 +70,6 @@ const MusicForm = () => {
       return uploadImage
     })
   };
-
-  const changeCondition=(props)=>{
-    setCondition(props)
-    setValue('condition',props)
-  }
 
   const submit=(data)=>{
     //api call comes here
@@ -116,25 +119,13 @@ const MusicForm = () => {
               innercolor='indigo'
               {...register('itemname',{required:true})}
               />
-              {/* INSTRUMENT CONDITION (Moved to the right) */}
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Instrument Condition</label>
-                <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                  {conditions.map((item) => (
-                    <button 
-                      key={item}
-                      type="button"
-                      onClick={() => changeCondition(item)}
-                      className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <input
-                type='hidden'
-                {...register('condition',{required:true})}/>
-              </div>
+
+              <Condition
+              innercolor="indigo"
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              />
 
               {/* SEARCHABLE INSTRUMENT TYPE */}
               <div className="space-y-2">

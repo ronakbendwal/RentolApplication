@@ -7,7 +7,13 @@ import {
   Lock, Landmark, Home, Map,
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput,FormDescription, Price,Location,Address,Contact
+import {
+  FormInput,
+  FormDescription,
+  Price,
+  Location,
+  Address,
+  Contact,
 } from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 const SpaceForm = () => {
@@ -23,7 +29,7 @@ const SpaceForm = () => {
     }
   }=useForm({
     defaultValues:{
-      category:'space'
+      category:'space',
     }
   })
   const dispatch = useDispatch();

@@ -9,7 +9,15 @@ import {
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import { useForm } from 'react-hook-form';
-import {FormInput,FormDescription,Price,Contact,Location,Address} from './Utils/index.js'
+import {
+  FormInput,
+  FormDescription,
+  Price,
+  Contact,
+  Location,
+  Address,
+  Condition
+} from './Utils/index.js'
 
 const BikeForm = () => {
 
@@ -23,6 +31,7 @@ const BikeForm = () => {
      reset,
      handleSubmit,
      setValue,
+     watch,
      formState:{
        errors,
        isSubmitting,
@@ -30,7 +39,8 @@ const BikeForm = () => {
       }
   } =useForm({
     defaultValues:{
-      category:"Bike"
+      category:"Bike",
+      condition:"Excellent"
     }
   })
 
@@ -47,8 +57,7 @@ const BikeForm = () => {
 
   const [images, setImages] = useState([]);
   const [previews,setPreview]=useState([]);
-  const [condition, setCondition] = useState('Excellent');
-  const conditions = ["Brand New", "Excellent", "Good", "Used"];
+
   
   const bikeTypes = [
     "Mountain Bike (MTB)", "Road Bike", "Hybrid/City Bike", 
@@ -69,12 +78,6 @@ const BikeForm = () => {
     })
     
   };
-
-
-  const changeCondition=(prop)=>{
-    setCondition(prop)
-    setValue('condition',prop)
-  }
 
    const submit=(data)=>{
     //api call comes here
@@ -118,10 +121,7 @@ const BikeForm = () => {
               <Tag size={20} className="text-emerald-600" /> Basic Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Bike Model / Brand</label>
-                <input type="text" placeholder="e.g. Trek Marlin 7" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" />
-              </div> */}
+
               <FormInput
               label='Bike Model / Brand'
               placeholder="e.g. Trek Marlin 7"
@@ -131,25 +131,12 @@ const BikeForm = () => {
               })}
               />
 
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Condition</label>
-                <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                  {conditions.map((item) => (
-                    <button 
-                      key={item}
-                      type="button"
-                      onClick={() => changeCondition(item)}
-                      className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                   >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                  <input
-                  type="hidden"
-                  {...register('condition', {required:true})}
-                  />
-              </div>
+              <Condition
+              innercolor="emerald"
+              register={register}
+              setValue={setValue}
+              watch={watch}
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Purchase Year</label>

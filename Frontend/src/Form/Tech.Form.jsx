@@ -9,7 +9,15 @@ import {
   IndianRupeeIcon
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput,FormDescription,Price,Contact,Address,Location} from './Utils/index.js'
+import {
+  FormInput,
+  FormDescription,
+  Price,
+  Contact,
+  Address,
+  Location,
+  Condition
+} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const TechForm = () => {
@@ -18,6 +26,7 @@ const TechForm = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState:{
       errors,
       isSubmitting,
@@ -25,7 +34,8 @@ const TechForm = () => {
     }
   }=useForm({
     defaultValues:{
-      category:'tech'
+      category:'tech',
+      condition:"Excellent"
     }
   })
   const dispatch = useDispatch();
@@ -40,11 +50,9 @@ const TechForm = () => {
 
   const [images, setImages] = useState([]);
   const [previewImage,setPreviewImage]=useState([])
-  const [condition, setCondition] = useState('Like New');
   const [techType, setTechType] = useState('');
   const [hasWarranty, setHasWarranty] = useState(false);
 
-  const conditions = ["Brand New", "Like New", "Refurbished", "Used"];
   
   const techSuggestions = [
     "MacBook Pro", "Gaming Laptop", "iPhone / Smartphone", "iPad / Tablet",
@@ -66,10 +74,6 @@ const TechForm = () => {
     })
   };
 
-  const changeCondition=(props)=>{
-    setCondition(props)
-    setValue('condition',props)
-  }
 
   const submit=(data)=>{
     //api call comes here
@@ -122,7 +126,7 @@ const TechForm = () => {
               />
 
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Device Condition</label>
                 <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
                   {conditions.map((item) => (
@@ -139,7 +143,14 @@ const TechForm = () => {
                 <input
                 type='hidden'
                 {...register('condition',{required:true})}/>
-              </div>
+              </div> */}
+
+              <Condition
+              innercolor="cyan"
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Search size={14}/> Electronic Type</label>

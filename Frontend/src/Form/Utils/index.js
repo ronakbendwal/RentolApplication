@@ -4,6 +4,7 @@ import Price from "./Price.jsx";
 import Contact from "./Contact.jsx";
 import Location from "./Location.jsx";
 import Address from './Address.jsx';
+import Condition from "./Condition.jsx";
 export {
   FormInput,
   FormDescription,
@@ -11,4 +12,5 @@ export {
   Contact,
   Location,
   Address,
+  Condition
 }

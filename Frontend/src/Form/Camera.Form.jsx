@@ -7,7 +7,14 @@ import {
   Settings, Maximize, Aperture, Briefcase, Focus, Search
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput,FormDescription,Price,Location,Address,Contact} from './Utils/index.js'
+import {
+  FormInput,
+  FormDescription,
+  Price,Location,
+  Address,
+  Contact, 
+  Condition
+} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const CameraForm = () => {
@@ -16,6 +23,7 @@ const CameraForm = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState:{
       errors,
       isSubmitting,
@@ -23,7 +31,8 @@ const CameraForm = () => {
     }
   }=useForm({
     defaultValues:{
-      category:'camera'
+      category:'camera',
+      condition:"Excellent"
     }
   })
 
@@ -39,11 +48,8 @@ const CameraForm = () => {
   
   const [images, setImages] = useState([]);
   const [previewImage,setPreviewImage]=useState([])
-  const [condition, setCondition] = useState('Excellent');
   // State to track the custom lens input
   const [lensInput, setLensInput] = useState('');
-
-  const conditions = ["New", "Excellent", "Good", "Used"];
   
   const cameraTypes = [
     "DSLR Camera", "Mirrorless Camera", "Cinema Camera", 
@@ -82,10 +88,6 @@ const CameraForm = () => {
     console.log(data)
   }
 
-  const changeCondition=(props)=>{
-    setCondition(props)
-    setValue('condition',props)
-  }
 
   return (
     <div className="flex-grow bg-[#F9FAFB] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -131,25 +133,11 @@ const CameraForm = () => {
               {...register('itemname',{required:true})}
               />
 
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Condition</label>
-                <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                  {conditions.map((item) => (
-                    <button 
-                      key={item}
-                      type="button"
-                      onClick={() =>changeCondition(item)}
-                      className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-slate-900 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <input
-                type='hidden'
-                {...register('condition',{required:true})}
-                />
-              </div>
+              <Condition
+              innercolor="slate"
+              register={register}
+              watch={watch}
+              setValue={setValue}/>
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Aperture size={14}/> Body Type</label>

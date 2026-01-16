@@ -8,7 +8,15 @@ import {
   IndianRupee
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormDescription,FormInput,Price,Location,Address,Contact} from './Utils/index.js'
+import {
+  FormDescription,
+  FormInput,
+  Price,
+  Location,
+  Address,
+  Contact,
+  Condition
+} from './Utils/index.js'
 import { useForm } from 'react-hook-form';
 
 const PowerToolForm = () => {
@@ -17,6 +25,7 @@ const PowerToolForm = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState:{
       errors,
       isSubmitting,
@@ -24,7 +33,8 @@ const PowerToolForm = () => {
     }
   }=useForm({
     defaultValues:{
-      category:'power tools'
+      category:'power tools',
+      condition:"Excellent"
     }
   })
   const dispatch = useDispatch();
@@ -40,11 +50,9 @@ const PowerToolForm = () => {
   const [images, setImages] = useState([]);
   const [previewImage,setPreviewImage]=useState([])
   const [activeSafety, setActiveSafety] = useState([]);
-  const [condition, setCondition] = useState('Like New');
   const [toolType, setToolType] = useState(''); // State for custom tool type
 
   const safetyGear = ["Safety Glasses", "Work Gloves", "Ear Protection", "Dust Mask", "Hard Hat", "Carry Case"];
-  const conditions = ["Brand New", "Like New", "Good", "Well Used"];
 
   // Predefined tool types for the search suggestions
   const toolSuggestions = [
@@ -67,10 +75,6 @@ const PowerToolForm = () => {
     })
   };
 
-  const changeCondition=(props)=>{
-    setCondition(props)
-    setValue('condition',props)
-  }
 
   const submit=(data)=>{
     //api call comes here
@@ -148,7 +152,7 @@ const PowerToolForm = () => {
                 </div>
               </div>
 
-              <div className="space-y-2 col-span-1 md:col-span-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Tool Condition</label>
                 <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
                   {conditions.map((item) => (
@@ -165,7 +169,14 @@ const PowerToolForm = () => {
                 <input
                 type='hidden'
                 {...register('condition',{required:true})}/>
-              </div>
+              </div> */}
+
+              <Condition
+              innercolor="orange"
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              />
             </div>
           </div>
 

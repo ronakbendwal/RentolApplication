@@ -7,7 +7,15 @@ import {
   Layers, Wallet // Added Wallet for Security Deposit
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput, FormDescription,Price,Contact,Address,Location} from './Utils/index.js'
+import {
+  FormInput, 
+  FormDescription,
+  Price,
+  Contact,
+  Address,
+  Location, 
+  Condition
+} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 const VehicleForm = () => {
   const {
@@ -15,6 +23,7 @@ const VehicleForm = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState:{
       errors,
       isSubmitting,
@@ -22,7 +31,8 @@ const VehicleForm = () => {
     }
   }=useForm({
     defaultValues:{
-      category:'vehicle'
+      category:'vehicle',
+      condition:"Excellent"
     }
   })
   const dispatch = useDispatch();
@@ -37,9 +47,7 @@ const VehicleForm = () => {
 
   const [images, setImages] = useState([]);
   const [previewImage,setPreviewImage]=useState([])
-  const [condition, setCondition] = useState('Excellent');
 
-  const conditions = ["Brand New", "Excellent", "Good", "Used"];
   const vehicleTypes = [
     "Sedan", "SUV", "Hatchback", "Luxury / Sport", 
     "Crossover", "Convertible", "Coupe", "Mini Van",
@@ -59,11 +67,6 @@ const VehicleForm = () => {
       return uploadedImage
     })
   };
-
-  const changeCondition=(props)=>{
-    setCondition(props)
-    setValue('condition',props)
-  }
 
   const submit =(data)=>{
     //api call come here
@@ -114,7 +117,7 @@ const VehicleForm = () => {
               {...register('itemname',{required:true})}
               />
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1">Vehicle Condition</label>
                 <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
                   {conditions.map((item) => (
@@ -132,7 +135,14 @@ const VehicleForm = () => {
                 type='hidden'
                 {...register('condition',{required:true})}
                 />
-              </div>
+              </div> */}
+
+              <Condition
+              innercolor="blue"
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Vehicle Type</label>
