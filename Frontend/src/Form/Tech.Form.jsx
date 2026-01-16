@@ -16,7 +16,8 @@ import {
   Contact,
   Address,
   Location,
-  Condition
+  Condition,
+  Images,
 } from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
@@ -48,8 +49,6 @@ const TechForm = () => {
       }
     },[isSubmitSuccessful])
 
-  const [images, setImages] = useState([]);
-  const [previewImage,setPreviewImage]=useState([])
   const [techType, setTechType] = useState('');
   const [hasWarranty, setHasWarranty] = useState(false);
 
@@ -62,18 +61,6 @@ const TechForm = () => {
   ];
 
   if (selectedCategory !== 'electronics') return null;
-
- const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const prevImages = files.map(file => URL.createObjectURL(file));
-    setPreviewImage(prev => [...prev, ...prevImages].slice(0, 6));
-    setImages((prev)=>{
-      const uploadedImage=[...prev,...files].slice(0,6);
-      setValue('images',uploadedImage)
-      return uploadedImage
-    })
-  };
-
 
   const submit=(data)=>{
     //api call comes here
@@ -210,27 +197,12 @@ const TechForm = () => {
           </div>
 
           {/* 3. GALLERY */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-cyan-600" /> Gadget Photos</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {previewImage.map((src, index) => (
-                <div key={index} className="relative aspect-square rounded-3xl overflow-hidden group border border-gray-100">
-                  <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Tech" />
-                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full transition-colors hover:bg-red-500"><X size={14} /></button>
-                </div>
-              ))}
-              {images.length < 6 && (
-                <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-100 bg-gray-50 rounded-3xl cursor-pointer hover:border-cyan-400 transition-all group">
-                  <Upload size={20} className="text-gray-400 group-hover:text-cyan-500" />
-                  <span className="text-[10px] font-black text-gray-400 uppercase mt-2">Add Photo</span>
-                  <input type="file" multiple className="hidden" onChange={handleImageUpload} />
-                </label>
-              )}
-            </div>
-            <input
-            type='hidden'
-            {...register('images',{required:true})}/>
-          </div>
+
+          <Images
+          register={register}
+          setValue={setValue}
+          innercolor="cyan"
+          />
 
           {/* 4. DESCRIPTION */}
 

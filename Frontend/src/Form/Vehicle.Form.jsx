@@ -14,7 +14,8 @@ import {
   Contact,
   Address,
   Location, 
-  Condition
+  Condition,
+  Images
 } from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 const VehicleForm = () => {
@@ -45,8 +46,6 @@ const VehicleForm = () => {
     }
   },[isSubmitSuccessful])
 
-  const [images, setImages] = useState([]);
-  const [previewImage,setPreviewImage]=useState([])
 
   const vehicleTypes = [
     "Sedan", "SUV", "Hatchback", "Luxury / Sport", 
@@ -56,17 +55,6 @@ const VehicleForm = () => {
   ];
 
   if (selectedCategory !== 'cars') return null;
-
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const prevImages = files.map(file => URL.createObjectURL(file));
-    setPreviewImage(prev => [...prev, ...prevImages].slice(0, 6));
-    setImages((prev)=>{
-      const uploadedImage=[...prev,...files].slice(0,6)
-      setValue('images',uploadedImage)
-      return uploadedImage
-    })
-  };
 
   const submit =(data)=>{
     //api call come here
@@ -213,7 +201,7 @@ const VehicleForm = () => {
             />
           </div>
 
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2"><ImageIcon size={20} className="text-blue-600" /> High-Res Gallery</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               {previewImage.map((src, index) => (
@@ -233,7 +221,13 @@ const VehicleForm = () => {
             <input
             type='hidden'
             {...register('images',{required:true})}/>
-          </div>
+          </div> */}
+
+          <Images
+          register={register}
+          setValue={setValue}
+          innercolor="blue"
+          />
 
           <FormDescription
           heading="Description"

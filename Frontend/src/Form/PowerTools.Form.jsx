@@ -15,7 +15,8 @@ import {
   Location,
   Address,
   Contact,
-  Condition
+  Condition,
+  Images
 } from './Utils/index.js'
 import { useForm } from 'react-hook-form';
 
@@ -47,8 +48,6 @@ const PowerToolForm = () => {
     }
   },[isSubmitSuccessful])
 
-  const [images, setImages] = useState([]);
-  const [previewImage,setPreviewImage]=useState([])
   const [activeSafety, setActiveSafety] = useState([]);
   const [toolType, setToolType] = useState(''); // State for custom tool type
 
@@ -63,18 +62,6 @@ const PowerToolForm = () => {
   ];
 
   if (selectedCategory !== 'tools') return null;
-
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const prevImages = files.map(file => URL.createObjectURL(file));
-    setPreviewImage(prev => [...prev, ...prevImages].slice(0, 6));
-    setImages((prev)=>{
-      const uploadedImage=[...prev,...files].slice(0,6);
-      setValue('images',uploadedImage)
-      return uploadedImage
-    })
-  };
-
 
   const submit=(data)=>{
     //api call comes here
@@ -234,39 +221,14 @@ const PowerToolForm = () => {
           </div> */}
 
           {/* 4. GALLERY */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><ImageIcon size={20} className="text-orange-500" /> Equipment Photos</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {previewImage.map((src, index) => (
-                <div key={index} className="relative aspect-square rounded-3xl overflow-hidden group border border-gray-100">
-                  <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Tool" />
-                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 text-white rounded-full"><X size={14} /></button>
-                </div>
-              ))}
-              {images.length < 6 && (
-                <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-100 bg-gray-50 rounded-3xl cursor-pointer hover:border-orange-400 transition-all group">
-                  <Upload size={20} className="text-gray-400 group-hover:text-orange-500" />
-                  <span className="text-[10px] font-black text-gray-400 uppercase mt-2">Upload</span>
-                  <input type="file" multiple className="hidden" onChange={handleImageUpload} />
-                </label>
-              )}
-            </div>
-            <input
-            type='hidden'
-            {...register('images',{required:true})}/>
-          </div>
+
+          <Images
+          register={register}
+          setValue={setValue}
+          innercolor="orange"
+          />
 
           {/* 5. DESCRIPTION */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Info size={20} className="text-orange-500" /> Technical Description</h2>
-            <textarea 
-              rows="4" 
-              placeholder="Describe condition, battery life, included bits, and usage rules..." 
-              className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-orange-500 focus:bg-white transition-all font-medium resize-none"
-              {...register('description',{required:true})}
-            ></textarea>
-          </div>
-
           <FormDescription
           heading="Technical Description"
           placeholder="Describe condition, battery life, included bits, and usage rules..."

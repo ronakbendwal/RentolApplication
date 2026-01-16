@@ -16,7 +16,8 @@ import {
   Contact,
   Location,
   Address,
-  Condition
+  Condition,
+  Images
 } from './Utils/index.js'
 
 const BikeForm = () => {
@@ -55,8 +56,8 @@ const BikeForm = () => {
 
   const dispatch = useDispatch();
 
-  const [images, setImages] = useState([]);
-  const [previews,setPreview]=useState([]);
+  // const [images, setImages] = useState([]);
+  // const [previews,setPreview]=useState([]);
 
   
   const bikeTypes = [
@@ -65,19 +66,18 @@ const BikeForm = () => {
     "BMX", "Folding Bike", "Gravel Bike", "Fat Tire Bike"
   ];
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const previewURL = files.map(file => URL.createObjectURL(file));
-    // setImages(prev => [...prev, ...newImages].slice(0, 6));
-    setPreview(prev=>[...prev,...previewURL].slice(0,6))
+  // const handleImageUpload = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   const previewURL = files.map(file => URL.createObjectURL(file));
+  //   // setImages(prev => [...prev, ...newImages].slice(0, 6));
+  //   setPreview(prev=>[...prev,...previewURL].slice(0,6))
 
-    setImages(prev=>{
-      const updatedImage=[...prev, ...files].slice(0,6)
-      setValue('images',updatedImage)
-      return updatedImage;
-    })
-    
-  };
+  //   setImages(prev=>{
+  //     const updatedImage=[...prev, ...files].slice(0,6)
+  //     setValue('images',updatedImage)
+  //     return updatedImage;
+  //   })
+  // };
 
    const submit=(data)=>{
     //api call comes here
@@ -201,7 +201,7 @@ const BikeForm = () => {
           </div>
 
           {/* 3. GALLERY */}
-          <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2"><ImageIcon size={20} className="text-emerald-600" /> Photos</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               {previews.map((src, index) => (
@@ -223,7 +223,13 @@ const BikeForm = () => {
             type='hidden'
             {...register('images',{required:true})}
             />
-          </div>
+          </div> */}
+
+          <Images
+          register={register}
+          setValue={setValue}
+          innercolor="emerald"
+          />
 
           {/* 4. DESCRIPTION */}
 
