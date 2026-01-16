@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import { useForm } from 'react-hook-form';
-import {FormInput,FormDescription,Price,Contact} from './Utils/index.js'
+import {FormInput,FormDescription,Price,Contact,Location,Address} from './Utils/index.js'
 
 const BikeForm = () => {
 
@@ -127,7 +127,7 @@ const BikeForm = () => {
               placeholder="e.g. Trek Marlin 7"
               innercolor='emerald'
               {...register('itemname',{
-                required:true
+                // required:tru
               })}
               />
 
@@ -147,7 +147,7 @@ const BikeForm = () => {
                 </div>
                   <input
                   type="hidden"
-                  {...register('condition', { required: true })}
+                  {...register('condition', {})}
                   />
               </div>
 
@@ -155,7 +155,7 @@ const BikeForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Purchase Year</label>
                 <input type="number" placeholder="2024" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
                 {...register('purchaseyear',{
-                  required:true
+                  // required:true
                 })} />
               </div>
 
@@ -163,7 +163,7 @@ const BikeForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Bike Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium appearance-none"
                 {...register('biketype',{
-                  required:true
+                  // required:true
                 })}>
                   <option value="">Select Type</option>
                   {bikeTypes.map((type) => (
@@ -200,7 +200,7 @@ const BikeForm = () => {
               {...register('price',{required:true })
               }/>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Contact WhatsApp</label>
                 <div className="relative">
                   <Phone className="absolute left-5 top-4 text-green-500" size={18} />
@@ -210,12 +210,18 @@ const BikeForm = () => {
                     required:true,
                   })} />
                 </div>
-              </div>
+              </div> */}
+
+
+              <Contact
+              innercolor="emerald"
+              {...register('contactnumber',{ required:true})}
+              />
 
 
 
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City / Area</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
@@ -224,12 +230,21 @@ const BikeForm = () => {
                     required:true
                   })} />
                 </div>
-              </div>
+              </div> */}
+
+
+              <Location
+              innercolor="emerald"
+              {...register('location',{required:true})}
+              />
+
+
+
 
 
             </div>
             {/* Full Street Address Field Added Here */}
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Full Pickup Address</label>
               <div className="relative">
                 <Map className="absolute left-5 top-4 text-gray-400" size={18} />
@@ -238,7 +253,12 @@ const BikeForm = () => {
                   required:true
                 })}/>
               </div>
-            </div>
+            </div> */}
+
+            <Address
+            innercolor="emerald"
+            {...register('address',{required:true})}
+            />
 
 
           </div>
@@ -283,7 +303,7 @@ const BikeForm = () => {
           innercolor="emerald"
           logoclass="text-emerald-600"
           {...register('descreption',{
-              required:true
+              // required:true
             })}
           />
 
