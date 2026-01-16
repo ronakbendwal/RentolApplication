@@ -4,11 +4,12 @@ import {
   Bike, DollarSign, Image as ImageIcon, 
   Upload, X, ArrowRight, ShieldCheck, MessageCircle, 
   Info, Star, ArrowLeft, MapPin, Calendar, Tag, Navigation,
-  Layers, Map // Added Map icon
+  Layers, Map, // Added Map icon
+  Phone
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import { useForm } from 'react-hook-form';
-import {FormInput,FormDescription,Price} from './Utils/index.js'
+import {FormInput,FormDescription,Price,Contact} from './Utils/index.js'
 
 const BikeForm = () => {
 
@@ -68,6 +69,7 @@ const BikeForm = () => {
     })
     
   };
+
 
   const changeCondition=(prop)=>{
     setCondition(prop)
@@ -195,24 +197,23 @@ const BikeForm = () => {
 
               <Price
               innercolor="emerald"
-              {...register('price',{
-                    required:true
-                    })}
-              />
+              {...register('price',{required:true })
+              }/>
 
-
-
-              
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Contact WhatsApp</label>
                 <div className="relative">
-                  <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+91..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
+                  <Phone className="absolute left-5 top-4 text-green-500" size={18} />
+                  <input type="tel" placeholder="+91..."
+                  className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
                   {...register('contactnumber',{
-                    required:true
+                    required:true,
                   })} />
                 </div>
               </div>
+
+
+
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City / Area</label>
