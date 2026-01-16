@@ -172,41 +172,18 @@ const HelperForm = () => {
             </h2>
             
             <div  className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Rate / Day</label>
-                <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
-                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-black text-lg" 
-                  {...register('price',{required:true})}/>
-                </div>
-              </div> */}
+
               <Price
               innercolor="fuchsia"
               {...register('price',{required:true})}
               />
 
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
-                <div className="relative">
-                  <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
-                  {...register('contactnumber',{required:true})}/>
-                </div>
-              </div> */}
 
               <Contact
               innercolor="fuchsia"
               {...register('contactnumber',{required:true})}
               />
 
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Service City</label>
-                <div className="relative">
-                  <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
-                  <input type="text" placeholder="e.g. Miami, FL" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
-                  {...register('location',{required:true})}/>
-                </div>
-              </div> */}
 
               <Location
               innercolor="fuchsia"
@@ -245,15 +222,6 @@ const HelperForm = () => {
           </div>
 
           {/* 4. ABOUT SERVICES */}
-          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Info size={20} className="text-fuchsia-500" /> Professional Summary</h2>
-            <textarea 
-              rows="4" 
-              placeholder="Describe your skills, previous work experience, or specific tools you can operate..." 
-              className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium resize-none"
-              {...register('description',{required:true})}
-            ></textarea>
-          </div> */}
 
           <FormDescription
           heading="Professional Summary"

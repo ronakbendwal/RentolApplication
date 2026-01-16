@@ -171,42 +171,17 @@ const MusicForm = () => {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Price / Day</label>
-                <div className="relative">
-                  <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
-                  <input type="number" placeholder="0" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-black text-lg"
-                  {...register('price',{required:true})} />
-                </div>
-              </div> */}
-
+   
               <Price
               innercolor="indigo"
               {...register('price',{required:true })}
               />
-
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
-                <div className="relative">
-                  <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
-                  <input type="tel" placeholder="+91..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" 
-                  {...register('contact number',{required:true})}/>
-                </div>
-              </div> */}
 
               <Contact
               innercolor="indigo"
               {...register('contact number',{required:true})}
               />
 
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">City / Area</label>
-                <div className="relative">
-                  <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
-                  <input type="text" placeholder="e.g. Austin, TX" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" 
-                  {...register('location',{required:true})}/>
-                </div>
-              </div>*/}
 
               <Location
               innercolor="ingigo"
@@ -215,15 +190,6 @@ const MusicForm = () => {
 
             </div>
 
-
-            {/* <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Full Pickup Address</label>
-              <div className="relative">
-                <Map className="absolute left-5 top-4 text-gray-400" size={18} />
-                <input type="text" placeholder="Studio/House No, Street Name, Landmark..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium"
-                {...register('address',{required:true})} />
-              </div>
-            </div> */}
 
             <Address
             innercolor="indigo"
@@ -255,16 +221,6 @@ const MusicForm = () => {
             {...register('images',{required:true})}/>
           </div>
 
-          {/* 4. DESCRIPTION */}
-          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Info size={20} className="text-indigo-500" /> Item Description</h2>
-            <textarea 
-              rows="4" 
-              placeholder="Include details about strings, accessories like cases/stands, or specific sound characteristics..." 
-              className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium resize-none"
-              {...register('description',{required:true})}
-            ></textarea>
-          </div> */}
 
           <FormDescription
           heading="Item Description"
