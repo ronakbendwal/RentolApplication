@@ -6,7 +6,7 @@ import {
   User, Search, Star, Clock, Heart, CheckCircle2
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormDescription,FormInput,Price} from './Utils/index.js'
+import {FormDescription,FormInput,Price,Location,Address,Contact} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const HelperForm = () => {
@@ -171,7 +171,7 @@ const HelperForm = () => {
               <Briefcase size={20} className="text-fuchsia-500" /> Rates & Location
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div  className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Rate / Day</label>
                 <div className="relative">
@@ -182,28 +182,37 @@ const HelperForm = () => {
               </div> */}
               <Price
               innercolor="fuchsia"
-              {...register('price',{
-                    required:true
-                    })}
+              {...register('price',{required:true})}
               />
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
                   <input type="tel" placeholder="+1..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
                   {...register('contactnumber',{required:true})}/>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="space-y-2">
+              <Contact
+              innercolor="fuchsia"
+              {...register('contactnumber',{required:true})}
+              />
+
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Service City</label>
                 <div className="relative">
                   <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
                   <input type="text" placeholder="e.g. Miami, FL" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
                   {...register('location',{required:true})}/>
                 </div>
-              </div>
+              </div> */}
+
+              <Location
+              innercolor="fuchsia"
+              {...register('location',{required:true})}
+              />
+
             </div>
 
             <div className="flex items-center gap-4 p-4 bg-fuchsia-50 rounded-2xl border border-fuchsia-100 text-fuchsia-700">

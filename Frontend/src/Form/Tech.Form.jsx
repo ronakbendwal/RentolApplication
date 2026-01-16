@@ -9,7 +9,7 @@ import {
   IndianRupeeIcon
 } from 'lucide-react';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
-import {FormInput,FormDescription,Price} from './Utils/index.js'
+import {FormInput,FormDescription,Price,Contact,Address,Location} from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
 const TechForm = () => {
@@ -186,14 +186,19 @@ const TechForm = () => {
               {...register('price',{required:true})} 
               />
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">WhatsApp / Phone</label>
                 <div className="relative">
                   <MessageCircle className="absolute left-5 top-4 text-green-500" size={18} />
                   <input type="tel" placeholder="+91..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-medium" 
                   {...register('contact-number',{required:true})}/>
                 </div>
-              </div>
+              </div> */}
+
+              <Contact
+              innercolor="cyan"
+              {...register('contact-number',{required:true})}
+              />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Security Deposit</label>
@@ -203,16 +208,22 @@ const TechForm = () => {
                   {...register('Deposite',{required:true})} />
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-2">
+           </div>
+
+            {/* <div className="space-y-2">
               <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5">Pickup Location</label>
               <div className="relative">
                 <MapPin className="absolute left-5 top-4 text-red-400" size={18} />
                 <input type="text" placeholder="Full Address or Area..." className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-medium"
                 {...register('address',{required:true})} />
               </div>
-            </div>
+            </div> */}
+
+            <Address
+            innercolor="cyan"
+            {...register('address',{required:true})}
+            />
           </div>
 
           {/* 3. GALLERY */}
