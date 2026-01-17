@@ -14,7 +14,8 @@ import {
   Address,
   Contact, 
   Condition,
-  Images
+  Images,
+  SubmitButton
 } from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
@@ -208,7 +209,7 @@ const CameraForm = () => {
           />
 
           {/* SUBMIT */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
+          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 border border-slate-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Ensure the sensor is clean and lenses are dust-free.</p>
@@ -216,7 +217,12 @@ const CameraForm = () => {
             <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-slate-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
               List My Gear <ArrowRight size={20} />
             </button>
-          </div>
+          </div> */}
+
+          <SubmitButton
+          innercolor="slate"
+          isSubmitting={isSubmitting}
+          />
 
         </form>
       </div>

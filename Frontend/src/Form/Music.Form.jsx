@@ -16,6 +16,7 @@ import {
   Contact,
   Condition,
   Images,
+  SubmitButton
 } from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 
@@ -195,7 +196,7 @@ const MusicForm = () => {
           />
 
           {/* 5. SUBMIT */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
+          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0 border border-indigo-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Ensure instruments are tuned and electronics are tested before pickup.</p>
@@ -203,8 +204,12 @@ const MusicForm = () => {
             <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               Post Listing <ArrowRight size={20} />
             </button>
-          </div>
+          </div> */}
 
+          <SubmitButton
+          innercolor="indigo"
+          isSubmitting={isSubmitting}
+          />
         </form>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Location from "./Location.jsx";
 import Address from './Address.jsx';
 import Condition from "./Condition.jsx";
 import Images from "./Images.jsx";
+import SubmitButton from "./SubmitButton.jsx";
 export {
   FormInput,
   FormDescription,
@@ -15,4 +16,5 @@ export {
   Address,
   Condition,
   Images,
+  SubmitButton
 }

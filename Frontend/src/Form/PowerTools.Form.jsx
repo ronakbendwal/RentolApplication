@@ -16,7 +16,8 @@ import {
   Address,
   Contact,
   Condition,
-  Images
+  Images,
+  SubmitButton
 } from './Utils/index.js'
 import { useForm } from 'react-hook-form';
 
@@ -237,7 +238,7 @@ const PowerToolForm = () => {
           />
 
           {/* 6. SUBMIT */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
+          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-600 shrink-0 border border-orange-100"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you agree to Rentol's machinery safety standards.</p>
@@ -245,7 +246,12 @@ const PowerToolForm = () => {
             <button disabled={isSubmitting} type='submit' className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               Confirm & List <ArrowRight size={20} />
             </button>
-          </div>
+          </div> */}
+
+          <SubmitButton
+          isSubmitting={isSubmitting}
+          innercolor="orange"
+          />
 
         </form>
       </div>

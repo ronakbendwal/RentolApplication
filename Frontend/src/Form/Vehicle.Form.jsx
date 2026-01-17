@@ -15,7 +15,8 @@ import {
   Address,
   Location, 
   Condition,
-  Images
+  Images,
+  SubmitButton
 } from './Utils/index.js'
 import {useForm} from 'react-hook-form'
 const VehicleForm = () => {
@@ -237,7 +238,7 @@ const VehicleForm = () => {
           {...register('description',{required:true})}
           />
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
+          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0 border border-green-200"><ShieldCheck size={20} /></div>
               <p className="text-[11px] text-gray-400 font-medium leading-tight max-w-[200px]">Ensure registration and insurance documents are ready for verification.</p>
@@ -246,7 +247,12 @@ const VehicleForm = () => {
             className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
               Post Listing <ArrowRight size={20} />
             </button>
-          </div>
+          </div> */}
+
+          <SubmitButton
+          innercolor="blue"
+          isSubmitting={isSubmitting}
+           />
         </form>
       </div>
     </div>
