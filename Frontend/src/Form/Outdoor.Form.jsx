@@ -116,7 +116,6 @@ const OutdoorForm = () => {
               setValue={setValue}
               />
 
-              {/* SEARCHABLE TYPE FIELD */}
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Search size={14}/> Equipment Type</label>
                 <input 
@@ -145,7 +144,6 @@ const OutdoorForm = () => {
             </div>
           </div>
 
-          {/* 2. RENTAL TERMS & LOCATION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <IndianRupee size={20} className="text-emerald-500" /> Rental & Pickup
@@ -179,15 +177,12 @@ const OutdoorForm = () => {
 
           </div>
 
-          {/* 3. GALLERY */}
-
           <Images
           register={register}
           setValue={setValue}
           innercolor="emerald"
           />
 
-          {/* 4. DESCRIPTION */}
           <FormDescription
           heading=" Description & Rules"
           placeholder="Tell borrowers about weight limits, weather resistance, or cleaning requirements..."
@@ -196,16 +191,6 @@ const OutdoorForm = () => {
           {...register('description',{required:true})}
           />
 
-          {/* 5. SUBMIT */}
-          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 shrink-0 border border-emerald-100"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you verify gear is sanitized and safe for use.</p>
-            </div>
-            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
-              List Gear <ArrowRight size={20} />
-            </button>
-          </div> */}
 
           <SubmitButton
           isSubmitting={isSubmitting}

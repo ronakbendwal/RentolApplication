@@ -106,25 +106,7 @@ const VehicleForm = () => {
               {...register('itemname',{required:true})}
               />
 
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Vehicle Condition</label>
-                <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                  {conditions.map((item) => (
-                    <button 
-                      key={item}
-                      type="button"
-                      onClick={() => changeCondition(item)}
-                      className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <input
-                type='hidden'
-                {...register('condition',{required:true})}
-                />
-              </div> */}
+
 
               <Condition
               innercolor="blue"
@@ -152,7 +134,6 @@ const VehicleForm = () => {
                 </select>
               </div>
 
-              {/* TWO COLUMN GRID FOR YEAR AND DEPOSIT */}
               <div className="grid grid-cols-2 gap-4 col-span-1 md:col-span-2">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Manufacturing Year</label>
@@ -171,8 +152,6 @@ const VehicleForm = () => {
               </div>
             </div>
           </div>
-
-          {/* ... (Rest of the code remains the same as previous) ... */}
           
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -202,27 +181,7 @@ const VehicleForm = () => {
             />
           </div>
 
-          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2"><ImageIcon size={20} className="text-blue-600" /> High-Res Gallery</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {previewImage.map((src, index) => (
-                <div key={index} className="relative aspect-square rounded-3xl overflow-hidden group border border-gray-100">
-                  <img src={src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Preview" />
-                  <button onClick={() => setPreviewImage(prev => prev.filter((_, i) => i !== index))} className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500 text-white rounded-full transition-colors"><X size={14} /></button>
-                </div>
-              ))}
-              {images.length < 6 && (
-                <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-gray-100 bg-gray-50 rounded-3xl cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all group">
-                  <Upload size={20} className="text-gray-400 group-hover:text-blue-600 transition-colors" />
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-2">Upload</span>
-                  <input type="file" multiple className="hidden" onChange={handleImageUpload} />
-                </label>
-              )}
-            </div>
-            <input
-            type='hidden'
-            {...register('images',{required:true})}/>
-          </div> */}
+
 
           <Images
           register={register}
@@ -238,16 +197,7 @@ const VehicleForm = () => {
           {...register('description',{required:true})}
           />
 
-          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 shrink-0 border border-green-200"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-medium leading-tight max-w-[200px]">Ensure registration and insurance documents are ready for verification.</p>
-            </div>
-            <button type='submit' disabled={isSubmitting}
-            className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
-              Post Listing <ArrowRight size={20} />
-            </button>
-          </div> */}
+
 
           <SubmitButton
           innercolor="blue"

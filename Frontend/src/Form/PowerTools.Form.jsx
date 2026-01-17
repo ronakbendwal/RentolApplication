@@ -52,9 +52,6 @@ const PowerToolForm = () => {
   const [activeSafety, setActiveSafety] = useState([]);
   const [toolType, setToolType] = useState(''); // State for custom tool type
 
-  const safetyGear = ["Safety Glasses", "Work Gloves", "Ear Protection", "Dust Mask", "Hard Hat", "Carry Case"];
-
-  // Predefined tool types for the search suggestions
   const toolSuggestions = [
     "Hammer Drill", "Impact Driver", "Circular Saw", "Angle Grinder", 
     "Jigsaw", "Orbital Sander", "Mitre Saw", "Table Saw", 
@@ -140,24 +137,6 @@ const PowerToolForm = () => {
                 </div>
               </div>
 
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Tool Condition</label>
-                <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                  {conditions.map((item) => (
-                    <button 
-                      key={item}
-                      type="button"
-                      onClick={() => changeCondition(item)}
-                      className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-400'}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <input
-                type='hidden'
-                {...register('condition',{required:true})}/>
-              </div> */}
 
               <Condition
               innercolor="orange"
@@ -168,9 +147,6 @@ const PowerToolForm = () => {
             </div>
           </div>
 
-          {/* ... rest of your form remains the same ... */}
-          
-          {/* 2. PRICING, LOCATION & CONTACT */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <IndianRupee size={20} className="text-orange-500" /> Rental Terms
@@ -199,37 +175,12 @@ const PowerToolForm = () => {
 
           </div>
 
-          {/* 3. SAFETY GEAR SELECTION */}
-          {/* <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <HardHat size={20} className="text-orange-500" /> Included Gear
-            </h2>
-            <div className="flex flex-wrap gap-3">
-              {safetyGear.map(item => (
-                <button 
-                  key={item} 
-                  type="button" 
-                  onClick={() => setActiveSafety(prev => prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item])}
-                  className={`px-5 py-3 rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all border ${activeSafety.includes(item) ? 'bg-orange-500 border-orange-500 text-white shadow-lg' : 'bg-gray-50 border-gray-100 text-gray-500'}`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-            <input
-            type='hidden'
-            {...register('safety-gear')}/>
-          </div> */}
-
-          {/* 4. GALLERY */}
-
           <Images
           register={register}
           setValue={setValue}
           innercolor="orange"
           />
 
-          {/* 5. DESCRIPTION */}
           <FormDescription
           heading="Technical Description"
           placeholder="Describe condition, battery life, included bits, and usage rules..."
@@ -237,16 +188,6 @@ const PowerToolForm = () => {
           logoclass="text-orange-500"
           />
 
-          {/* 6. SUBMIT */}
-          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-600 shrink-0 border border-orange-100"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you agree to Rentol's machinery safety standards.</p>
-            </div>
-            <button disabled={isSubmitting} type='submit' className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
-              Confirm & List <ArrowRight size={20} />
-            </button>
-          </div> */}
 
           <SubmitButton
           isSubmitting={isSubmitting}

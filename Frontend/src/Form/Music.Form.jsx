@@ -145,7 +145,6 @@ const MusicForm = () => {
             </div>
           </div>
 
-          {/* 2. RENTAL TERMS & LOCATION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <IndianRupee size={20} className="text-indigo-500" /> Rental & Pickup
@@ -179,7 +178,6 @@ const MusicForm = () => {
 
           </div>
 
-          {/* 3. GALLERY */}
 
           <Images
           register={register}
@@ -194,17 +192,6 @@ const MusicForm = () => {
           logoclass="text-indigo-500"
           {...register('description',{required:true})}
           />
-
-          {/* 5. SUBMIT */}
-          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0 border border-indigo-100"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Ensure instruments are tuned and electronics are tested before pickup.</p>
-            </div>
-            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
-              Post Listing <ArrowRight size={20} />
-            </button>
-          </div> */}
 
           <SubmitButton
           innercolor="indigo"

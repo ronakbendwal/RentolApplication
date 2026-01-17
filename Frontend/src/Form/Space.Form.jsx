@@ -64,7 +64,6 @@ const SpaceForm = () => {
           Back to Categories
         </button>
 
-        {/* HEADER SECTION */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 bg-white p-7 rounded-[2.5rem] border border-gray-100 shadow-sm">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 bg-gradient-to-br from-indigo-600 to-blue-700 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shadow-indigo-100">
@@ -123,13 +122,11 @@ const SpaceForm = () => {
             </div>
           </div>
 
-          {/* 2. LEASE & LOCATION (Updated Section) */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <MapPin size={20} className="text-indigo-600" /> Lease & Location
             </h2>
             
-            {/* 3-Column Utility Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <Price
               innercolor="indigo"
@@ -155,15 +152,12 @@ const SpaceForm = () => {
 
           </div>
 
-          {/* 3. GALLERY */}
 
           <Images
           register={register}
           setValue={setValue}
           innercolor="indigo"
           />
-
-          {/* 4. DESCRIPTION */}
 
           <FormDescription
           heading="Detailed Description"
@@ -173,16 +167,6 @@ const SpaceForm = () => {
           {...register('description',{required:true})}
           />
 
-          {/* SUBMIT */}
-          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 shrink-0 border border-indigo-100"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">By listing, you agree to our verified property standards.</p>
-            </div>
-            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-16 py-5 bg-indigo-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
-              Post Listing <ArrowRight size={20} />
-            </button>
-          </div> */}
 
           <SubmitButton
           innercolor="indigo"

@@ -99,7 +99,6 @@ const TechForm = () => {
 
         <form className="space-y-8" onSubmit={handleSubmit(submit)}>
           
-          {/* 1. DEVICE IDENTITY & CONDITION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Smartphone size={20} className="text-cyan-600" /> Device Information
@@ -113,25 +112,6 @@ const TechForm = () => {
               {...register('itemname',{required:true})}
               />
 
-
-              {/* <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">Device Condition</label>
-                <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-100">
-                  {conditions.map((item) => (
-                    <button 
-                      key={item}
-                      type="button"
-                      onClick={() => changeCondition(item)}
-                      className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${condition === item ? 'bg-white text-cyan-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-                <input
-                type='hidden'
-                {...register('condition',{required:true})}/>
-              </div> */}
 
               <Condition
               innercolor="cyan"
@@ -164,7 +144,6 @@ const TechForm = () => {
             </div>
           </div>
 
-          {/* 2. RENTAL TERMS & LOCATION */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
              <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <IndianRupee size={20} className="text-cyan-600" /> Rental Terms
@@ -197,7 +176,6 @@ const TechForm = () => {
             />
           </div>
 
-          {/* 3. GALLERY */}
 
           <Images
           register={register}
@@ -205,7 +183,6 @@ const TechForm = () => {
           innercolor="cyan"
           />
 
-          {/* 4. DESCRIPTION */}
 
           <FormDescription
           heading="Additional Details"
@@ -215,16 +192,6 @@ const TechForm = () => {
           {...register('description',{required:true})}
           />
 
-          {/* 5. SUBMIT */}
-          {/* <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-cyan-50 rounded-full flex items-center justify-center text-cyan-600 shrink-0 border border-cyan-100"><ShieldCheck size={20} /></div>
-              <p className="text-[11px] text-gray-400 font-bold leading-tight max-w-[200px]">Ensure all personal data is wiped before handing over electronics.</p>
-            </div>
-            <button type='submit' disabled={isSubmitting} className="w-full md:w-auto px-14 py-5 bg-slate-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
-              Post Tech Listing <ArrowRight size={20} />
-            </button>
-          </div> */}
 
           <SubmitButton
           isSubmitting={isSubmitting}
