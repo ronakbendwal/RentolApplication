@@ -2,6 +2,15 @@
 
 
 const Condition = ({ innercolor ,register, setValue, watch }) => {
+  const textColorMap = {
+  emerald: "text-emerald-600",
+  slate: "text-slate-600",
+  indigo: "text-indigo-600",
+  orange: "text-orange-600",
+  cyan: "text-cyan-600",
+  fuchsia: "text-fuchsia-600",
+  blue: "text-blue-600",
+};
   const conditions = ["Good", "Bad", "Excellent"];
   const condition = watch("condition");
 
@@ -24,7 +33,7 @@ const Condition = ({ innercolor ,register, setValue, watch }) => {
             className={`flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all
               ${
                 condition === item
-                  ? `bg-white text-${innercolor}-600 shadow-sm`
+                  ? `bg-white ${textColorMap[innercolor]} shadow-sm`
                   : "text-gray-400 hover:text-gray-600"
               }`}
           >

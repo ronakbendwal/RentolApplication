@@ -8,6 +8,15 @@ const FormInput=forwardRef(function input({
   innercolor,
   ...props
 },referance){
+  const borderColorMap = {
+  emerald: "focus:border-emerald-500",
+  slate: "focus:border-slate-500",
+  indigo: "focus:border-indigo-500",
+  orange: "focus:border-orange-500",
+  cyan: "focus:border-cyan-500",
+  fuchsia: "focus:border-fuchsia-500",
+  blue: "focus:border-blue-500",
+};
   const id=useId()
   return (
     <div className="space-y-2">
@@ -19,7 +28,8 @@ const FormInput=forwardRef(function input({
     <input 
      type={type} 
      placeholder={placeholder}
-     className={`w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-${innercolor}-500 focus:bg-white transition-all font-medium ${className}`} 
+     className={`w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none  
+     ${borderColorMap[innercolor]} focus:bg-white transition-all font-medium ${className}`} 
      id={id}
      ref={referance}
      {...props}

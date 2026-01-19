@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Link} from'react-router-dom';
+import {Link, useNavigate} from'react-router-dom';
 import { setIsThemeOpen } from '../../redux/Feature/Theme.js';
 import {
   LogoutPremissionComponent,
@@ -27,6 +27,7 @@ import { useDispatch,useSelector} from 'react-redux';
 import {setIsSidebarOpen }from '../../redux/Feature/SideBar.js'
 import LocationService from '../../services/LocationService.jsx';
 const Header4 = () => {
+  const navigate=useNavigate()
   const dispatch=useDispatch()
   const {isThemeOpen}=useSelector((state)=>state.theme)
   const {status}=useSelector((state)=>state.auth)
@@ -72,7 +73,7 @@ const Header4 = () => {
 
             <SidebarLink onclick={()=>setActiveComponent('CartItem')} icon={<ShoppingCart size={20}/>} label="Cart Items" />
 
-            <SidebarLink  onclick={()=>setActiveComponent('Profile')} icon={<User size={20}/>} label="Profile" />
+            <SidebarLink  onclick={()=>{navigate('/userprofile')}} icon={<User size={20}/>} label="Profile" />
 
             <SidebarLink onclick={()=>dispatch(setIsThemeOpen(!isThemeOpen))} icon={<Settings size={20}/>} label="Preferences" />
 
@@ -93,7 +94,7 @@ const Header4 = () => {
             
             {/* LOGO */}
             <div className="flex-shrink-0">
-              <Link to='/' className="text-2xl font-black tracking-tight text-blue-600 cursor-pointer">
+              <Link to='/' className="text-2xl font-black tracking-tight text-emerald-600 cursor-pointer">
                 RENTOL<span className="text-gray-900">.</span>
               </Link>
             </div>
@@ -102,50 +103,21 @@ const Header4 = () => {
             <div className="hidden md:flex flex-1 items-center gap-4 max-w-4xl">
               <div className="relative flex-1 group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                  <Search size={18} className="text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                  <Search size={18} className="text-gray-400 group-focus-within:text-emerald-600 transition-colors" />
                 </div>
                 <input 
                   type="text" 
                   placeholder="Search for cars, tools, bikes..." 
-                  className="block w-full pl-12 pr-24 py-3 bg-gray-50 border border-gray-200 rounded-2xl leading-5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all"
+                  className="block w-full pl-12 pr-24 py-3 bg-gray-50 border border-gray-200 rounded-2xl leading-5 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 sm:text-sm transition-all"
                 />
-                <button className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all active:scale-95 shadow-sm">
+                <button className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl transition-all active:scale-95 shadow-sm">
                   Search
                 </button>
               </div>
 
               {/* Location Selector */}
-              <LocationService/>
-              {/* <div className="relative w-60">
-                <div 
-                  onClick={() => setShowLocationModal(!showLocationModal)}
-                  className="flex items-center gap-3 px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl cursor-pointer hover:border-gray-300 transition-all"
-                >
-                  <MapPin size={18} className="text-gray-400" />
-                  <div className="flex-1 truncate">
-                    <span className="text-sm font-medium text-gray-700">Select Location</span>
-                  </div>
-                  <ChevronDown size={16} className={`text-gray-400 transition-transform ${showLocationModal ? 'rotate-180' : ''}`} />
-                </div>
 
-                {showLocationModal && (
-                  <div className="absolute top-full mt-2 w-full bg-white border border-gray-100 shadow-2xl rounded-2xl overflow-hidden z-50">
-                    <div className="p-2">
-                      <button onClick={getCurrentLocation} className="w-full flex items-center gap-3 px-3 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 rounded-xl transition-colors">
-                        <Target size={18} />
-                        Current Location
-                      </button>
-                      <div className="h-px bg-gray-100 my-1" />
-                      <input 
-                        type="text"
-                        placeholder="Type city or zip..."
-                        className="w-full px-3 py-2 text-sm border-none focus:ring-0 placeholder-gray-400"
-                        autoFocus
-                      />
-                    </div>
-                  </div>
-                )}
-              </div> */}
+              <LocationService/>
             </div>
 
             {/* USER ACTIONS (Clicking this opens sidebar) */}
@@ -166,11 +138,11 @@ const Header4 = () => {
             {!status && <div className="flex items-center gap-3">
                   <Link
                   to="/login"
-                   className="px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-xl transition-all"
+                   className="px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-emerald-600 hover:bg-gray-50 rounded-xl transition-all"
                   >Log in  </Link>
                  <Link
                  to="/signup"
-                 className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-100 transition-all active:scale-95"
+                 className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-100 transition-all active:scale-95"
                   > Sign up </Link>
              </div>}
           </div>
@@ -182,7 +154,7 @@ const Header4 = () => {
 
 // Simple Helper Component for Sidebar Links
 const SidebarLink = ({ onclick,icon, label}) => (
-  <button onClick={onclick} className="flex items-center gap-3 w-full p-3 text-gray-700 font-medium hover:bg-gray-50 hover:text-blue-600 rounded-xl transition-all">
+  <button onClick={onclick} className="flex items-center gap-3 w-full p-3 text-gray-700 font-medium hover:bg-gray-50 hover:text-emerald-600 rounded-xl transition-all">
     <span className="text-gray-400">{icon}</span>
     {label}
   </button>

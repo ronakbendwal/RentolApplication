@@ -1,7 +1,6 @@
 import MainLayout from './Outlet/MainLayout.jsx';
-
 function App() {
-<MainLayout/>
+ <MainLayout/> 
 }
 
 export default App

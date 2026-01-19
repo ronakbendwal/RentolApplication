@@ -93,11 +93,11 @@ const LocationService = () => {
             onClick={() => setShowLocationModal(!showLocationModal)}
             className={`group flex items-center gap-3 px-4 py-3 bg-white border rounded-2xl cursor-pointer transition-all duration-300 ${
               showLocationModal 
-              ? 'border-blue-500 shadow-[0_0_0_4px_rgba(59,130,246,0.1)]' 
-              : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
+              ? 'border-emerald-500 shadow-[0_0_0_4px_rgba(59,130,246,0.1)]' 
+              : 'border-gray-200 hover:border-emerald-300 hover:shadow-md'
             }`}
         >
-          <div className={`p-1.5 rounded-lg transition-colors ${location ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-500'}`}>
+          <div className={`p-1.5 rounded-lg transition-colors ${location ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500'}`}>
             <MapPin size={16} />
           </div>
           
@@ -108,7 +108,7 @@ const LocationService = () => {
             </span>
           </div>
           
-          <ChevronDown size={16} className={`text-gray-300 transition-transform duration-500 ${showLocationModal ? 'rotate-180 text-blue-500' : ''}`} />
+          <ChevronDown size={16} className={`text-gray-300 transition-transform duration-500 ${showLocationModal ? 'rotate-180 text-emerald-500' : ''}`} />
         </div>
 
         {/* MODERN DROPDOWN MODAL */}
@@ -118,17 +118,17 @@ const LocationService = () => {
               
               {/* SEARCH INPUT AREA */}
               <div className="relative group">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-emerald-500 transition-colors" />
                 <input 
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search city..."
-                  className="w-full pl-11 pr-10 py-4 text-sm bg-gray-50 border-none rounded-[1.2rem] focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all font-medium"
+                  className="w-full pl-11 pr-10 py-4 text-sm bg-gray-50 border-none rounded-[1.2rem] focus:bg-white focus:ring-2 focus:ring-emerald-100 transition-all font-medium"
                   autoFocus
                 />
                 {isSearching && (
-                    <Loader2 size={16} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-blue-500" />
+                    <Loader2 size={16} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-emerald-500" />
                 )}
               </div>
 
@@ -137,7 +137,7 @@ const LocationService = () => {
                 <button 
                     onClick={getCurrentLocation} 
                     disabled={loading}
-                    className="w-full flex items-center justify-between px-4 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-[1.2rem] shadow-lg shadow-blue-100 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-70 group"
+                    className="w-full flex items-center justify-between px-4 py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-[1.2rem] shadow-lg shadow-emerald-100 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-70 group"
                 >
                     <div className="flex items-center gap-3">
                     {loading ? <Loader2 size={18} className="animate-spin" /> : <Navigation size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />}
@@ -153,9 +153,9 @@ const LocationService = () => {
                     <button
                         key={index}
                         onClick={() => handleSelectLocation(loc)}
-                        className="w-full flex items-start gap-3 px-3 py-3 hover:bg-blue-50 rounded-xl text-left transition-all group"
+                        className="w-full flex items-start gap-3 px-3 py-3 hover:bg-emerald-50 rounded-xl text-left transition-all group"
                     >
-                        <MapPin size={16} className="mt-1 text-gray-300 group-hover:text-blue-500 shrink-0" />
+                        <MapPin size={16} className="mt-1 text-gray-300 group-hover:text-emerald-500 shrink-0" />
                         <div className="overflow-hidden">
                             <p className="text-sm font-bold text-gray-800 truncate">
                                 {loc.display_name.split(',')[0]}
