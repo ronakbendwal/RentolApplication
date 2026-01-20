@@ -27,13 +27,18 @@ try{
 }
 
 const CreateUser=AsyncHandle(async(req,res)=>{
-  const {username,email,passward,fullname}=req.body;
+  console.log("req body me aa raha he")
+  console.log(req.body)
+  const {username,email,passward,fullname,phonenumber,address}=req.body;
 
+  console.log("1st path check")
   let uploadedfilepath="";
-  console.log(username, email , passward , fullname)
-  if (!username || !email || !passward || !fullname) {
+  if (!username || !email || !passward || !fullname || !phonenumber || !address) {
   throw new ApiError(400, "All Fields Are Required");
 }
+
+  console.log("2nd path check")
+
 
   const existedUser=await USER.findOne({
     $or:[{email},{username:username.toLowerCase()}]
@@ -43,19 +48,30 @@ const CreateUser=AsyncHandle(async(req,res)=>{
     throw new ApiError(400,"User Already Exist")
   }
 
+    console.log("3rd path check")
+
+
   if(req.file && req.file?.path){
 
     uploadedfilepath=await CLoudinaryUpload(req.file?.path);
 
   }
 
+    console.log("4th path check")
+
+
   const userObject=await USER.create({
     username:username.toLowerCase(),
     email,
     fullname,
     passward,
+    phonenumber,
+    address,
     image:uploadedfilepath?.url || ""
   })
+
+    console.log("5th path check")
+
 
   const userObjectReferance=await USER.findById(userObject._id)
   .select("-passward")
@@ -63,6 +79,7 @@ const CreateUser=AsyncHandle(async(req,res)=>{
   if(!userObjectReferance){
     throw new ApiError(500,"Error While Creating User")
   }
+  console.log("final path check")
 
   return res.status(201)
   .json(
@@ -77,9 +94,13 @@ const CreateUser=AsyncHandle(async(req,res)=>{
 const GetCurrentUser=AsyncHandle(async(req,res)=>{
   console.log("aa raha he current user me " )
 const currentUser=await USER.findById(req.user?._id).select("-passward");
+ console.log("current user gatted condition remaining");
 if(!currentUser){
+  console.log("condition failed")
   throw new ApiError(401,"User Not Authenticate")
+  
 }
+console.log("condition passed")
 
 return res.status(200).
 json(

@@ -23,6 +23,12 @@ const UserSchema=new Schema({
   },
   image:{
     type:Object,
+  },
+  phonenumber:{
+    type:Number,
+  },
+  address:{
+    type:String,
   }
 },{timestamps:true})
 
