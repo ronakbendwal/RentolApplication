@@ -73,7 +73,7 @@ const Header4 = () => {
 
             <SidebarLink onclick={()=>setActiveComponent('CartItem')} icon={<ShoppingCart size={20}/>} label="Cart Items" />
 
-            <SidebarLink  onclick={()=>{navigate('/userprofile')}} icon={<User size={20}/>} label="Profile" />
+            <SidebarLink  onclick={()=>{navigate('/userprofile') ,dispatch(setIsSidebarOpen(flase))}} icon={<User size={20}/>} label="Profile" />
 
             <SidebarLink onclick={()=>dispatch(setIsThemeOpen(!isThemeOpen))} icon={<Settings size={20}/>} label="Preferences" />
 

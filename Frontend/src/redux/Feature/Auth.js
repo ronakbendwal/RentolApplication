@@ -4,7 +4,7 @@ const dataFromStore=getData("auth");
 const AuthSlice=createSlice({
   name:"auth",
   initialState:{
-    data: dataFromStore || null,
+    data: dataFromStore || '',
     status:dataFromStore ? true : false,
   },
   reducers:{

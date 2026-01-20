@@ -221,16 +221,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setProfileImage } from '../redux/Feature/ProfilePicture';
 
 const UserProfile = () => {
+  const {data,status}=useSelector((state)=>state.auth)
+  if(!status) return;
   const [CurrentData, SetCurrentData] = useState({});
   const [error, setError] = useState("");
   const [showPhotoOptions, setShowPhotoOptions] = useState(false);
+
   const {profileImage} = useSelector((state)=>state.profilepicture)
   const fileInputRef = useRef(null);
-  const {data}=useSelector((state)=>state.auth)
-  const currentUserData=data.data;
-  const createdAt = currentUserData.createdAt
-  const dateObj = new Date(createdAt);
- const properDate = dateObj.toLocaleDateString();
+  const currentUserData=data?.data;
+
+  const createdAt=currentUserData?.createdAt
+  const dateObj=new Date(createdAt);
+  const properDate=dateObj?.toLocaleDateString() || "";
+
  const {location}=useSelector((state)=>state.location)
  const dispatch=useDispatch()
 
@@ -318,7 +322,8 @@ const UserProfile = () => {
                   )}
                 </div>
 
-                <h2 className="text-3xl font-black tracking-tight leading-tight">{currentUserData.username || "User"}</h2>
+                <h2 className="text-3xl font-black tracking-tight leading-tight">
+                {currentUserData?.username || "User"}</h2>
                 <div className="flex items-center gap-2 mt-2">
                     <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                     <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Active Member</p>
@@ -345,8 +350,8 @@ const UserProfile = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <DataField label="Display Name" icon={<User size={18}/>} value={currentUserData.fullname} />
-                <DataField label="Email Protocol" icon={<Mail size={18}/>} value={currentUserData.email} />
+                <DataField label="Display Name" icon={<User size={18}/>} value={currentUserData?.fullname} />
+                <DataField label="Email Protocol" icon={<Mail size={18}/>} value={currentUserData?.email} />
                 
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Secure WhatsApp</label>
@@ -355,14 +360,14 @@ const UserProfile = () => {
                       <MessageCircle size={20} />
                       <span className="font-black text-lg">+91</span>
                     </div>
-                    <span className="text-xl font-bold text-slate-800">{currentUserData.phonenumber || "---"}</span>
+                    <span className="text-xl font-bold text-slate-800">{currentUserData?.phonenumber || "---"}</span>
                   </div>
                 </div>
 
                 <DataField label="Geo Location" icon={<MapPin size={18}/>} value={location || "---"} />
               </div>
               <div className='mt-10' >
-                <DataField label="Address.." icon={<Home size={18}/>} value={currentUserData.address }/>
+                <DataField label="Address.." icon={<Home size={18}/>} value={currentUserData?.address }/>
               </div>
 
 
