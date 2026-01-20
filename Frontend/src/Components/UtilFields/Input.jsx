@@ -12,7 +12,7 @@ const Input =forwardRef(function input({
     type={type} 
     placeholder={placeholder}
     className={`w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl
-    focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all ${className}`}
+    focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all ${className}`}
     ref={referance}
     id={id}
     {...props}

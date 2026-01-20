@@ -37,7 +37,7 @@ const LoginForm = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-black text-blue-600 tracking-tight mb-2">RENTOL.</h1>
+          <h1 className="text-3xl font-black text-emerald-600 tracking-tight mb-2">RENTOL.</h1>
           <p className="text-gray-500 font-medium">Welcome back! Please enter your details.</p>
         </div>
 
@@ -65,10 +65,10 @@ const LoginForm = () => {
           </div>
 
           <div className="flex justify-end">
-            <button className="text-sm font-bold text-blue-600 hover:underline">Forgot password?</button>
+            <button className="text-sm font-bold text-emerald-600 hover:underline">Forgot password?</button>
           </div>
 
-          <button type='submit' disabled={isSubmitting} className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+          <button type='submit' disabled={isSubmitting} className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
             Sign In
           </button>
         </form>
@@ -89,7 +89,7 @@ const LoginForm = () => {
 
         <p className="text-center text-sm text-gray-600">
           Don't have an account? 
-          <Link to="/signup" className="ml-1 font-bold text-blue-600 hover:underline">Create Account</Link>
+          <Link to="/signup" className="ml-1 font-bold text-emerald-600 hover:underline">Create Account</Link>
         </p>
       </div>
     </div>

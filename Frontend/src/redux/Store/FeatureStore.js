@@ -5,6 +5,7 @@ import AuthReducer from '../Feature/Auth.js'
 import SideBarReducer from '../Feature/SideBar.js'
 import FormOpenDataReducer from '../Feature/FormOpenName.js'
 import LocationReducer from '../Feature/Location.js'
+import ProfilePictureReducer from '../Feature/ProfilePicture.js'
 const store=configureStore({
   reducer:{
     logoutState:LogoutReducer,
@@ -13,6 +14,7 @@ const store=configureStore({
     sidebarstate:SideBarReducer,
     formopendata:FormOpenDataReducer,
     location:LocationReducer,
+    profilepicture:ProfilePictureReducer,
   }
 });
 
