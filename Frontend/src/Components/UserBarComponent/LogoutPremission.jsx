@@ -5,7 +5,6 @@ import { X,LogOut } from 'lucide-react';
 import axios from 'axios'
 import {logout} from '../../redux/Feature/Auth.js'
 import {useNavigate} from 'react-router-dom';
-import { setIsSidebarOpen } from '../../redux/Feature/SideBar.js';
 
 function LogoutPremissionComponent() {
     
@@ -14,14 +13,13 @@ function LogoutPremissionComponent() {
   const IsLogoutConform=useSelector((state)=>state.logoutState.isLogoutConform)
   if(!IsLogoutConform) return null;
 
+  const onCancel= () =>dispatch(setIsLogoutConform(!IsLogoutConform))
 
-  const onCancel= () =>dispatch(setIsLogoutConform(false))
   const onConfirm=async() => {
     console.log("Logged out!")
     await axios.post('/api/user/logout-user',{}, { withCredentials: true })
     dispatch(logout())
     dispatch(setIsLogoutConform(!IsLogoutConform));
-    dispatch(setIsSidebarOpen(false))
     navigate("/")
    }
   return (

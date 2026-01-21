@@ -71,17 +71,31 @@ const Header4 = () => {
 
             <SidebarLink onclick={()=>setActiveComponent('YourItem')} icon={<Package size={20}/>} label="Your Items" />
 
-            <SidebarLink onclick={()=>setActiveComponent('CartItem')} icon={<ShoppingCart size={20}/>} label="Cart Items" />
+            <SidebarLink onclick={
+              ()=>{
+               setActiveComponent('CartItem')
+               dispatch(setIsSidebarOpen(!isSidebarOpen))
+              }
+              }icon={<ShoppingCart size={20}/>} label="Cart Items" />
 
-            <SidebarLink  onclick={()=>{navigate('/userprofile') ,dispatch(setIsSidebarOpen(flase))}} icon={<User size={20}/>} label="Profile" />
+            <SidebarLink  onclick={
+              ()=>{
+              navigate('/userprofile') 
+              dispatch(setIsSidebarOpen(!isSidebarOpen))
+              }} icon={<User size={20}/>} label="Profile" />
 
-            <SidebarLink onclick={()=>dispatch(setIsThemeOpen(!isThemeOpen))} icon={<Settings size={20}/>} label="Preferences" />
+            <SidebarLink onclick={
+              ()=>{
+                dispatch(setIsThemeOpen(!isThemeOpen))
+                dispatch(setIsSidebarOpen(!isSidebarOpen))
+              }
+              } icon={<Settings size={20}/>} label="Preferences" />
 
             <SidebarLink icon={<Heart size={20}/>} label="Wishlist" />
           </nav>
            <Logout/>
         </div>
-  
+
       </div>
       <ThemePermission/>
       <LogoutPremissionComponent/>
