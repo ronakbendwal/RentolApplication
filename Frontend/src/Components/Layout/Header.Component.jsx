@@ -69,7 +69,12 @@ const Header4 = () => {
           {/* Sidebar Links */}
           <nav className="space-y-2 flex-grow">
 
-            <SidebarLink onclick={()=>setActiveComponent('YourItem')} icon={<Package size={20}/>} label="Your Items" />
+            <SidebarLink onclick={
+              ()=>{
+                navigate('/youritem')
+                dispatch(setIsSidebarOpen(!isSidebarOpen))
+              }
+              }icon={<Package size={20}/>} label="Your Items" />
 
             <SidebarLink onclick={
               ()=>{
