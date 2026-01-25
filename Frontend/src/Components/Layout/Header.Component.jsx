@@ -24,31 +24,30 @@ import {
   SunMoon
  } from 'lucide-react';
 import { useDispatch,useSelector} from 'react-redux';
-import {setIsSidebarOpen }from '../../redux/Feature/SideBar.js'
 import LocationService from '../../services/LocationService.jsx';
+import { setSideBarStatus } from '../../redux/Feature/Status.js';
 const Header4 = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const {isThemeOpen}=useSelector((state)=>state.theme)
   const {status}=useSelector((state)=>state.auth)
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const {isSidebarOpen}=useSelector((state)=>state.sidebarstate)
-
+  const {sideBarComponentStatus}=useSelector((state)=>state.componentstatus)
   
  
   return (
     <>
       {/* 1. SIDEBAR OVERLAY (Background Dim) */}
-       {isSidebarOpen && (
+       {sideBarComponentStatus && (
         <div 
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] transition-opacity"
-          onClick={() => dispatch(setIsSidebarOpen(false))}
+          onClick={()=>dispatch(setSideBarStatus(!sideBarComponentStatus))}
         />
       )}
 
 
       {/* 2. SIDEBAR CONTENT */}
-      <div className={`fixed top-0 right-0 h-full w-80 bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed top-0 right-0 h-full w-80 bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out ${sideBarComponentStatus ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-6 flex flex-col h-full">
           {/* Sidebar Header */}
 
@@ -56,7 +55,7 @@ const Header4 = () => {
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-xl font-bold text-gray-900">Account</h2>
             <button 
-              onClick={() => dispatch(setIsSidebarOpen(false))}
+              onClick={()=>dispatch(setSideBarStatus(!sideBarComponentStatus))}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
               <X size={20} />
@@ -143,7 +142,7 @@ const Header4 = () => {
            { status && <div className="flex items-center gap-4">
                  <AddItemButton/>
                 <div 
-                onClick={() => dispatch(setIsSidebarOpen(true))}
+                onClick={()=>dispatch(setSideBarStatus(!sideBarComponentStatus))}
                 className="flex items-center gap-2 border border-gray-200 rounded-full p-1.5 pl-3 hover:shadow-md transition-all cursor-pointer bg-white"
               >
                 <Menu size={18} className="text-gray-600" />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux';
-import { setIsLogoutConform } from '../../redux/Feature/LogoutUi';
+import { setLogoutStatus } from '../../redux/Feature/Status.js';
 import { X,LogOut } from 'lucide-react';
 import axios from 'axios'
 import {logout} from '../../redux/Feature/Auth.js'
@@ -10,10 +10,10 @@ function LogoutPremissionComponent() {
     
   const dispatch=useDispatch();
   const navigate=useNavigate()
-  const IsLogoutConform=useSelector((state)=>state.logoutState.isLogoutConform)
-  if(!IsLogoutConform) return null;
+  const {logoutComponentStatus}=useSelector((state)=>state.componentstatus)
+  if(!logoutComponentStatus) return null;
 
-  const onCancel= () =>dispatch(setIsLogoutConform(!IsLogoutConform))
+  const onCancel= () =>dispatch(setLogoutStatus(!logoutComponentStatus))
 
   const onConfirm=async() => {
     console.log("Logged out!")
