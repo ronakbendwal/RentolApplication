@@ -1,7 +1,8 @@
 import express from 'express';
 import cookieParser from 'cookie-parser'
-import UserRouter from './Route/User.Route.js';
+import {UserRouter,RentItemRouter} from './Route/index.js';
 import cors from 'cors'
+
 
 const app=express();
 app.use(cookieParser())
@@ -17,6 +18,7 @@ app.use(
 
 
 app.use('/api/user',UserRouter)
+app.use('/api/user/',RentItemRouter)
 
 
 export default app

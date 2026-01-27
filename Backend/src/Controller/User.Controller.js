@@ -28,7 +28,6 @@ try{
 
 const CreateUser=AsyncHandle(async(req,res)=>{
   console.log("req body me aa raha he")
-  console.log(req.body)
   const {username,email,passward,fullname,phonenumber,address}=req.body;
 
   console.log("1st path check")
@@ -354,7 +353,7 @@ const RefreshAccessToken=AsyncHandle(async(req,res)=>{
 
 const ChangeImage=AsyncHandle(async(req,res)=>{
 
-  console.log("andar aa gaye")
+console.log("andar aa gaye")
 const newImageLocalPath=req.file?.path;
 console.log(newImageLocalPath)
 const user=await USER.findById(req.user?._id)
@@ -374,8 +373,7 @@ const newImage=await CLoudinaryUpload(newImageLocalPath);
 if(!newImage?.url){
   throw new ApiError(500,"Image Not Upload");
 }
-console.log(newImage);
-const uploadedReferance= await USER.findByIdAndUpdate(
+const newuploadedimageuser= await USER.findByIdAndUpdate(
   req.user?._id,
   {
     $set:{
@@ -385,13 +383,59 @@ const uploadedReferance= await USER.findByIdAndUpdate(
   {
     new:true
   }).select("-passward -refreshtoken");
+
+  if(!newuploadedimageuser){
+    throw new ApiError(500,"image not upload")
+  }
+  console.log("change file sucessfully done")
   return res.status(200)
   .json(
     new ApiResponse(
      200,
-    uploadedReferance,
+     newuploadedimageuser,
     "image Sucessfully Uploaded"
   )
+  )
+})
+
+const DeleteImage=AsyncHandle(async(req,res)=>{
+  
+  // const user=await USER.findById(req.user?._id)
+
+  const user=req?.user
+
+  if(!user){
+  throw new ApiError(404,"User Not Found")
+  }
+
+  const currentimage=user?.image;
+
+  if(!currentimage){
+    return res.status(200).json(
+    new ApiResponse(
+      200,
+      user,
+      "No image found to delete"
+    )
+  );
+  }
+
+  const DeletedImage= await DeleteCloudinaryUpload(currentimage)
+
+  if(!DeletedImage){
+    throw new ApiError(500,"image not deleted")
+  }
+  user.image=null;
+  await user.save();
+  
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      user,
+      "Image Sucessfully Deleted"
+    )
   )
 })
 
@@ -405,4 +449,5 @@ const uploadedReferance= await USER.findByIdAndUpdate(
     ChangePassward,
     RefreshAccessToken,
     ChangeImage,
+    DeleteImage
   }

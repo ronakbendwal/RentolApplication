@@ -1,7 +1,6 @@
-import DBconnect from './DataBase/ConnedtDB.js';
-import dotenv from 'dotenv';
+import "./env.js";
 import app from './App.js';
-dotenv.config();
+import DBconnect from './DataBase/ConnedtDB.js';
 
 DBconnect().then(()=>{
   app.listen(process.env.PORT,()=>{
