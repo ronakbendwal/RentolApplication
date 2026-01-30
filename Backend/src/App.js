@@ -1,6 +1,11 @@
 import express from 'express';
 import cookieParser from 'cookie-parser'
-import {UserRouter,RentItemRouter} from './Route/index.js';
+import {
+  UserRouter,
+  RentItemRouter,
+  CartItemRouter,
+} from './Route/index.js';
+
 import cors from 'cors'
 
 
@@ -17,8 +22,9 @@ app.use(
 );
 
 
-app.use('/api/user',UserRouter)
-app.use('/api/user/',RentItemRouter)
+app.use('/api/user',UserRouter);
+app.use('/api/user/',RentItemRouter);
+app.use('/api/user/',CartItemRouter)
 
 
 export default app

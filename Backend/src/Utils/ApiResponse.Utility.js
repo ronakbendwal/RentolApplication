@@ -6,7 +6,7 @@ constructor(
   this.message=message,
   this.data=data,
   this.statuscode=statuscode,
-  this.success=statuscode<400
+  this.success=true
 }
 }
 

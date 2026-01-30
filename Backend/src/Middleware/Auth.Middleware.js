@@ -8,7 +8,7 @@ import { USER } from '../Model/User.Model.js';
 const VerifyUser=AsyncHandle(async(req,res,next)=>{
 console.log('in the auth middleware')
 const token=req.cookies?.accessToken ;
-console.log(token)
+
 if(!token){
   throw new ApiError(401,"Token Not Found || Unauthorize User")
 }
@@ -22,7 +22,6 @@ const user=await USER.findById(decodetoken?._id).select("-passward -refreshtoken
 if(!user){
   throw new ApiError(404,"Invalid Access Token")
 }
-console.log(user)
 req.user=user;
 console.log('complete auth middleware')
 next();
