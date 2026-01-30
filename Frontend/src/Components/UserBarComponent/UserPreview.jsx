@@ -4,8 +4,6 @@ import {useSelector} from 'react-redux'
 function UserPreview() {
   const {data,status}=useSelector((state)=>state.auth)
   if(!status) return null
-  console.log("from user preview")
-  console.log(data.data.username)
   const {profileImage}=useSelector((state)=>state.profilepicture)
   return (
      <div className="flex items-center gap-4 mb-8 p-4 bg-blue-50 rounded-2xl">

@@ -71,27 +71,27 @@ const Header4 = () => {
             <SidebarLink onclick={
               ()=>{
                 navigate('/youritem')
-                dispatch(setIsSidebarOpen(!isSidebarOpen))
+                dispatch(setSideBarStatus(!sideBarComponentStatus))
               }
               }icon={<Package size={20}/>} label="Your Items" />
 
             <SidebarLink onclick={
               ()=>{
                setActiveComponent('CartItem')
-               dispatch(setIsSidebarOpen(!isSidebarOpen))
+               dispatch(setSideBarStatus(!sideBarComponentStatus))
               }
               }icon={<ShoppingCart size={20}/>} label="Cart Items" />
 
             <SidebarLink  onclick={
               ()=>{
               navigate('/userprofile') 
-              dispatch(setIsSidebarOpen(!isSidebarOpen))
+              dispatch(setSideBarStatus(!sideBarComponentStatus))
               }} icon={<User size={20}/>} label="Profile" />
 
             <SidebarLink onclick={
               ()=>{
                 dispatch(setIsThemeOpen(!isThemeOpen))
-                dispatch(setIsSidebarOpen(!isSidebarOpen))
+                dispatch(setSideBarStatus(!sideBarComponentStatus))
               }
               } icon={<Settings size={20}/>} label="Preferences" />
 
