@@ -1,6 +1,8 @@
-import {Schema,model} from "mongoose";
+import mongoose, {Schema,model} from "mongoose";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+
+
 const UserSchema=new Schema({
   username:{
     type:String,
@@ -29,7 +31,11 @@ const UserSchema=new Schema({
   },
   address:{
     type:String,
-  }
+  },
+  wishitems:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"RENTALITEM"
+  }]
 },{timestamps:true})
 
 
@@ -40,14 +46,10 @@ UserSchema.pre("save", async function () {
 
   this.passward=await bcrypt.hash(this.passward,10);
 });
-
-
 //it is an middleware user to chect the passward is correct or not
 UserSchema.methods.IsPasswardCorrect=async function(passward){
   return await bcrypt.compare(passward,this.passward)
 }
-
-
 //now we're gonna create custom method for the generation of access and refresh token
 UserSchema.methods.generateAccessToken=function(){
 return jwt.sign(

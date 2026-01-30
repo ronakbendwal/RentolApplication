@@ -10,7 +10,11 @@ import{
   ChangePassward,
   GetCurrentUser,
   DeleteImage,
-  RefreshAccessToken} from '../Controller/User.Controller.js';
+  RefreshAccessToken,
+  RemoveWishItem,
+  AddToWishList,
+  GetWishItem
+} from '../Controller/User.Controller.js';
 
 
 const UserRouter=Router();
@@ -18,9 +22,12 @@ const UserRouter=Router();
 UserRouter.post("/signup",Multer.single("image"),CreateUser);
 UserRouter.post("/login",LoginUser);
 UserRouter.post('/logout-user',VerifyUser,LogOutUser);
-UserRouter.post("/delete-user",VerifyUser,DeleteUser);
-UserRouter.post("/deleteimage",VerifyUser,DeleteImage);
 UserRouter.post("/refresh-access-token",VerifyUser,RefreshAccessToken);
+UserRouter.post("/wish-list-item/:itemid",VerifyUser,AddToWishList);
+UserRouter.delete("/remove-wished-item/:itemid",VerifyUser,RemoveWishItem);
+UserRouter.delete("/delete-user",VerifyUser,DeleteUser);
+UserRouter.delete("/deleteimage",VerifyUser,DeleteImage);
+UserRouter.get("/get-wished-item",VerifyUser,GetWishItem);
 UserRouter.get("/current-user",VerifyUser,GetCurrentUser);
 UserRouter.patch("/update-user",VerifyUser,UpdateUser);
 UserRouter.patch("/change-passward",VerifyUser,ChangePassward);

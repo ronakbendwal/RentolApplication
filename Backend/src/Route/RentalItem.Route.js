@@ -12,9 +12,9 @@ import {
  } from "../Controller/RentalItem.Controller.js";
 const RentItemRouter=Router();
 
-RentItemRouter.post("/deleteimage/:itemId/:imageId",VerifyUser,DeleteItemImage);
+RentItemRouter.delete("/deleteimage/:itemId/:imageId",VerifyUser,DeleteItemImage);
 RentItemRouter.post("/updateitem/:itemId",VerifyUser,UpdateItem);
-RentItemRouter.post("/deleteitem/:itemId",VerifyUser,DeleteItem);
+RentItemRouter.delete("/deleteitem/:itemId",VerifyUser,DeleteItem);
 RentItemRouter.post("/rentoutitem",VerifyUser,Multer.array("images",6),rentOutItem);
 RentItemRouter.get("/getitem/:itemId",VerifyUser,GetItem);
 RentItemRouter.get("/getallitem",VerifyUser,GetAllItem);

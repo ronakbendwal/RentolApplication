@@ -439,6 +439,72 @@ const DeleteImage=AsyncHandle(async(req,res)=>{
   )
 })
 
+const AddToWishList = AsyncHandle(async(req,res)=>{
+
+ const { itemid } = req.params;
+
+ if(!itemid){
+   throw new ApiError(400,"Item Id Required");
+ }
+
+ const wishitemlist = await USER.findByIdAndUpdate(
+   req?.user._id,
+   {
+     $addToSet:{ wishitems:itemid }   // prevents duplicates
+   },
+   { new:true }
+ ).populate("wishitems");
+
+ return res.status(200).json(
+   new ApiResponse(
+     200,
+     wishitemlist.wishitems,
+     "Added To Favourites"
+   )
+ );
+});
+
+const RemoveWishItem = AsyncHandle(async(req,res)=>{
+
+ const { itemid } = req.params;
+
+ if(!itemid){
+  throw new ApiError(400,"item id missing")
+ }
+
+ const wishitemlist = await USER.findByIdAndUpdate(
+   req?.user._id,
+   {
+     $pull:{wishitems:itemid }
+   },
+   { new:true }
+ ).populate("wishitems");
+
+ return res.status(200).json(
+   new ApiResponse(
+     200,
+     wishitemlist.wishitems,
+     "Removed From Favourites"
+   )
+ );
+});
+
+const GetWishItem = AsyncHandle(async(req,res)=>{
+
+ const user = await USER.findById(req?.user._id)
+ .populate("wishitems");
+
+ return res.status(200).json(
+   new ApiResponse(
+     200,
+     user.wishitems,
+     "Favourite Items"
+   )
+ );
+});
+
+
+
   export {
     CreateUser,
     LoginUser,
@@ -449,5 +515,8 @@ const DeleteImage=AsyncHandle(async(req,res)=>{
     ChangePassward,
     RefreshAccessToken,
     ChangeImage,
-    DeleteImage
+    DeleteImage,
+    AddToWishList,
+    RemoveWishItem,
+    GetWishItem,
   }
