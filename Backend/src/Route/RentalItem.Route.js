@@ -11,7 +11,6 @@ import {
   UpdateItem,
   RateItem
  } from "../Controller/RentalItem.Controller.js";
-import { verify } from "jsonwebtoken";
 const RentItemRouter=Router();
 
 RentItemRouter.post("/rentoutitem",VerifyUser,Multer.array("images",6),rentOutItem);

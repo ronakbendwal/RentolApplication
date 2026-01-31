@@ -14,8 +14,9 @@ if(!token){
 }
 
 const decodetoken= jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+console.log(decodetoken)
 
-if(decodetoken){
+if(!decodetoken){
   throw new ApiError(404,"decoded token not found")
 }
 

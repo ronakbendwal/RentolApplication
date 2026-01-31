@@ -462,7 +462,7 @@ const RateItem=AsyncHandle(async(req,res)=>{
   ))
 
   if(ratingExisted){
-    ratingExisted.value=ratingValue
+    ratingExisted.rating=ratingValue
   }else{
     item.ratings.push({
       user:req?.user._id,
@@ -472,7 +472,7 @@ const RateItem=AsyncHandle(async(req,res)=>{
 
   //Calculate rating total and average
 
-  const total=0;
+  let total=0;
   //Here we get the total rating in number
   item.ratings.forEach((data)=>(
     total+=data.rating
