@@ -30,6 +30,7 @@ const RentalItemSchema=new Schema({
   },
   contactNumber:{//contact number gonna be store here
     type:String,
+    match:/^[0-9]{10}$/
   },
   location:{//for storing location
     type:String,
@@ -58,10 +59,31 @@ const RentalItemSchema=new Schema({
     default:{}
   },
   owner:{//here our owner id comes to store
-    type:mongoose.Types.ObjectId,
+    type:mongoose.Schema.Types.ObjectId,
     ref:"USER",
     required:true
+  },
+  ratings:[{
+    user:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"USER"
+    },
+    rating:{
+    type:Number,
+    min:1,
+    max:5,
+    required:true
+  },
+  }],
+  ratingCount:{
+    type:Number,
+    default:0
+  },
+  averageRating:{
+    type:Number,
+    default:0,
   }
+
 },{timestamps:true});
 
 export const RENTALITEM=model("RENTALITEM",RentalItemSchema)
