@@ -8,12 +8,12 @@ import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/Store/FeatureStore.js';
 import App from './App.jsx';
-import {ItemCategoryPage3, UserProfile,YourItem} from './Page/index.js'
+import {ItemCategoryPage3, UserProfile,YourItem,Home} from './Page/index.js'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<MainLayout/>}>
-      <Route path='/' element={<ItemsPreviewSection/>}/>
+      <Route path='/' element={<Home/>}/>
       <Route path='/login' element={<LoginForm/>}/>
       <Route path='/signup' element={<SignupForm2/>}/>
       <Route path='/categorypage' element={<ItemCategoryPage3/>}/>

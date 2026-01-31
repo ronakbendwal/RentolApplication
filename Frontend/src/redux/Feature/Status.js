@@ -5,6 +5,7 @@ const ComponentStatusSlice=createSlice({
   initialState:{
     logoutComponentStatus:false,
     sideBarComponentStatus:false,
+    heartStatus:false
   },
   reducers:{
     setLogoutStatus:(state,action)=>{
@@ -12,11 +13,14 @@ const ComponentStatusSlice=createSlice({
     },
     setSideBarStatus:(state,action)=>{
       state.sideBarComponentStatus=action.payload
+    },
+    setHeartStatus:(state,action)=>{
+      state.heartStatus=action.payload
     }
   }
 })
 
 
-export const {setSideBarStatus,setLogoutStatus}=ComponentStatusSlice.actions
+export const {setSideBarStatus,setLogoutStatus,setHeartStatus}=ComponentStatusSlice.actions
 
 export default ComponentStatusSlice.reducer
