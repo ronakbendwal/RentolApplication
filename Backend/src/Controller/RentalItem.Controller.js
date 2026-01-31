@@ -444,6 +444,57 @@ const DeleteItemImage=AsyncHandle(async(req,res)=>{
 
 })
 
+const RateItem=AsyncHandle(async(req,res)=>{
+  console.log("inside rateitem controller");
+
+  const {itemid}=req.params;
+  const {ratingValue}=req.body;
+
+  const item = await RENTALITEM.findById(itemid)
+
+  if(!item){
+    throw new ApiError(404,"Item not found")
+  }
+
+  //Check Existed Rated Or Not
+  const ratingExisted=await item.ratings.find((rated)=>(
+    rated.user.toString() === req?.user._id.toString()
+  ))
+
+  if(ratingExisted){
+    ratingExisted.value=ratingValue
+  }else{
+    item.ratings.push({
+      user:req?.user._id,
+      rating:ratingValue
+    })
+  }
+
+  //Calculate rating total and average
+
+  const total=0;
+  //Here we get the total rating in number
+  item.ratings.forEach((data)=>(
+    total+=data.rating
+  ))
+  //Here we calculate how many people rate the item;
+  item.ratingCount=item.ratings.length;
+
+  //Here we calculate the average rating of the item
+  item.averageRating=(total/item.ratingCount).toFixed(1);
+
+  await item.save();
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      item,
+      "Rating Subbmited Sucessfully"
+    )
+  )
+})
+
 export {
   rentOutItem,
   UpdateItem,
@@ -453,4 +504,5 @@ export {
   GetYouritem,
   DeleteItemImage,
   UploadMoreImage,
+  RateItem,
 }
