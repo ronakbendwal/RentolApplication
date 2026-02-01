@@ -8,6 +8,7 @@ import {
   IndianRupee,
   IndianRupeeIcon
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormInput,
@@ -52,6 +53,7 @@ const TechForm = () => {
 
   const [techType, setTechType] = useState('');
   const [hasWarranty, setHasWarranty] = useState(false);
+  const [error,setError]=useState("")
 
   
   const techSuggestions = [
@@ -63,10 +65,53 @@ const TechForm = () => {
 
   if (selectedCategory !== 'electronics') return null;
 
-  const submit=(data)=>{
-    //api call comes here
-    console.log(data)
+
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
   return (
     <div className="flex-grow bg-[#F8FAFC] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -109,7 +154,7 @@ const TechForm = () => {
               label="Brand & Model"
               placeholder="e.g. Sony A7III or MacBook Air M2"
               innercolor='cyan'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
 
@@ -127,7 +172,7 @@ const TechForm = () => {
                   list="tech-types"
                   placeholder="e.g. Laptop, Camera, Drone..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-medium" 
-                  {...register('type',{required:true})}
+                  {...register('specs.type',{required:true})}
                 />
                 <datalist id="tech-types">
                   {techSuggestions.map((type) => (
@@ -137,10 +182,14 @@ const TechForm = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><HardDrive size={14}/> Key Specs (RAM/Storage)</label>
-                <input type="text" placeholder="e.g. 16GB RAM, 512GB SSD, 4K Video" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-medium" 
-                {...register('specs',{required:true})}/>
+                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Security Deposit</label>
+                <div className="relative">
+                  <Wallet className="absolute left-5 top-4 text-amber-500" size={18} />
+                  <input type="number" placeholder="Amt" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-medium"
+                  {...register('specs.Deposite',{required:true})} />
+                </div>
               </div>
+
             </div>
           </div>
 
@@ -157,17 +206,12 @@ const TechForm = () => {
 
               <Contact
               innercolor="cyan"
-              {...register('contact-number',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 ml-1 text-xs uppercase tracking-tight">Security Deposit</label>
-                <div className="relative">
-                  <Wallet className="absolute left-5 top-4 text-amber-500" size={18} />
-                  <input type="number" placeholder="Amt" className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-cyan-500 focus:bg-white transition-all font-medium"
-                  {...register('Deposite',{required:true})} />
-                </div>
-              </div>
+              <Location
+              innercolor="cyan"
+              {...register('location',{request:true})}/>
 
            </div>
             <Address
@@ -196,6 +240,7 @@ const TechForm = () => {
           <SubmitButton
           isSubmitting={isSubmitting}
           innercolor="cyan"
+          name="Tech Item"
           />
 
         </form>

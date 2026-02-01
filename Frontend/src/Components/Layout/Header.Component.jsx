@@ -77,7 +77,7 @@ const Header4 = () => {
 
             <SidebarLink onclick={
               ()=>{
-               setActiveComponent('CartItem')
+              //  navigate('/cartitem')
                dispatch(setSideBarStatus(!sideBarComponentStatus))
               }
               }icon={<ShoppingCart size={20}/>} label="Cart Items" />

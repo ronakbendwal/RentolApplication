@@ -6,6 +6,7 @@ import {
   Info, Star, ArrowLeft, MapPin, Map, Video, 
   Settings, Maximize, Aperture, Briefcase, Focus, Search
 } from 'lucide-react';
+import axios from'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormInput,
@@ -50,7 +51,7 @@ const CameraForm = () => {
 
   // State to track the custom lens input
   const [lensInput, setLensInput] = useState('');
-  
+  const [error,setError]=useState("")
   const cameraTypes = [
     "DSLR Camera", "Mirrorless Camera", "Cinema Camera", 
     "Action Camera (GoPro)", "Instax / Polaroid", "Point & Shoot", 
@@ -68,11 +69,51 @@ const CameraForm = () => {
   if (selectedCategory !== 'photography') return null;
 
 
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
 
-  const submit=(data)=>{
-    //api call come here
-    console.log(data)
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
 
   return (
@@ -116,7 +157,7 @@ const CameraForm = () => {
               label='Camera Brand & Model'
               placeholder="e.g. Sony A7IV"
               innercolor='slate'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
               <Condition
@@ -128,7 +169,7 @@ const CameraForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Aperture size={14}/> Body Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-slate-500 focus:bg-white transition-all font-medium appearance-none"
-                {...register('type',{required:true})}>
+                {...register('specs.type',{required:true})}>
                   <option value="">Select Category</option>
                   {cameraTypes.map((type) => (
                     <option key={type} value={type}>{type}</option>
@@ -146,7 +187,7 @@ const CameraForm = () => {
                     list="lens-suggestions"
                     placeholder="Type to search or add custom lens..." 
                     className="w-full pl-12 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-slate-500 focus:bg-white transition-all font-medium" 
-                    {...register('included-lens',{required:true})}
+                    {...register('specs.includedlens',{required:true})}
                   />
                   <datalist id="lens-suggestions">
                     {lensOptions.map((lens) => (
@@ -175,7 +216,7 @@ const CameraForm = () => {
 
               <Contact
               innercolor="slate"
-              {...register('contactnumber',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
 
@@ -211,6 +252,7 @@ const CameraForm = () => {
           <SubmitButton
           innercolor="slate"
           isSubmitting={isSubmitting}
+          name="Camera"
           />
 
         </form>

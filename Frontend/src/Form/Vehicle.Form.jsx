@@ -6,6 +6,7 @@ import {
   Info, Star, ArrowLeft, MapPin, Calendar, Tag, Map,
   Layers, Wallet // Added Wallet for Security Deposit
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormInput, 
@@ -39,6 +40,7 @@ const VehicleForm = () => {
   })
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
+  const [error,setError]=useState("")
 
   useEffect(()=>{
     if(isSubmitSuccessful){
@@ -57,10 +59,52 @@ const VehicleForm = () => {
 
   if (selectedCategory !== 'cars') return null;
 
-  const submit =(data)=>{
-    //api call come here
-    console.log(data)
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
   return (
     <div className="flex-grow bg-[#F8FAFC] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -103,7 +147,7 @@ const VehicleForm = () => {
               label="Vehicle Name / Model"
               placeholder="e.g. BMW M4 Competition"
               innercolor='blue'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
 
@@ -118,7 +162,7 @@ const VehicleForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Vehicle Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium appearance-none"
-                {...register('type',{required:true})}>
+                {...register('specs.type',{required:true})}>
                   <option value="">Select Category</option>
                   {vehicleTypes.map((type) => (
                     <option key={type} value={type}>{type}</option>
@@ -129,7 +173,7 @@ const VehicleForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Fuel size={14}/> Fuel Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium appearance-none"
-                {...register('fuel-type',{required:true})}>
+                {...register('specs.fuelType',{required:true})}>
                   <option>Petrol</option><option>Electric</option><option>Diesel</option><option>Hybrid</option><option>CNG</option>
                 </select>
               </div>
@@ -138,7 +182,7 @@ const VehicleForm = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Manufacturing Year</label>
                   <input type="number" placeholder="2024" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium" 
-                  {...register('purchasedate',{required:true})}/>
+                  {...register('specs.purchaseYear',{required:true})}/>
                 </div>
 
                 <div className="space-y-2">
@@ -146,7 +190,7 @@ const VehicleForm = () => {
                   <div className="relative">
                     <span className="absolute left-5 top-4 text-gray-400 font-bold">$</span>
                     <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-blue-500 focus:bg-white transition-all font-medium"
-                    {...register('deposite',{required:true})} />
+                    {...register('specs.securityDeposite',{required:true})} />
                   </div>
                 </div>
               </div>
@@ -166,7 +210,7 @@ const VehicleForm = () => {
               
               <Contact
               innercolor="blue"
-              {...register('contact-number',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
               <Location
@@ -197,11 +241,10 @@ const VehicleForm = () => {
           {...register('description',{required:true})}
           />
 
-
-
           <SubmitButton
           innercolor="blue"
           isSubmitting={isSubmitting}
+          name="Vehicle"
            />
         </form>
       </div>

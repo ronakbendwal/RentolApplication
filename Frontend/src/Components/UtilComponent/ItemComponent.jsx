@@ -11,7 +11,7 @@ import { setHeartStatus } from '../../redux/Feature/Status';
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
         <img 
-          src={item.images?.[1]?.url } 
+          src={item.images?.[0]?.url } 
           alt={item.itemName || item.itemname}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -56,13 +56,6 @@ import { setHeartStatus } from '../../redux/Feature/Status';
 };
 
 const ItemsPreviewSection = () => {
-  //   const items = [
-  //   { id: 1, name: "Tesla Model 3 Performance", location: "New York, NY", price: 85, image: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=500", rating: 4.9,category:"vehical" },
-  //   { id: 2, name: "Mountain Side Villa", location: "Aspen, CO", price: 250, image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=500", rating: 4.8 ,category:"Property"},
-  //   { id: 3, name: "Sony A7III Camera", location: "Austin, TX", price: 45, image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=500", rating: 4.7,category:"Digital item" },
-  //   { id: 4, name: "Heavy Duty Jackhammer", location: "Chicago, IL", price: 30, image: "https://images.unsplash.com/photo-1504148455328-c3972bda8ceb?auto=format&fit=crop&w=500", rating: 4.5 ,category:"tool"},
-  // ];
-console.log("inside item preview sectino controller")
   const [items,setItems]=useState([]);
 
   useEffect(()=>{
@@ -78,7 +71,6 @@ console.log("inside item preview sectino controller")
     fetchFunction();
   },[])
 
-  console.log(items)
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-6">
@@ -86,11 +78,13 @@ console.log("inside item preview sectino controller")
       </div>
 
       {/* Grid: 1 col on mobile, 2 on tablet, 4 on desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
-        {items.map((item) => (
+      {items.length===0 ? ( <p>No items available</p>) : 
+      (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
+        {items?.map((item) => (
           <ItemCard2 key={item?._id} item={item} />
         ))}
-      </div>
+      </div>)
+      }
     </section>
   );
 };

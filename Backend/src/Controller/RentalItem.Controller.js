@@ -13,11 +13,12 @@ import mongoose from 'mongoose';
 
 const rentOutItem=AsyncHandle(async(req,res)=>{
 console.log("in the item upload controller");
+console.log(req.body)
 const {
   category,
   itemName,
   condition,
-  securityDeposite,
+  // securityDeposite,
   price,
   contactNumber,
   location,
@@ -44,9 +45,8 @@ if(price == null){
 }
 
 console.log("2nd phase of item upload pass")
-
-
-if(!req.files || req.files.length===0){
+console.log(req.files)
+if(!req.files || req.files.length<0){
   throw new ApiError(400,"image required ")
 }
 
@@ -70,7 +70,6 @@ const uploadedItemObject=await RENTALITEM.create({
   category,
   itemName,
   condition,
-  securityDeposite,
   price,
   contactNumber,
   location,
@@ -129,7 +128,6 @@ return res.status(200)
 })
 
 const GetAllItem=AsyncHandle(async(req,res)=>{
-  console.log("inside get all item controller")
 
   const {
     search,
@@ -137,13 +135,17 @@ const GetAllItem=AsyncHandle(async(req,res)=>{
   }=req.query;
 const items=await RENTALITEM.find({}).sort({createdAt:-1});
 
-console.log("1st phase of get all item pass")
 
 if(items.length===0){
-  throw new ApiError(404,"Items Not Found")
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      items || [],
+      "No Item Found"
+    )
+  )
 }
-
-console.log("final phase of get all item pass")
 
 return res.status(200)
 .json(
@@ -495,6 +497,28 @@ const RateItem=AsyncHandle(async(req,res)=>{
   )
 })
 
+const DeleteAllItem=AsyncHandle(async(req,res)=>{
+const userid=req?.user?._id;
+if(!userid){
+  throw new ApiError(400,"User Id Required")
+}
+
+const deletedItemData=await RENTALITEM.deleteMany({owner:userid});
+
+if(deletedItemData.deletedCount===0){
+  throw new ApiError(404,"No items found to delete")
+}
+
+return res.status(200)
+.json(
+  new ApiResponse(
+    200,
+    {deletedItemData},
+    "User All Item Sucessfully Deleted"
+  )
+)
+})
+
 export {
   rentOutItem,
   UpdateItem,
@@ -505,4 +529,5 @@ export {
   DeleteItemImage,
   UploadMoreImage,
   RateItem,
+  DeleteAllItem
 }

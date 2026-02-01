@@ -7,6 +7,7 @@ import {
   Phone, Briefcase, Map, Wallet, Search, // Added Wallet and Search
   IndianRupee
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormDescription,
@@ -50,6 +51,7 @@ const PowerToolForm = () => {
   },[isSubmitSuccessful])
 
   const [activeSafety, setActiveSafety] = useState([]);
+  const [error,setError]=useState("")
   const [toolType, setToolType] = useState(''); // State for custom tool type
 
   const toolSuggestions = [
@@ -61,10 +63,52 @@ const PowerToolForm = () => {
 
   if (selectedCategory !== 'tools') return null;
 
-  const submit=(data)=>{
-    //api call comes here
-    console.log(data)
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
   return (
     <div className="flex-grow bg-[#FDFCFB] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -107,7 +151,7 @@ const PowerToolForm = () => {
               label='Brand & Model Name'
               placeholder="e.g. Bosch Professional Hammer Drill"
               innercolor='orange'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
               {/* SEARCHABLE TOOL TYPE FIELD */}
@@ -118,7 +162,7 @@ const PowerToolForm = () => {
                   list="tool-types"
                   placeholder="e.g. Drill, Saw..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-orange-500 focus:bg-white transition-all font-medium" 
-                  {...register('tool-type',{required:true})}
+                  {...register('specs.toolType',{required:true})}
                 />
                 <datalist id="tool-types">
                   {toolSuggestions.map((type) => (
@@ -133,7 +177,7 @@ const PowerToolForm = () => {
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
                   <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-orange-500 focus:bg-white transition-all font-medium"
-                  {...register('security-deposite',{required:true})} />
+                  {...register('specs.securityDeposite',{required:true})} />
                 </div>
               </div>
 
@@ -160,7 +204,7 @@ const PowerToolForm = () => {
 
               <Contact
               innercolor="orange"
-              {...register('contact-number',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
               <Location
@@ -186,12 +230,14 @@ const PowerToolForm = () => {
           placeholder="Describe condition, battery life, included bits, and usage rules..."
           innercolor="orange"
           logoclass="text-orange-500"
+          {...register('description',{required:true})}
           />
 
 
           <SubmitButton
           isSubmitting={isSubmitting}
           innercolor="orange"
+          name="Tool"
           />
 
         </form>

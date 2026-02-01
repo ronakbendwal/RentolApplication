@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Building, MapPin, DollarSign, Image as ImageIcon, 
@@ -6,6 +6,7 @@ import {
   Info, Star, ArrowLeft, Layers, Maximize, Tag, 
   Lock, Landmark, Home, Map,
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormInput,
@@ -16,8 +17,10 @@ import {
   Contact,
   Images,
   SubmitButton
-} from './Utils/index.js'
-import {useForm} from 'react-hook-form'
+} from './Utils/index.js';
+import {useForm} from 'react-hook-form';
+
+
 const SpaceForm = () => {
   const {
     register,
@@ -34,22 +37,74 @@ const SpaceForm = () => {
       category:'space',
     }
   })
+
+
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
+
+  useEffect(() => {
+  if (isSubmitSuccessful) {
+      reset();
+      dispatch(setSelectedCategory(null));
+    }
+  }, [isSubmitSuccessful]);
   
   const spaceTypes = [
     "Residential Home", "Apartment/Flat", "Single Room", "Guest House", 
     "Hostel Room", "Commercial Shop", "Office Space", "Warehouse", 
     "Open Land", "Residential Plot", "Showroom", "Event Hall"
   ];
+  const [error,setError]=useState("");
 
   if (selectedCategory !== 'realestate') return null;
 
 
-  const submit=(data)=>{
-    //api call comes here
-    console.log(data)
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
   return (
     <div className="flex-grow bg-[#F9FAFF] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -91,19 +146,19 @@ const SpaceForm = () => {
               label='Listing Title'
               placeholder="e.g. Cozy Guest House in Downtown"
               innercolor='indigo'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Maximize size={14}/> Total Area (Sq. Ft / Sq. Yard)</label>
                 <input type="text" placeholder="e.g. 1200 sq ft" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium"
-                 {...register('size',{required:true})} />
+                 {...register('specs.size',{required:true})} />
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Space Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium appearance-none"
-                {...register('type',{required:true})}>
+                {...register('specs.type',{required:true})}>
                   <option value="">Select Category</option>
                   {spaceTypes.map((type) => (
                     <option key={type} value={type}>{type}</option>
@@ -171,6 +226,7 @@ const SpaceForm = () => {
           <SubmitButton
           innercolor="indigo"
           isSubmitting={isSubmitting}
+          name="Space"
           />
 
         </form>

@@ -6,6 +6,7 @@ import {
   Info, ArrowLeft, MapPin, Tag,
   Map, Wallet, Search, Disc,IndianRupee
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormDescription,
@@ -48,6 +49,7 @@ const MusicForm = () => {
   },[])
 
   const [instrumentType, setInstrumentType] = useState('');
+  const [error,setError]=useState("")
 
   
   const instrumentSuggestions = [
@@ -61,10 +63,52 @@ const MusicForm = () => {
   if (selectedCategory !== 'music-instruments') return null;
 
 
-  const submit=(data)=>{
-    //api call comes here
-    console.log(data)
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
   return (
     <div className="flex-grow bg-[#FBFAFF] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
       <div className="max-w-4xl mx-auto">
@@ -107,7 +151,7 @@ const MusicForm = () => {
               label='Instrument Brand & Model'
               placeholder="e.g. Fender Stratocaster"
               innercolor='indigo'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
               <Condition
@@ -124,7 +168,7 @@ const MusicForm = () => {
                   list="music-types"
                   placeholder="e.g. Guitar, Synth..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium" 
-                  {...register('instrument-type',{required:true})}
+                  {...register('specs.instrumentType',{required:true})}
                 />
                 <datalist id="music-types">
                   {instrumentSuggestions.map((type) => (
@@ -139,7 +183,7 @@ const MusicForm = () => {
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
                   <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-indigo-500 focus:bg-white transition-all font-medium"
-                  {...register('security-deposite',{required:true})} />
+                  {...register('specs.securityDeposite',{required:true})} />
                 </div>
               </div>
             </div>
@@ -159,7 +203,7 @@ const MusicForm = () => {
 
               <Contact
               innercolor="indigo"
-              {...register('contact number',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
 
@@ -196,6 +240,7 @@ const MusicForm = () => {
           <SubmitButton
           innercolor="indigo"
           isSubmitting={isSubmitting}
+          name="Instrument"
           />
         </form>
       </div>

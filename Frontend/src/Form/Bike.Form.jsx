@@ -7,6 +7,7 @@ import {
   Layers, Map, // Added Map icon
   Phone
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import { useForm } from 'react-hook-form';
 import {
@@ -21,11 +22,11 @@ import {
   SubmitButton
 } from './Utils/index.js'
 
+
+
 const BikeForm = () => {
 
-
   const { selectedCategory } = useSelector((state) => state.formopendata);
-
   if (selectedCategory !== 'bikes') return null;
 
   const {
@@ -46,6 +47,8 @@ const BikeForm = () => {
     }
   })
 
+  const [err,setError]=useState("")
+
   useEffect(() => {
   if (isSubmitSuccessful) {
     reset();
@@ -61,10 +64,52 @@ const BikeForm = () => {
     "BMX", "Folding Bike", "Gravel Bike", "Fat Tire Bike"
   ];
 
-   const submit=(data)=>{
-    //api call comes here
-    console.log(data)
-   }
+const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data.images && data.images.length > 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
+  }
+};
+
 
   return (
     <div className="flex-grow bg-[#F7FCF9] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -108,7 +153,7 @@ const BikeForm = () => {
               label='Bike Model / Brand'
               placeholder="e.g. Trek Marlin 7"
               innercolor='emerald'
-              {...register('itemname',{
+              {...register('itemName',{
                 required:true
               })}
               />
@@ -123,7 +168,7 @@ const BikeForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Calendar size={14}/> Purchase Year</label>
                 <input type="number" placeholder="2024" className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium"
-                {...register('purchaseyear',{
+                {...register('specs.purchaseyear',{
                   required:true
                 })} />
               </div>
@@ -131,7 +176,7 @@ const BikeForm = () => {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-1.5"><Layers size={14}/> Bike Type</label>
                 <select className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium appearance-none"
-                {...register('biketype',{
+                {...register('specs.biketype',{
                   required:true
                 })}>
                   <option value="">Select Type</option>
@@ -163,7 +208,7 @@ const BikeForm = () => {
 
               <Contact
               innercolor="emerald"
-              {...register('contactnumber',{ required:true})}
+              {...register('contactNumber',{ required:true})}
               />
 
               <Location
@@ -196,7 +241,7 @@ const BikeForm = () => {
           placeholder="Mention frame size, included accessories (helmet, lock), and any usage rules..."
           innercolor="emerald"
           logoclass="text-emerald-600"
-          {...register('descreption',{
+          {...register('description',{
               required:true
             })}
           />
@@ -205,6 +250,7 @@ const BikeForm = () => {
           <SubmitButton
           isSubmitting={isSubmitting}
           innercolor="emerald"
+          name="Bike"
           />
 
         </form>

@@ -20,8 +20,8 @@ const RentalItemSchema=new Schema({
   },
   condition:{//here we store the condition of the item
     type:String,
-    enum:["good","bad","excellent"],
-    default:"good"
+    enum:["Good","Bad","Excellent"],
+    default:"Good"
   },
   price:{//price will be comes here
     type:Number,

@@ -9,7 +9,8 @@ import {
   DeleteItemImage,
   UploadMoreImage,
   UpdateItem,
-  RateItem
+  RateItem,
+  DeleteAllItem
  } from "../Controller/RentalItem.Controller.js";
 const RentItemRouter=Router();
 
@@ -22,6 +23,7 @@ RentItemRouter.get("/getyouritem",VerifyUser,GetYouritem);
 RentItemRouter.patch("/uploadimages/:itemId",VerifyUser,Multer.array("images",6),UploadMoreImage);
 RentItemRouter.delete("/deleteitem/:itemId",VerifyUser,DeleteItem);
 RentItemRouter.delete("/deleteimage/:itemId/:imageId",VerifyUser,DeleteItemImage);
+RentItemRouter.delete("/deleteallitem",VerifyUser,DeleteAllItem)
 
 
 

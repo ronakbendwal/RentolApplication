@@ -5,6 +5,7 @@ import {
   Upload, X, ArrowRight, MessageCircle, Info, ArrowLeft, MapPin, 
   User, Search, Star, Clock, Heart, CheckCircle2
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormDescription,
@@ -29,7 +30,11 @@ const HelperForm = () => {
       isSubmitting,
       isSubmitSuccessful
     }
-  }=useForm()
+  }=useForm({
+    defaultValues:{
+      category:'helper'
+    }
+  })
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.formopendata);
 
@@ -41,6 +46,7 @@ const HelperForm = () => {
   },[isSubmitSuccessful])
 
   const [gender, setGender] = useState('Male');
+  const [error,setError]=useState("")
   const [serviceType, setServiceType] = useState('');
   const [experience, setExperience] = useState('1-2 Years');
 
@@ -58,13 +64,56 @@ const HelperForm = () => {
 
   const changeGender=(props)=>{
     setGender(props)
-    setValue('gender',props)
+    setValue('specs.gender',props)
   }
 
-  const submit=(data)=>{
-    //api call come here
-    console.log(data)
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("error aaya he ")
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
   return (
     <div className="flex-grow bg-[#FFFBF7] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -107,7 +156,7 @@ const HelperForm = () => {
               label='Service Title / Name'
               placeholder='e.g. Professional Driver for Luxury Cars'
               innercolor='fuchsia'
-              {...register('Personname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
               {/* GENDER SELECTION (On the right) */}
@@ -127,7 +176,7 @@ const HelperForm = () => {
                 </div>
                 <input
                 type='hidden'
-                {...register('gender',{required:true})}/>
+                {...register('specs.gender',{required:true})}/>
               </div>
 
               {/* SEARCHABLE SERVICE TYPE */}
@@ -138,7 +187,7 @@ const HelperForm = () => {
                   list="service-types"
                   placeholder="e.g. Security, Driver..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium" 
-                  {...register('services-have',{required:true})}
+                  {...register('specs.servicesHave',{required:true})}
                 />
                 <datalist id="service-types">
                   {serviceSuggestions.map((type) => (
@@ -152,7 +201,7 @@ const HelperForm = () => {
                 <label className="text-sm font-bold text-gray-700 ml-1">Experience Level</label>
                 <select 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-fuchsia-500 focus:bg-white transition-all font-medium appearance-none"
-                  {...register('exprience',{required:true})}
+                  {...register('specs.exprience',{required:true})}
                 >
                   {experienceLevels.map((lvl) => (
                     <option key={lvl} value={lvl}>{lvl}</option>
@@ -177,7 +226,7 @@ const HelperForm = () => {
 
               <Contact
               innercolor="fuchsia"
-              {...register('contactnumber',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
 
@@ -186,7 +235,13 @@ const HelperForm = () => {
               {...register('location',{required:true})}
               />
 
+
             </div>
+              <Address
+              innercolor="fuchsia"
+              {...register('address',{required:true})}
+              />
+
 
             <div className="flex items-center gap-4 p-4 bg-fuchsia-50 rounded-2xl border border-fuchsia-100 text-fuchsia-700">
                <Clock size={20} />
@@ -214,9 +269,8 @@ const HelperForm = () => {
           <SubmitButton
           isSubmitting={isSubmitting}
           innercolor="fuchsia"
+          name="Work"
           />
-
-
 
         </form>
       </div>

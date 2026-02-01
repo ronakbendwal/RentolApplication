@@ -6,6 +6,7 @@ import {
   Info, ArrowLeft, MapPin, Tag, Map, Wallet, Search, Trees,
   IndianRupee
 } from 'lucide-react';
+import axios from 'axios';
 import { setSelectedCategory } from '../redux/Feature/FormOpenName.js';
 import {
   FormInput,
@@ -48,7 +49,8 @@ const OutdoorForm = () => {
   })
 
   const [equipmentType, setEquipmentType] = useState('');
-  
+  const [error,setError]=useState("")
+
   // Predefined outdoor equipment types for search suggestions
   const equipmentSuggestions = [
     "Camping Tent", "Hiking Backpack", "Sleeping Bag", "Kayak",
@@ -59,10 +61,52 @@ const OutdoorForm = () => {
 
   if (selectedCategory !== 'outdoor') return null;
 
-  const submit=(data)=>{
-    //api call comes here 
-    console.log(data)
+
+ const submit = async (data) => {
+  console.log("RAW FORM DATA:", data);
+  setError("");
+
+  try {
+    const fd = new FormData();
+
+    // append normal fields
+    Object.keys(data).forEach((key) => {
+      if (key !== "images" && key !== "specs") {
+        fd.append(key, data[key]);
+      }
+    });
+
+    // append specs (nested object)
+    if (data.specs) {
+      Object.keys(data.specs).forEach((k) => {
+        fd.append(`specs[${k}]`, data.specs[k]);
+      });
+    }
+
+    // append images
+    if (data?.images && data.images.length >= 0) {
+      data.images.forEach((file) => {
+        fd.append("images", file);
+      });
+    }
+
+    const response = await axios.post(
+      "/api/user/rentoutitem",
+      fd,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    console.log("SUCCESS:", response.data);
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    setError(error?.response?.data?.message || "Invalid credentials");
   }
+};
 
   return (
     <div className="flex-grow bg-[#F7FCF9] h-screen overflow-y-auto p-4 md:p-12 animate-in slide-in-from-right duration-700">
@@ -106,7 +150,7 @@ const OutdoorForm = () => {
               placeholder="e.g. North Face Stormbreak 2"
               label='Brand & Gear Name'
               innercolor='emerald'
-              {...register('itemname',{required:true})}
+              {...register('itemName',{required:true})}
               />
 
               <Condition
@@ -122,7 +166,7 @@ const OutdoorForm = () => {
                   list="outdoor-types"
                   placeholder="e.g. Tent, Kayak..." 
                   className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" 
-                  {...register('equipment-type',{required:true})}
+                  {...register('specs.equipmentType',{required:true})}
                 />
                 <datalist id="outdoor-types">
                   {equipmentSuggestions.map((type) => (
@@ -137,7 +181,7 @@ const OutdoorForm = () => {
                 <div className="relative">
                   <span className="absolute left-5 top-4 text-gray-400 font-bold">₹</span>
                   <input type="number" placeholder="Refundable amount" className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all font-medium" 
-                  {...register('security-amount',{required:true})}
+                  {...register('spces.securityAmount',{required:true})}
                   />
                 </div>
               </div>
@@ -159,7 +203,7 @@ const OutdoorForm = () => {
 
               <Contact
               innercolor="emerald"
-              {...register('contact-number',{required:true})}
+              {...register('contactNumber',{required:true})}
               />
 
 
@@ -195,6 +239,7 @@ const OutdoorForm = () => {
           <SubmitButton
           isSubmitting={isSubmitting}
           innercolor="emerald"
+          name="Outdoor Item"
           />
 
         </form>

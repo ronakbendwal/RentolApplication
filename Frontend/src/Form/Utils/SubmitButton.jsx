@@ -1,6 +1,6 @@
 import React from 'react'
 import { ShieldCheck,ArrowRight } from 'lucide-react'
-const SubmitButton=({innercolor,isSubmitting})=> {
+const SubmitButton=({innercolor,isSubmitting,name})=> {
 
 const badgeColorMap = {
   emerald: "bg-emerald-50 text-emerald-600 border border-emerald-100",
@@ -26,9 +26,10 @@ return (
          </div>
       <button 
       disabled={isSubmitting} 
+      onClick={()=>console.log("inside submit button")}
       type='submit' 
       className="w-full md:w-auto px-14 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
-        List My Bike 
+        List My {name}
         <ArrowRight size={20} />
       </button>
   </div>
