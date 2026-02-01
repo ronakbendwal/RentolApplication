@@ -61,7 +61,7 @@ const ItemCategoryPage3 = () => {
       <div className={`flex flex-col lg:flex-row min-h-screen transition-all duration-700 ease-in-out ${selectedCategory ? 'gap-0' : 'max-w-4xl mx-auto pt-10 px-4'}`}>
         
         {/* LEFT SIDE: CATEGORY LIST */}
-        <div className={`transition-all duration-700 p-6 ${selectedCategory ? 'lg:w-[450px] bg-white border-r border-gray-100 h-screen overflow-y-auto shrink-0' : 'w-full'}`}>
+        <div className={`transition-all duration-700 p-6 ${selectedCategory ? 'lg:w-[450px] bg-white border-r border-gray-100 overflow-y-auto shrink-0' : 'w-full'}`}>
           
           <div className={`${selectedCategory ? 'mb-8' : 'text-center mb-16'}`}>
             {!selectedCategory && (
@@ -150,7 +150,7 @@ const ItemCategoryPage3 = () => {
 
         {/* RIGHT SIDE: FORMS (Scrollable area) */}
         {selectedCategory && (
-          <div className="flex-grow h-screen overflow-y-auto bg-white">
+          <div className="flex-grow overflow-y-auto bg-white">
             {selectedCategory==='cars' && <VehicleForm />}
             {selectedCategory==='tools' && <PowerToolForm />}
             {selectedCategory==='bikes' && <BikeForm />}
@@ -167,6 +167,8 @@ const ItemCategoryPage3 = () => {
     </div>
   );
 };
+
+
 const ItemCategoryPage2 = () => {
   const { selectedCategory } = useSelector((state) => state.formopendata);
   const [searchTerm, setSearchTerm] = useState("");
@@ -270,6 +272,8 @@ const ItemCategoryPage2 = () => {
     </div>
   );
 };
+
+
 const ItemCategoryPage= () => {
   
   const {selectedCategory}=useSelector((state)=>state.formopendata)
@@ -337,6 +341,8 @@ const ItemCategoryPage= () => {
     </div>
   );
 };
+
+
 const EnhancedCategoryPage2 = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -469,6 +475,8 @@ const EnhancedCategoryPage2 = () => {
     </div>
   );
 };
+
+
 const EnhancedCategoryPage = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
