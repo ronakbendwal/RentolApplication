@@ -447,44 +447,70 @@ const AddToWishList = AsyncHandle(async(req,res)=>{
    throw new ApiError(400,"Item Id Required");
  }
 
- const wishitemlist = await USER.findByIdAndUpdate(
+ const user =await USER.findById(req?.user?._id)
+
+ if(!user){
+  throw new ApiError(404,"User not found")
+ }
+
+ const dataExisted=user.wishitems.includes(itemid);
+
+ let updatedUser;
+ if(dataExisted){
+   updatedUser=await USER.findByIdAndUpdate(
+    req?.user?._id,
+    {
+      $pull:{ wishitems: itemid }
+    },
+    {new:true}
+  ).populate("wishitems")
+ }else{
+    updatedUser = await USER.findByIdAndUpdate(
    req?.user._id,
    {
      $addToSet:{ wishitems:itemid }   // prevents duplicates
    },
    { new:true }
- ).populate("wishitems");
+ ).populate("wishitems")
+ }
+
+
+;
 
  return res.status(200).json(
    new ApiResponse(
      200,
-     wishitemlist.wishitems,
+     updatedUser.wishitems,
      "Added To Favourites"
    )
  );
 });
 
-const RemoveWishItem = AsyncHandle(async(req,res)=>{
+const RemoveAllWishItem = AsyncHandle(async(req,res)=>{
 
- const { itemid } = req.params;
+  if(!req?.user?._id){
+    throw new ApiError(404,"User not found")
+  }
 
- if(!itemid){
-  throw new ApiError(400,"item id missing")
- }
-
- const wishitemlist = await USER.findByIdAndUpdate(
-   req?.user._id,
-   {
-     $pull:{wishitems:itemid }
+ const removeResponse =await USER.findByIdAndUpdate(
+   req?.user?._id,
+   { 
+     $set:{
+      wishitems:[]
+     }
    },
    { new:true }
- ).populate("wishitems");
+ );
+
+ if(!removeResponse){
+  throw new ApiError(404,"User not found in database")
+ }
 
  return res.status(200).json(
    new ApiResponse(
      200,
-     wishitemlist.wishitems,
-     "Removed From Favourites"
+     removeResponse.wishitems,
+     "Wish List Empty Now"
    )
  );
 });
@@ -517,6 +543,6 @@ const GetWishItem = AsyncHandle(async(req,res)=>{
     ChangeImage,
     DeleteImage,
     AddToWishList,
-    RemoveWishItem,
+    RemoveAllWishItem,
     GetWishItem,
   }

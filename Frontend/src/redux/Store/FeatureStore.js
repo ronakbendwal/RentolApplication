@@ -4,7 +4,9 @@ import AuthReducer from '../Feature/Auth.js'
 import FormOpenDataReducer from '../Feature/FormOpenName.js'
 import LocationReducer from '../Feature/Location.js'
 import ProfilePictureReducer from '../Feature/ProfilePicture.js'
-import ComponentStatusReducer from '../Feature/Status.js'
+import ComponentStatusReducer from '../Feature/Status.js';
+import WishlistItemReducer from '../Feature/WishList.js';
+import YourItemReducer from '../Feature/YourItem.js'
 const store=configureStore({
   reducer:{
     theme:ThemeReducer,
@@ -12,7 +14,9 @@ const store=configureStore({
     formopendata:FormOpenDataReducer,
     location:LocationReducer,
     profilepicture:ProfilePictureReducer,
-    componentstatus:ComponentStatusReducer
+    componentstatus:ComponentStatusReducer,
+    wishlistitem:WishlistItemReducer,
+    youritem:YourItemReducer,
   }
 });
 

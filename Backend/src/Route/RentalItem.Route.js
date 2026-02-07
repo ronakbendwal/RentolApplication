@@ -10,13 +10,15 @@ import {
   UploadMoreImage,
   UpdateItem,
   RateItem,
-  DeleteAllItem
+  DeleteAllItem,
+  itemStatus
  } from "../Controller/RentalItem.Controller.js";
 const RentItemRouter=Router();
 
 RentItemRouter.post("/rentoutitem",VerifyUser,Multer.array("images",6),rentOutItem);
 RentItemRouter.post("/updateitem/:itemId",VerifyUser,UpdateItem);
 RentItemRouter.post("/rate-item/:itemid",VerifyUser,RateItem)
+RentItemRouter.post("/update-item-status/:itemId",VerifyUser,itemStatus)
 RentItemRouter.get("/getitem/:itemId",VerifyUser,GetItem);
 RentItemRouter.get("/getallitem",VerifyUser,GetAllItem);
 RentItemRouter.get("/getyouritem",VerifyUser,GetYouritem);

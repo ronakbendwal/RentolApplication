@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {  MapPin, Heart, Star} from 'lucide-react';
 import axios from 'axios';
-import {useSelector,useDispatch} from 'react-redux'
-import { setHeartStatus } from '../../redux/Feature/Status';
+import {useSelector,useDispatch} from 'react-redux';
+import {wishlistapi} from '../../redux/Feature/WishList.js'
+import { setWishList } from '../../redux/Feature/WishList.js';
  const ItemCard2 = ({item}) => {
   const dispatch=useDispatch();
-  const {heartStatus}=useSelector((state)=>state.componentstatus)
+  const {wishlist}=useSelector((state)=>state.wishlistitem)
   return (
     <div className="group curser-pointer">
       {/* Image Container */}
@@ -18,9 +19,9 @@ import { setHeartStatus } from '../../redux/Feature/Status';
         
         {/* Wishlist Button */}
         <button
-        onClick={()=>dispatch(setHeartStatus(!heartStatus))}
+        onClick={()=>dispatch(wishlistapi(item?._id))}
         className="absolute top-3 right-3 p-2 rounded-full bg-white/70 backdrop-blur-md hover:bg-white transition-colors shadow-sm">
-          <Heart size={18} className={`${heartStatus ? "fill-red-500" : 'text-gray-700' } hover:text-red-500 transition-colors`} />
+          <Heart  size={18} className={`${wishlist?.some((w)=>w._id===item?._id) ? "fill-red-500 text-red-500" : 'text-gray-700' } hover:text-red-500 transition-colors`} />
         </button>
 
         {/* Category Tag */}
@@ -57,20 +58,21 @@ import { setHeartStatus } from '../../redux/Feature/Status';
 
 const ItemsPreviewSection = () => {
   const [items,setItems]=useState([]);
-
+  const {wishlist}=useSelector((state)=>state.wishlistitem)
+  const dispatch=useDispatch()
   useEffect(()=>{
 
     const fetchFunction=async()=>{
 
-    const response=await axios.get('/api/user/getallitem');
-
-    const itemdata=response.data.data;
-
+    const itemResponse=await axios.get('/api/user/getallitem');
+    const wishlistResponse=await axios.get('/api/user/get-wish-list')
+    const itemdata=itemResponse?.data.data;
+    const wishlistdata=wishlistResponse?.data.data;
+    dispatch(setWishList(wishlistdata))
     setItems(itemdata)
     }
     fetchFunction();
   },[])
-
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-6">

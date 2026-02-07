@@ -7,8 +7,8 @@ const RentalItemSchema=new Schema({
   },
   status:{//we can show the item status here 
    type:String,
-   enum:["active","inactive","rented"],
-   default:"active"
+   enum:["Active","Inactive","Rented"],
+   default:"Active"
   },
   itemName:{//here our product or item name comes
     type:String,

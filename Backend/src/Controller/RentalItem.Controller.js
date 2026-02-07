@@ -255,36 +255,31 @@ return res.status(200)
 })
 
 const DeleteItem=AsyncHandle(async(req,res)=>{
-  console.log("inside delete item controller")
 const {itemId}=req.params;
 if(!itemId){
   throw new ApiError(400,"Item ID Required")
 }
 
-console.log("1st phase of delete item pass")
 const item=await RENTALITEM.findById(itemId);
 if(!item){
-  throw new ApiError(400,"Item Not Found")
+  throw new ApiError(404,"Item Not Found")
 }
-
-console.log("2nd phase of delete item pass")
 
 if(item.owner?.toString() !== req.user?._id?.toString()){
-  throw new ApiError(403,"Not Allowed For Unauthorize User")
+  throw new ApiError(403,"You are not allowed to delete this item")
 }
-console.log("3rd phase of delete item pass")
 
-const response=await RENTALITEM.findByIdAndDelete(itemId);
-if(!response){
-  throw new ApiError(404,"Item Not Deleted")
+const deletedItemResponse=await RENTALITEM.findByIdAndDelete(itemId);
+
+if(!deletedItemResponse){
+  throw new ApiError(404,"item not deleted")
 }
-console.log("sucessfully delete the item")
 
 return res.status(200)
 .json(
   new ApiResponse(
     200,
-    {},
+    {itemId},
     "Item Sucessfully Deleted"
   )
 )
@@ -519,6 +514,33 @@ return res.status(200)
 )
 })
 
+const itemStatus=AsyncHandle(async(req,res)=>{
+  const {itemId}=req?.params;
+  
+  const item=await RENTALITEM.findOne({
+    _id:itemId,
+    owner:req?.user._id
+  })
+
+  if(!item){
+    throw new ApiError(404,"Item not found");
+  }
+
+  item.status=item.status==="Active" ? "Inactive" : "Active"
+   await item.save();
+
+   return res.status(200)
+   .json(
+    new ApiResponse(
+      200,
+      item,
+      "Item Status Updated"
+    )
+   )
+
+
+})
+
 export {
   rentOutItem,
   UpdateItem,
@@ -529,5 +551,6 @@ export {
   DeleteItemImage,
   UploadMoreImage,
   RateItem,
-  DeleteAllItem
+  DeleteAllItem,
+  itemStatus,
 }

@@ -7,11 +7,14 @@ function App() {
   const dispatch=useDispatch()
   console.log("from app.js 1st step")
   useEffect(()=>{
-    const rawCurrentUserData=axios.get('/api/user/current-user')
+    const getCurrentUser=async ()=>{
+    const rawCurrentUserData=await axios.get('/api/user/current-user')
     const currentUserData=rawCurrentUserData.data
     console.log("data mil gaya he current user ka")
     dispatch(login(currentUserData))
     console.log("current user data set and login the user")
+    }
+    getCurrentUser(); 
   },[])
   return(
     <MainLayout/>

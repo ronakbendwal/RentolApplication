@@ -95,7 +95,11 @@ const Header4 = () => {
               }
               } icon={<Settings size={20}/>} label="Preferences" />
 
-            <SidebarLink icon={<Heart size={20}/>} label="Wishlist" />
+            <SidebarLink onclick={
+              ()=>{
+               navigate('wishlist'); 
+               dispatch(setSideBarStatus(!sideBarComponentStatus))
+              }} icon={<Heart size={20}/>} label="Wishlist" />
           </nav>
            <Logout/>
         </div>

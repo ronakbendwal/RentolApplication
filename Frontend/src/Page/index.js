@@ -4,6 +4,8 @@ import { EnhancedCategoryPage,EnhancedCategoryPage2,ItemCategoryPage,ItemCategor
 import UserProfile from "./Profile";
 import YourItem from "./YourItem";
 import Home from "./Home";
+import YourItemEditPage from "./YourItemEditPage";
+import WishlistPage from "./WishListPage";
 export {
   EnhancedCategoryPage,
   EnhancedCategoryPage2,
@@ -13,4 +15,6 @@ export {
   UserProfile,
   YourItem,
   Home,
+  YourItemEditPage,
+  WishlistPage,
 }
