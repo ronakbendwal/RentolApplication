@@ -57,11 +57,12 @@ const Header4 = () => {
           {status && <div className="mb-8"><UserPreview /></div>}
 
           <nav className="space-y-2 flex-grow">
-            <SidebarLink onclick={() => { navigate('/youritem'); dispatch(setSideBarStatus(false)); }} icon={<Package size={20}/>} label="Your Items" />
-            <SidebarLink onclick={() => { dispatch(setSideBarStatus(false)); }} icon={<ShoppingCart size={20}/>} label="Cart Items" />
             <SidebarLink onclick={() => { navigate('/userprofile'); dispatch(setSideBarStatus(false)); }} icon={<User size={20}/>} label="Profile" />
+            <SidebarLink onclick={() => { navigate('/youritem'); dispatch(setSideBarStatus(false)); }} icon={<Package size={20}/>} label="Your Items" />
             <SidebarLink onclick={() => { navigate('/wishlist'); dispatch(setSideBarStatus(false)); }} icon={<Heart size={20}/>} label="Wishlist" />
             <SidebarLink onclick={() => { dispatch(setIsThemeOpen(!isThemeOpen)); dispatch(setSideBarStatus(false)); }} icon={<Settings size={20}/>} label="Preferences" />
+            <SidebarLink onclick={() => { dispatch(setSideBarStatus(false)); }} icon={<ShoppingCart size={20}/>} label="Orders" />
+
           </nav>
           <div className="pt-6 border-t border-slate-100">
             <Logout />
