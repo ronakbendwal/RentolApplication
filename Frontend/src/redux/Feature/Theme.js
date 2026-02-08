@@ -1,14 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { storeData ,getData} from "../../LocalStorage/localStorage";
+const dataFromStore=getData('theme')
 const ThemeSlice=createSlice({
   name:'theme',
   initialState:{
-    thememode:"light",
+    thememode:dataFromStore|| "light",
     isThemeOpen:false
   },
   reducers:{
     setThemeMode:(state,action)=>{
       state.thememode=action.payload
+      storeData('theme',state.thememode)
     },
     setIsThemeOpen:(state,action)=>{
       state.isThemeOpen=action.payload

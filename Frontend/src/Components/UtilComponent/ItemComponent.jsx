@@ -7,6 +7,10 @@ import { setWishList } from '../../redux/Feature/WishList.js';
  const ItemCard2 = ({item}) => {
   const dispatch=useDispatch();
   const {wishlist}=useSelector((state)=>state.wishlistitem)
+  console.log(item)
+  if(item.status==='Inactive'){
+    return null
+  }
   return (
     <div className="group curser-pointer">
       {/* Image Container */}
@@ -53,7 +57,7 @@ import { setWishList } from '../../redux/Feature/WishList.js';
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 const ItemsPreviewSection = () => {

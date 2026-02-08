@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Link, useNavigate} from'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { setIsThemeOpen } from '../../redux/Feature/Theme.js';
 import {
   LogoutPremissionComponent,
@@ -9,164 +9,162 @@ import {
   AddItemButton
 } from '../index.js';
 import { 
-  Plus,
   Search, 
-  MapPin,
   User, 
-  Menu, 
-  Target, 
-  ChevronDown,
   X,
   Package,
   ShoppingCart,
   Settings,
-  Heart,
-  SunMoon
+  Heart
  } from 'lucide-react';
-import { useDispatch,useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LocationService from '../../services/LocationService.jsx';
 import { setSideBarStatus } from '../../redux/Feature/Status.js';
+
 const Header4 = () => {
-  const navigate=useNavigate()
-  const dispatch=useDispatch()
-  const {isThemeOpen}=useSelector((state)=>state.theme)
-  const {status}=useSelector((state)=>state.auth)
-  const [showLocationModal, setShowLocationModal] = useState(false);
-  const {sideBarComponentStatus}=useSelector((state)=>state.componentstatus)
-  
- 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isThemeOpen } = useSelector((state) => state.theme);
+  const { status } = useSelector((state) => state.auth);
+  const { sideBarComponentStatus } = useSelector((state) => state.componentstatus);
+
   return (
     <>
-      {/* 1. SIDEBAR OVERLAY (Background Dim) */}
-       {sideBarComponentStatus && (
+      {/* 1. SIDEBAR OVERLAY */}
+      {sideBarComponentStatus && (
         <div 
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] transition-opacity"
-          onClick={()=>dispatch(setSideBarStatus(!sideBarComponentStatus))}
+          onClick={() => dispatch(setSideBarStatus(false))}
         />
       )}
 
-
       {/* 2. SIDEBAR CONTENT */}
-      <div className={`fixed top-0 right-0 h-full w-80 bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out ${sideBarComponentStatus ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-6 flex flex-col h-full">
-          {/* Sidebar Header */}
-
-
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-xl font-bold text-gray-900">Account</h2>
+      <div className={`fixed top-0 right-0 h-full w-80 bg-white z-[70] shadow-2xl transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${sideBarComponentStatus ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="p-8 flex flex-col h-full">
+          <div className="flex justify-between items-center mb-10">
+            <div>
+              <h2 className="text-2xl font-black text-slate-900 tracking-tighter">Account</h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manage your profile</p>
+            </div>
             <button 
-              onClick={()=>dispatch(setSideBarStatus(!sideBarComponentStatus))}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              onClick={() => dispatch(setSideBarStatus(false))}
+              className="p-3 bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 rounded-2xl transition-all"
             >
               <X size={20} />
             </button>
           </div>
 
-          {/* User Preview */}
-          {status && <UserPreview/>}
+          {status && <div className="mb-8"><UserPreview /></div>}
 
-          {/* Sidebar Links */}
           <nav className="space-y-2 flex-grow">
-
-            <SidebarLink onclick={
-              ()=>{
-                navigate('/youritem')
-                dispatch(setSideBarStatus(!sideBarComponentStatus))
-              }
-              }icon={<Package size={20}/>} label="Your Items" />
-
-            <SidebarLink onclick={
-              ()=>{
-              //  navigate('/cartitem')
-               dispatch(setSideBarStatus(!sideBarComponentStatus))
-              }
-              }icon={<ShoppingCart size={20}/>} label="Cart Items" />
-
-            <SidebarLink  onclick={
-              ()=>{
-              navigate('/userprofile') 
-              dispatch(setSideBarStatus(!sideBarComponentStatus))
-              }} icon={<User size={20}/>} label="Profile" />
-
-            <SidebarLink onclick={
-              ()=>{
-                dispatch(setIsThemeOpen(!isThemeOpen))
-                dispatch(setSideBarStatus(!sideBarComponentStatus))
-              }
-              } icon={<Settings size={20}/>} label="Preferences" />
-
-            <SidebarLink onclick={
-              ()=>{
-               navigate('wishlist'); 
-               dispatch(setSideBarStatus(!sideBarComponentStatus))
-              }} icon={<Heart size={20}/>} label="Wishlist" />
+            <SidebarLink onclick={() => { navigate('/youritem'); dispatch(setSideBarStatus(false)); }} icon={<Package size={20}/>} label="Your Items" />
+            <SidebarLink onclick={() => { dispatch(setSideBarStatus(false)); }} icon={<ShoppingCart size={20}/>} label="Cart Items" />
+            <SidebarLink onclick={() => { navigate('/userprofile'); dispatch(setSideBarStatus(false)); }} icon={<User size={20}/>} label="Profile" />
+            <SidebarLink onclick={() => { navigate('/wishlist'); dispatch(setSideBarStatus(false)); }} icon={<Heart size={20}/>} label="Wishlist" />
+            <SidebarLink onclick={() => { dispatch(setIsThemeOpen(!isThemeOpen)); dispatch(setSideBarStatus(false)); }} icon={<Settings size={20}/>} label="Preferences" />
           </nav>
-           <Logout/>
+          <div className="pt-6 border-t border-slate-100">
+            <Logout />
+          </div>
         </div>
-
       </div>
-      <ThemePermission/>
-      <LogoutPremissionComponent/>
 
+      <ThemePermission />
+      <LogoutPremissionComponent />
 
       {/* 3. MAIN HEADER */}
-      <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 gap-6">
+      <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-24 gap-8">
             
-            {/* LOGO */}
+            {/* LEFT: LOGO */}
             <div className="flex-shrink-0">
-              <Link to='/' className="text-2xl font-black tracking-tight text-emerald-600 cursor-pointer">
-                RENTOL<span className="text-gray-900">.</span>
+              <Link to='/' className="text-3xl font-black tracking-tighter text-emerald-600">
+                RENTOL<span className="text-slate-900">.</span>
               </Link>
             </div>
 
-            {/* SEARCH AREA (Unchanged) */}
-            <div className="hidden md:flex flex-1 items-center gap-4 max-w-4xl">
-              <div className="relative flex-1 group">
-                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                  <Search size={18} className="text-gray-400 group-focus-within:text-emerald-600 transition-colors" />
+            {/* MIDDLE: UNIFIED SEARCH & LOCATION DOCK */}
+            {/* MIDDLE: THE UNIFIED PREMIUM DOCK */}
+          <div className="hidden md:flex flex-1 items-center justify-center max-w-4xl relative z-[100] px-4">
+            <div className="relative flex items-center w-full bg-slate-100/40 backdrop-blur-md border border-slate-200/50 rounded-2xl p-1.5 transition-all duration-500 
+                hover:bg-slate-100/80 hover:border-slate-300
+                focus-within:bg-white focus-within:ring-[6px] focus-within:ring-emerald-500/10 focus-within:border-emerald-500 focus-within:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.1)]
+                group">
+    
+    {/* SEARCH SECTION */}
+    <div className="relative flex-[2] flex items-center group/search">
+      <div className="absolute left-4 flex items-center justify-center pointer-events-none">
+        <Search 
+          size={18} 
+          className="text-slate-400 group-focus-within/search:text-emerald-600 group-focus-within/search:scale-110 transition-all duration-300" 
+        />
+      </div>
+
+      <input 
+        type="text" 
+        placeholder="Search for rentals..." 
+        className="w-full pl-12 pr-4 py-3 bg-transparent border-none outline-none focus:ring-0 font-bold text-slate-800 placeholder:text-slate-400 text-sm tracking-tight"
+      />
+    </div>
+
+    {/* GLASS DIVIDER */}
+    <div className="w-[1px] h-8 bg-gradient-to-b from-transparent via-slate-200 to-transparent mx-2" />
+
+    {/* LOCATION SECTION */}
+    <div className="relative flex-1 min-w-[180px]">
+      <LocationService />
+    </div>
+
+    {/* INTERACTIVE GLOW LINE */}
+    <div className="absolute bottom-0 left-6 right-6 h-[2px] w-0 bg-gradient-to-r from-transparent via-emerald-500 to-transparent group-focus-within:w-[calc(100%-48px)] transition-all duration-700 ease-out" />
+  </div>
+</div>
+
+
+
+            {/* RIGHT: USER ACTIONS DOCK */}
+            <div className="flex items-center gap-4">
+              {status ? (
+                <div className="flex items-center bg-slate-50 border border-slate-100 rounded-full p-1 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="hidden sm:flex items-center px-2">
+                    <AddItemButton />
+                  </div>
+                  
+                  <div className="w-[1px] h-6 bg-slate-200 mx-1" />
+
+                  <button 
+                    onClick={() => dispatch(setSideBarStatus(!sideBarComponentStatus))}
+                    className={`
+                      group flex items-center gap-3 py-1 pr-1 pl-4 rounded-full transition-all duration-500
+                      ${sideBarComponentStatus ? 'bg-slate-900' : 'bg-white shadow-sm border border-slate-50'}
+                    `}
+                  >
+                    <span className={`hidden lg:block text-[10px] font-black uppercase tracking-widest ${sideBarComponentStatus ? 'text-emerald-400' : 'text-slate-500'}`}>
+                      {sideBarComponentStatus ? 'Active' : 'Account'}
+                    </span>
+
+                    <div className={`
+                      relative w-9 h-9 rounded-full flex items-center justify-center transition-all duration-500
+                      ${sideBarComponentStatus ? 'bg-emerald-500 rotate-[360deg]' : 'bg-slate-900'}
+                    `}>
+                      <User size={16} fill="currentColor" className={sideBarComponentStatus ? 'text-white' : 'text-slate-200'} />
+                      {!sideBarComponentStatus && (
+                        <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full">
+                           <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-75"></span>
+                        </div>
+                      )}
+                    </div>
+                  </button>
                 </div>
-                <input 
-                  type="text" 
-                  placeholder="Search for cars, tools, bikes..." 
-                  className="block w-full pl-12 pr-24 py-3 bg-gray-50 border border-gray-200 rounded-2xl leading-5 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 sm:text-sm transition-all"
-                />
-                <button className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl transition-all active:scale-95 shadow-sm">
-                  Search
-                </button>
-              </div>
-
-              {/* Location Selector */}
-
-              <LocationService/>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link to="/login" className="px-6 py-3 text-sm font-black uppercase tracking-widest text-slate-600 hover:text-emerald-600 transition-all">Log in</Link>
+                  <Link to="/signup" className="px-8 py-4 bg-slate-900 hover:bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95">Join Now</Link>
+                </div>
+              )}
             </div>
 
-            {/* USER ACTIONS (Clicking this opens sidebar) */}
-           { status && <div className="flex items-center gap-4">
-                 <AddItemButton/>
-                <div 
-                onClick={()=>dispatch(setSideBarStatus(!sideBarComponentStatus))}
-                className="flex items-center gap-2 border border-gray-200 rounded-full p-1.5 pl-3 hover:shadow-md transition-all cursor-pointer bg-white"
-              >
-                <Menu size={18} className="text-gray-600" />
-                <div className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
-                  <User size={20} fill="currentColor" />
-                </div>
-              </div>
-            </div>}
-
-
-            {!status && <div className="flex items-center gap-3">
-                  <Link
-                  to="/login"
-                   className="px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-emerald-600 hover:bg-gray-50 rounded-xl transition-all"
-                  >Log in  </Link>
-                 <Link
-                 to="/signup"
-                 className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-100 transition-all active:scale-95"
-                  > Sign up </Link>
-             </div>}
           </div>
         </div>
       </nav>
@@ -174,190 +172,11 @@ const Header4 = () => {
   );
 };
 
-// Simple Helper Component for Sidebar Links
-const SidebarLink = ({ onclick,icon, label}) => (
-  <button onClick={onclick} className="flex items-center gap-3 w-full p-3 text-gray-700 font-medium hover:bg-gray-50 hover:text-emerald-600 rounded-xl transition-all">
-    <span className="text-gray-400">{icon}</span>
+const SidebarLink = ({ onclick, icon, label }) => (
+  <button onClick={onclick} className="group flex items-center gap-4 w-full p-4 text-slate-600 font-bold text-sm hover:bg-emerald-50 hover:text-emerald-600 rounded-[1.5rem] transition-all">
+    <span className="text-slate-300 group-hover:text-emerald-500 transition-colors">{icon}</span>
     {label}
   </button>
 );
 
 export default Header4;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const HeaderComponent = () => {
-  const [showLocationModal, setShowLocationModal] = useState(false);
-
-  return (
-    <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-6">
-          
-          {/* 1. LOGO */}
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-black tracking-tight text-blue-600 cursor-pointer">
-              RENTOL<span className="text-gray-900">.</span>
-            </h1>
-          </div>
-
-          {/* 2. SEARCH AREA */}
-          <div className="hidden md:flex flex-1 items-center gap-4 max-w-4xl">
-            
-            {/* Item Search Bar with Integrated Button */}
-            <div className="relative flex-1 group">
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                <Search size={18} className="text-gray-400 group-focus-within:text-blue-600 transition-colors" />
-              </div>
-              <input 
-                type="text" 
-                placeholder="Search for cars, tools, bikes..." 
-                className="block w-full pl-12 pr-24 py-3 bg-gray-50 border border-gray-200 rounded-2xl leading-5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all"
-              />
-              <button className="absolute right-1.5 top-1.5 bottom-1.5 px-5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all active:scale-95 shadow-sm">
-                Search
-              </button>
-            </div>
-
-            {/* Separate Location Selector */}
-            <div className="relative w-60">
-              <div 
-                onClick={() => setShowLocationModal(!showLocationModal)}
-                className="flex items-center gap-3 px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl cursor-pointer hover:border-gray-300 transition-all"
-              >
-                <MapPin size={18} className="text-gray-400" />
-                <div className="flex-1 truncate">
-                  <span className="text-sm font-medium text-gray-700">Select Location</span>
-                </div>
-                <ChevronDown size={16} className={`text-gray-400 transition-transform ${showLocationModal ? 'rotate-180' : ''}`} />
-              </div>
-
-              {/* Location Dropdown */}
-              {showLocationModal && (
-                <div className="absolute top-full mt-2 w-full bg-white border border-gray-100 shadow-2xl rounded-2xl overflow-hidden z-50">
-                  <div className="p-2">
-                    <button className="w-full flex items-center gap-3 px-3 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 rounded-xl transition-colors">
-                      <Target size={18} />
-                      Current Location
-                    </button>
-                    <div className="h-px bg-gray-100 my-1" />
-                    <input 
-                      type="text"
-                      placeholder="Type city or zip..."
-                      className="w-full px-3 py-2 text-sm border-none focus:ring-0 placeholder-gray-400"
-                      autoFocus
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* 3. USER ACTIONS */}
-          <div className="flex items-center gap-4">
-            <button className="hidden lg:block text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors">
-              Rent out your gear
-            </button>
-            
-            <div className="flex items-center gap-2 border border-gray-200 rounded-full p-1.5 pl-3 hover:shadow-md transition-all cursor-pointer bg-white">
-              <Menu size={18} className="text-gray-600" />
-              <div className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
-                <User size={20} fill="currentColor" />
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </nav>
-  );
-};
-
