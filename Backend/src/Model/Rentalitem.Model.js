@@ -72,7 +72,6 @@ const RentalItemSchema=new Schema({
     type:Number,
     min:1,
     max:5,
-    required:true
   },
   }],
   ratingCount:{
@@ -82,7 +81,22 @@ const RentalItemSchema=new Schema({
   averageRating:{
     type:Number,
     default:0,
+  },
+  feedback:[{
+    user:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"USER",
+      required:true
+    },
+    comment:{
+      type:String,
+      default:null
+    },
+    createdAt: {
+    type: Date,
+    default: Date.now
   }
+  }]
 
 },{timestamps:true});
 

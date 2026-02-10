@@ -6,6 +6,8 @@ import YourItem from "./YourItem";
 import Home from "./Home";
 import YourItemEditPage from "./YourItemEditPage";
 import WishlistPage from "./WishListPage";
+import ViewItemPage from "./ViewItemPage";
+import ItemFeedbackPage from "./FeedBackPage";
 export {
   EnhancedCategoryPage,
   EnhancedCategoryPage2,
@@ -17,4 +19,6 @@ export {
   Home,
   YourItemEditPage,
   WishlistPage,
+  ViewItemPage,
+  ItemFeedbackPage
 }

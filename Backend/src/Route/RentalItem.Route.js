@@ -11,7 +11,10 @@ import {
   UpdateItem,
   RateItem,
   DeleteAllItem,
-  itemStatus
+  itemStatus,
+  FeedBack,
+  GetFeedBack,
+  DeleteFeedBack
  } from "../Controller/RentalItem.Controller.js";
 const RentItemRouter=Router();
 
@@ -19,6 +22,8 @@ RentItemRouter.post("/rentoutitem",VerifyUser,Multer.array("images",6),rentOutIt
 RentItemRouter.post("/updateitem/:itemId",VerifyUser,UpdateItem);
 RentItemRouter.post("/rate-item/:itemid",VerifyUser,RateItem)
 RentItemRouter.post("/update-item-status/:itemId",VerifyUser,itemStatus)
+RentItemRouter.post("/feedback/:id",VerifyUser,FeedBack)
+RentItemRouter.get("/getfeedback/:itemid",VerifyUser,GetFeedBack)
 RentItemRouter.get("/getitem/:itemId",VerifyUser,GetItem);
 RentItemRouter.get("/getallitem",VerifyUser,GetAllItem);
 RentItemRouter.get("/getyouritem",VerifyUser,GetYouritem);
@@ -26,6 +31,7 @@ RentItemRouter.patch("/uploadimages/:itemId",VerifyUser,Multer.array("images",6)
 RentItemRouter.delete("/deleteitem/:itemId",VerifyUser,DeleteItem);
 RentItemRouter.delete("/deleteimage/:itemId/:imageId",VerifyUser,DeleteItemImage);
 RentItemRouter.delete("/deleteallitem",VerifyUser,DeleteAllItem)
+RentItemRouter.delete("/deletefeedback/:itemid/:feedbackid",VerifyUser,DeleteFeedBack)
 
 
 

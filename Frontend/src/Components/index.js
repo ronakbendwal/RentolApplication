@@ -13,6 +13,7 @@ import AddItemButton from "./MainComponent/AddItemButton.jsx";
 import YourItemCard from "./UtilComponent/YourItemComponent.jsx";
 import SkeletonCard from "./UtilComponent/SkeletonCard.jsx";
 import WishedItemCard from "./UtilComponent/WishListItemComponent.jsx";
+import FeedBackComponent from "./UtilComponent/FeedBack.jsx";
 export {
   HeaderComponent,
   FooterComponent,
@@ -30,4 +31,5 @@ export {
   YourItemCard,
   SkeletonCard,
   WishedItemCard,
+  FeedBackComponent
 }

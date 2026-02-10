@@ -95,33 +95,38 @@ return res.status(201)
 })
 
 const GetItem=AsyncHandle(async(req,res)=>{
-console.log("inside get item controller")
 const {itemId}=req.params;
 
 if(!itemId){
   throw new ApiError(400,"Item Id Required")
 }
 
-console.log("1st phase of get item pass")
-
 if(!mongoose.Types.ObjectId.isValid(itemId)){
   throw new ApiError(400,"Invalid Item Id")
 }
 
-console.log("2nd phase of get item pass")
-
-const currentitem=await RENTALITEM.findById(itemId);
+const currentitem=await RENTALITEM.findById(itemId).populate('owner');
 if(!currentitem){
   throw new ApiError(404,"Item Not Found")
 }
 
-console.log("final phase of get tiem pass")
+let userRating = null;
+
+if (req.user) {
+  const rated = currentitem.ratings.find(
+    r=> r.user.toString() === req.user._id.toString()
+  );
+  userRating = rated ? rated.rating : null;
+}
 
 return res.status(200)
 .json(
   new ApiResponse(
     200,
-    currentitem,
+    {
+      currentitem,
+      userRating
+    },
     "Current Item Fatched"
   )
 )
@@ -454,17 +459,18 @@ const RateItem=AsyncHandle(async(req,res)=>{
   }
 
   //Check Existed Rated Or Not
-  const ratingExisted=await item.ratings.find((rated)=>(
+  let ratingExisted=await item.ratings.find((rated)=>(
     rated.user.toString() === req?.user._id.toString()
   ))
 
   if(ratingExisted){
     ratingExisted.rating=ratingValue
   }else{
-    item.ratings.push({
+    ratingExisted={
       user:req?.user._id,
       rating:ratingValue
-    })
+    };
+    item.ratings.push(ratingExisted)
   }
 
   //Calculate rating total and average
@@ -486,7 +492,11 @@ const RateItem=AsyncHandle(async(req,res)=>{
   .json(
     new ApiResponse(
       200,
-      item,
+      {
+        user:req.user._id,
+        rating:ratingValue,
+        item
+      },
       "Rating Subbmited Sucessfully"
     )
   )
@@ -541,6 +551,102 @@ const itemStatus=AsyncHandle(async(req,res)=>{
 
 })
 
+const FeedBack=AsyncHandle(async(req,res)=>{
+  const {id}=req.params;
+  const {comment}=req.body;
+  
+  if (!comment || !comment.trim()) {
+    throw new ApiError(400, "Feedback comment required");
+  }
+
+  const item=await RENTALITEM.findById(id).populate('owner')
+  if(!item){
+    throw new ApiError(404,"Item Not Found")
+  }
+
+  console.log("item from feedback controller ",item)
+
+  item.feedback.push({
+    user:req?.user?._id,
+    comment:comment.trim()
+  });
+
+
+  await item.save();
+
+return res.status(201)
+.json(
+  new ApiResponse(
+    201,
+    item, 
+    "Feedback successfully added"
+  )
+);
+})
+
+const DeleteFeedBack=AsyncHandle(async(req,res)=>{
+  const {itemid,feedbackid}=req.params;
+
+  const item =await RENTALITEM.findById(itemid)
+  if(!item){
+    throw new ApiError(404,"Item Not Found")
+  }
+
+  const feedback=item.feedback.id(feedbackid)
+  console.log(feedback);
+
+  if(!feedback){
+    throw new ApiResponse(404,"feedback not found")
+  }
+
+  if(feedback.user.toString()!==req?.user?._id.toString()){
+    throw new ApiError(403,"You can delete only your comments")
+  }
+
+  feedback?.deleteOne();
+  await item.save();
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      {},
+      "Comment Sucessfully Deleted"
+    )
+  )
+})
+
+const GetFeedBack=AsyncHandle(async(req,res)=>{
+  const {itemid}=req.params;
+  const item=await RENTALITEM.findById(itemid)
+  .select("feedback")
+  .populate("feedback.user","fullname image")
+
+  if(!item){
+    throw new ApiError(404,"Item Not Found ")
+  }
+
+  const allUserFeedback =item.feedback.map(f=>({
+    _id:f._id,
+    user:f.user,
+    comment:f.comment
+  }));
+
+
+  const sortedFeedback = item.feedback.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      sortedFeedback,
+      "All FeedBack Fatched"
+    )
+  )
+})
+
 export {
   rentOutItem,
   UpdateItem,
@@ -553,4 +659,7 @@ export {
   RateItem,
   DeleteAllItem,
   itemStatus,
+  FeedBack,
+  GetFeedBack,
+  DeleteFeedBack
 }

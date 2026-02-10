@@ -8,7 +8,7 @@ import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/Store/FeatureStore.js';
 import App from './App.jsx';
-import {ItemCategoryPage3, UserProfile,YourItem,Home,WishlistPage} from './Page/index.js'
+import {ItemCategoryPage3, UserProfile,YourItem,Home,WishlistPage,ViewItemPage,ItemFeedbackPage} from './Page/index.js'
 
 const router=createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +20,8 @@ const router=createBrowserRouter(
       <Route path='/userprofile' element={<UserProfile/>}/>
       <Route path='/youritem' element={<YourItem/>}/>
       <Route path='/wishlist' element={<WishlistPage/>}/>
+      <Route path='/viewitem/:id' element={<ViewItemPage/>} />
+      <Route path='/comments/:id' element={<ItemFeedbackPage/>}/>
     </Route>
   )
 )

@@ -282,8 +282,8 @@ const UserProfile = () => {
                 {/* Profile Picture & Integrated Edit Logo */}
                 <div className="relative mb-6">
                   <div className="w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-xl shadow-emerald-200 overflow-hidden border-4 border-white">
-                    {profileImage ? (
-                      <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                    {data?.data.image.url ? (
+                      <img src={data.data.image.url} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
                       <User size={60} strokeWidth={1.5} />
                     )}
@@ -309,7 +309,7 @@ const UserProfile = () => {
                       >
                         <Camera size={18} />
                       </button>
-                      {profileImage && (
+                      {data.data.image && (
                         <button 
                           onClick={removeProfileImage}
                           className="p-3 bg-white text-red-500 rounded-xl shadow-xl hover:bg-red-50 border border-red-100"

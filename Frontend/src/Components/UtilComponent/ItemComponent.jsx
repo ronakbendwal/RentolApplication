@@ -71,15 +71,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { wishlistapi } from '../../redux/Feature/WishList.js';
 import axios from 'axios';
 import { setWishList } from '../../redux/Feature/WishList.js';
+import { useNavigate } from 'react-router-dom';
 const ItemCard2 = ({ item }) => {
   const dispatch = useDispatch();
   const { wishlist } = useSelector((state) => state.wishlistitem);
-  const isWishlisted = wishlist?.some((w) => w._id === item?._id);
+  const isWishlisted = wishlist?.some((i) => i._id === item?._id);
+  const navigate=useNavigate();
 
   if (item.status === 'Inactive') return null;
 
   return (
-    <div className="group relative bg-white rounded-[2.5rem] p-3 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-2 border border-transparent hover:border-slate-100">
+    <div 
+    onClick={()=>navigate(`/viewitem/${item?._id}`)}
+    className="group relative bg-white rounded-[2.5rem] p-3 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-2 border border-transparent hover:border-slate-100">
       
       {/* Image Container */}
       <div className="relative aspect-[10/11] overflow-hidden rounded-[2rem] bg-slate-100">
@@ -97,7 +101,10 @@ const ItemCard2 = ({ item }) => {
           </div>
 
           <button
-            onClick={() => dispatch(wishlistapi(item?._id))}
+            onClick={
+              (e) =>{
+              e.stopPropagation();//here we dont want to redirect user on the view page so we do this
+              dispatch(wishlistapi(item?._id))}}
             className="p-2.5 rounded-full bg-white/80 backdrop-blur-md hover:bg-white transition-all shadow-sm active:scale-90"
           >
             <Heart 
@@ -138,12 +145,17 @@ const ItemCard2 = ({ item }) => {
             </div>
           </div>
 
-          <button className="relative flex-1 py-4 bg-slate-900 overflow-hidden text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-emerald-600 transition-all active:scale-95 group/btn shadow-xl shadow-slate-100">
+          <button 
+          onClick={(e)=>{
+            e.stopPropagation();
+            navigate(`/viewitem/${item?._id}`)
+          }}
+          className="relative flex-1 py-4 bg-slate-900 overflow-hidden text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-emerald-600 transition-all active:scale-95 group/btn shadow-xl shadow-slate-100">
              {/* Animated Background Shine */}
             <div className="absolute inset-0 w-1/2 h-full bg-white/10 skew-x-[-25deg] -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] pointer-events-none" />
             
             <Zap size={13} className="fill-current" />
-            <span>Book</span>
+            <span>View</span>
           </button>
         </div>
       </div>
