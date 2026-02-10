@@ -42,10 +42,8 @@ const ViewItemPage = () => {
 
 
   if(!data){
-      return (
-    <div className="min-h-screen flex items-center justify-center text-xl font-black">
-      Loading item...
-    </div>
+  return (
+    <div className="text-center py-20 font-black uppercase animate-pulse">Loading Items...</div>
   );
   }
 
