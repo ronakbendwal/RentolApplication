@@ -186,180 +186,12 @@
 
 // export default LocationService;
 
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {   
-  MapPin,
-  ChevronDown,
-  Loader2,
-  Search,
-  Navigation
- } from 'lucide-react';
-import { setLocation } from '../redux/Feature/Location.js'
 
-const LocationService = () => {
-  const [showLocationModal, setShowLocationModal] = useState(false)
-  const [loading, setLoading] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
 
-  const dispatch = useDispatch()
-  const { location } = useSelector((state) => state.location)
 
-  // --- LOGIC: AUTOCOMPLETE SEARCH ---
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchQuery.trim().length > 2) {
-        fetchSuggestions(searchQuery);
-      } else {
-        setSuggestions([]);
-      }
-    }, 500);
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
 
-  const fetchSuggestions = async (query) => {
-    setIsSearching(true);
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=5&addressdetails=1`
-      );
-      const data = await response.json();
-      setSuggestions(data);
-    } catch (error) {
-      console.error("Search Error:", error);
-    } finally {
-      setIsSearching(false);
-    }
-  };
 
-  const handleSelectLocation = (loc) => {
-    const city = loc.address.city || loc.address.town || loc.address.village || loc.display_name.split(',')[0];
-    const state = loc.address.state ? `, ${loc.address.state}` : "";
-    dispatch(setLocation(`${city}${state}`))
-    setShowLocationModal(false);
-    setSearchQuery("");
-    setSuggestions([]);
-  };
 
-  const getCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported");
-      return;
-    }
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
-        );
-        const data = await response.json();
-        const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
-        dispatch(setLocation(`${city}, ${data.address.state || ""}`))
-        setShowLocationModal(false); 
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
-      }
-    }, () => {
-      setLoading(false);
-      alert("Please enable location permissions.");
-    });
-  };
-
-  return (
-    <>
-      <div className="relative">
-        {/* TRIGGER BUTTON: Now transparent and integrated */}
-        <div 
-            onClick={() => setShowLocationModal(!showLocationModal)}
-            className="group flex items-center gap-3 px-4 py-1.5 cursor-pointer transition-all duration-300 rounded-full hover:bg-white hover:shadow-sm"
-        >
-          <div className={`transition-colors ${location ? 'text-emerald-600' : 'text-slate-400 group-hover:text-emerald-500'}`}>
-            <MapPin size={16} />
-          </div>
-          
-          <div className="max-w-[120px] lg:max-w-[160px] truncate">
-            <p className="text-[9px] uppercase tracking-[0.15em] font-black text-slate-400 leading-none mb-0.5">Location</p>
-            <span className={`text-xs font-bold truncate block ${location ? 'text-slate-900' : 'text-slate-400'}`}>
-              {location || "Select Area"}
-            </span>
-          </div>
-          
-          <ChevronDown size={14} className={`text-slate-300 transition-transform duration-500 ${showLocationModal ? 'rotate-180 text-emerald-500' : ''}`} />
-        </div>
-
-        {/* MODERN DROPDOWN MODAL */}
-        {showLocationModal && (
-          <div className="absolute top-full mt-4 right-0 w-[320px] bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] rounded-[2rem] overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="p-4 space-y-3">
-              
-              {/* SEARCH INPUT AREA */}
-              <div className="relative group">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 transition-colors" />
-                <input 
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Type city or area..."
-                  className="w-full pl-11 pr-10 py-3.5 text-sm bg-slate-50 border-none rounded-[1.2rem] focus:bg-white focus:ring-2 focus:ring-emerald-100 transition-all font-semibold text-slate-700"
-                  autoFocus
-                />
-                {isSearching && (
-                    <Loader2 size={16} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-emerald-500" />
-                )}
-              </div>
-
-              {/* GPS BUTTON */}
-              {suggestions.length === 0 && (
-                <button 
-                    onClick={getCurrentLocation} 
-                    disabled={loading}
-                    className="w-full flex items-center justify-between px-5 py-4 bg-slate-900 text-white rounded-[1.2rem] shadow-lg shadow-slate-200 hover:bg-emerald-600 transition-all disabled:opacity-70 group"
-                >
-                    <div className="flex items-center gap-3">
-                    {loading ? <Loader2 size={18} className="animate-spin" /> : <Navigation size={18} className="group-hover:rotate-12 transition-transform" />}
-                    <span className="text-sm font-bold">{loading ? "Finding you..." : "Auto-detect location"}</span>
-                    </div>
-                </button>
-              )}
-
-              {/* SUGGESTIONS LIST */}
-              <div className="max-h-60 overflow-y-auto space-y-1 custom-scrollbar">
-                {suggestions.map((loc, index) => (
-                    <button
-                        key={index}
-                        onClick={() => handleSelectLocation(loc)}
-                        className="w-full flex items-start gap-3 px-3 py-3 hover:bg-emerald-50 rounded-xl text-left transition-all group"
-                    >
-                        <MapPin size={16} className="mt-1 text-slate-300 group-hover:text-emerald-500 shrink-0" />
-                        <div className="overflow-hidden">
-                            <p className="text-sm font-bold text-slate-800 truncate">
-                                {loc.display_name.split(',')[0]}
-                            </p>
-                            <p className="text-[10px] text-slate-400 truncate">
-                                {loc.display_name}
-                            </p>
-                        </div>
-                    </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* CLICK OUTSIDE OVERLAY */}
-        {showLocationModal && (
-          <div className="fixed inset-0 z-40" onClick={() => setShowLocationModal(false)} />
-        )}
-      </div>
-    </>
-  )
-};
-
-export default LocationService;
 
 
 
@@ -476,3 +308,377 @@ export default LocationService;
 
 
 
+
+
+
+
+// import React, { useState, useEffect } from 'react'
+// import { useDispatch, useSelector } from 'react-redux'
+// import {   
+//   MapPin,
+//   ChevronDown,
+//   Loader2,
+//   Search,
+//   Navigation
+//  } from 'lucide-react';
+// import { setLocation } from '../redux/Feature/Location.js'
+
+// const LocationService = () => {
+//   const [showLocationModal, setShowLocationModal] = useState(false)
+//   const [loading, setLoading] = useState(false);
+//   const [isSearching, setIsSearching] = useState(false);
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [suggestions, setSuggestions] = useState([]);
+
+//   const dispatch = useDispatch()
+//   const { location } = useSelector((state) => state.location)
+
+//   // --- LOGIC: AUTOCOMPLETE SEARCH ---
+//   useEffect(() => {
+//     const delayDebounceFn = setTimeout(() => {
+//       if (searchQuery.trim().length > 2) {
+//         fetchSuggestions(searchQuery);
+//       } else {
+//         setSuggestions([]);
+//       }
+//     }, 500);
+//     return () => clearTimeout(delayDebounceFn);
+//   }, [searchQuery]);
+
+//   const fetchSuggestions = async (query) => {
+//     setIsSearching(true);
+//     try {
+//       const response = await fetch(
+//         `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=5&addressdetails=1`
+//       );
+//       const data = await response.json();
+//       setSuggestions(data);
+//     } catch (error) {
+//       console.error("Search Error:", error);
+//     } finally {
+//       setIsSearching(false);
+//     }
+//   };
+
+//   const handleSelectLocation = (loc) => {
+//     const city = loc.address.city || loc.address.town || loc.address.village || loc.display_name.split(',')[0];
+//     const state = loc.address.state ? `, ${loc.address.state}` : "";
+//     dispatch(setLocation(`${city}${state}`))
+//     setShowLocationModal(false);
+//     setSearchQuery("");
+//     setSuggestions([]);
+//   };
+
+//   const getCurrentLocation = () => {
+//     if (!navigator.geolocation) {
+//       alert("Geolocation is not supported");
+//       return;
+//     }
+//     setLoading(true);
+//     navigator.geolocation.getCurrentPosition(async (position) => {
+//       try {
+//         const response = await fetch(
+//           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
+//         );
+//         const data = await response.json();
+//         const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
+//         dispatch(setLocation(`${city}, ${data.address.state || ""}`))
+//         setShowLocationModal(false); 
+//       } catch (error) {
+//         console.error("Error:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }, () => {
+//       setLoading(false);
+//       alert("Please enable location permissions.");
+//     });
+//   };
+
+//   return (
+//     <>
+//       <div className="relative">
+//         {/* TRIGGER BUTTON: Now transparent and integrated */}
+//         <div 
+//             onClick={() => setShowLocationModal(!showLocationModal)}
+//             className="group flex items-center gap-3 px-4 py-1.5 cursor-pointer transition-all duration-300 rounded-full hover:bg-white hover:shadow-sm"
+//         >
+//           <div className={`transition-colors ${location ? 'text-emerald-600' : 'text-slate-400 group-hover:text-emerald-500'}`}>
+//             <MapPin size={16} />
+//           </div>
+          
+//           <div className="max-w-[120px] lg:max-w-[160px] truncate">
+//             <p className="text-[9px] uppercase tracking-[0.15em] font-black text-slate-400 leading-none mb-0.5">Location</p>
+//             <span className={`text-xs font-bold truncate block ${location ? 'text-slate-900' : 'text-slate-400'}`}>
+//               {location || "Select Area"}
+//             </span>
+//           </div>
+          
+//           <ChevronDown size={14} className={`text-slate-300 transition-transform duration-500 ${showLocationModal ? 'rotate-180 text-emerald-500' : ''}`} />
+//         </div>
+
+//         {/* MODERN DROPDOWN MODAL */}
+//         {showLocationModal && (
+//           <div className="absolute top-full mt-4 right-0 w-[320px] bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] rounded-[2rem] overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-300">
+//             <div className="p-4 space-y-3">
+              
+//               {/* SEARCH INPUT AREA */}
+//               <div className="relative group">
+//                 <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 transition-colors" />
+//                 <input 
+//                   type="text"
+//                   value={searchQuery}
+//                   onChange={(e) => setSearchQuery(e.target.value)}
+//                   placeholder="Type city or area..."
+//                   className="w-full pl-11 pr-10 py-3.5 text-sm bg-slate-50 border-none rounded-[1.2rem] focus:bg-white focus:ring-2 focus:ring-emerald-100 transition-all font-semibold text-slate-700"
+//                   autoFocus
+//                 />
+//                 {isSearching && (
+//                     <Loader2 size={16} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-emerald-500" />
+//                 )}
+//               </div>
+
+//               {/* GPS BUTTON */}
+//               {suggestions.length === 0 && (
+//                 <button 
+//                     onClick={getCurrentLocation} 
+//                     disabled={loading}
+//                     className="w-full flex items-center justify-between px-5 py-4 bg-slate-900 text-white rounded-[1.2rem] shadow-lg shadow-slate-200 hover:bg-emerald-600 transition-all disabled:opacity-70 group"
+//                 >
+//                     <div className="flex items-center gap-3">
+//                     {loading ? <Loader2 size={18} className="animate-spin" /> : <Navigation size={18} className="group-hover:rotate-12 transition-transform" />}
+//                     <span className="text-sm font-bold">{loading ? "Finding you..." : "Auto-detect location"}</span>
+//                     </div>
+//                 </button>
+//               )}
+
+//               {/* SUGGESTIONS LIST */}
+//               <div className="max-h-60 overflow-y-auto space-y-1 custom-scrollbar">
+//                 {suggestions.map((loc, index) => (
+//                     <button
+//                         key={index}
+//                         onClick={() => handleSelectLocation(loc)}
+//                         className="w-full flex items-start gap-3 px-3 py-3 hover:bg-emerald-50 rounded-xl text-left transition-all group"
+//                     >
+//                         <MapPin size={16} className="mt-1 text-slate-300 group-hover:text-emerald-500 shrink-0" />
+//                         <div className="overflow-hidden">
+//                             <p className="text-sm font-bold text-slate-800 truncate">
+//                                 {loc.display_name.split(',')[0]}
+//                             </p>
+//                             <p className="text-[10px] text-slate-400 truncate">
+//                                 {loc.display_name}
+//                             </p>
+//                         </div>
+//                     </button>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         )}
+
+//         {/* CLICK OUTSIDE OVERLAY */}
+//         {showLocationModal && (
+//           <div className="fixed inset-0 z-40" onClick={() => setShowLocationModal(false)} />
+//         )}
+//       </div>
+//     </>
+//   )
+// };
+
+// export default LocationService;
+
+
+
+
+
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {   
+  MapPin,
+  ChevronDown,
+  Loader2,
+  Search,
+  Navigation,
+  Globe
+ } from 'lucide-react';
+import { setLocation } from '../redux/Feature/Location.js'
+
+const LocationService = () => {
+  const [showLocationModal, setShowLocationModal] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const dispatch = useDispatch()
+  const { location } = useSelector((state) => state.location)
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery.trim().length > 2) {
+        fetchSuggestions(searchQuery);
+      } else {
+        setSuggestions([]);
+      }
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const fetchSuggestions = async (query) => {
+    setIsSearching(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=5&addressdetails=1`
+      );
+      const data = await response.json();
+      setSuggestions(data);
+    } catch (error) {
+      console.error("Search Error:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSelectLocation = (loc) => {
+    const city = loc.address.city || loc.address.town || loc.address.village || loc.display_name.split(',')[0];
+    const state = loc.address.state ? `, ${loc.address.state}` : "";
+    dispatch(setLocation(`${city}${state}`))
+    setShowLocationModal(false);
+    setSearchQuery("");
+    setSuggestions([]);
+  };
+
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported");
+      return;
+    }
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
+        );
+        const data = await response.json();
+        const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
+        dispatch(setLocation(`${city}, ${data.address.state || ""}`))
+        setShowLocationModal(false); 
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    }, () => {
+      setLoading(false);
+      alert("Please enable location permissions.");
+    });
+  };
+
+  // Replace the return part of your LocationService component
+return (
+  <div className="relative h-full flex items-center">
+    {/* TRIGGER BUTTON: Stylized to match Search Bar */}
+    <div 
+      onClick={() => setShowLocationModal(!showLocationModal)}
+      className={`group flex items-center gap-3 px-4 h-12 min-w-[180px] cursor-pointer transition-all duration-200 border-[3px] border-slate-900 rounded-2xl 
+        ${showLocationModal 
+          ? 'bg-indigo-50 translate-x-1 translate-y-1 shadow-none' 
+          : 'bg-white shadow-[4px_4px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1'}`}
+    >
+      {/* Icon with Neo-Brutalist badge style */}
+      <div className={`shrink-0 w-7 h-7 flex items-center justify-center rounded-lg border-2 border-slate-900 shadow-[2px_2px_0px_#000] transition-colors 
+        ${location ? 'bg-emerald-400' : 'bg-slate-50 group-hover:bg-indigo-400'}`}>
+        <MapPin size={12} strokeWidth={3} className="text-slate-900" />
+      </div>
+      
+      <div className="flex-1 min-w-0">
+        <p className="text-[7px] font-black uppercase tracking-[0.2em] text-slate-400 leading-none mb-1">Sector_Loc</p>
+        <span className={`text-[10px] font-black uppercase truncate block tracking-tighter leading-none ${location ? 'text-slate-900' : 'text-slate-300'}`}>
+          {location || "Select_City"}
+        </span>
+      </div>
+      
+      <ChevronDown size={14} strokeWidth={3} className={`text-slate-900 transition-transform duration-500 ${showLocationModal ? 'rotate-180' : ''}`} />
+    </div>
+
+    {/* DROPDOWN MODAL: Styled with thick borders and heavy shadows */}
+    {showLocationModal && (
+      <div className="absolute top-[calc(100%+12px)] right-0 w-[340px] bg-white border-[3px] border-slate-900 shadow-[12px_12px_0px_#000] rounded-[2rem] overflow-hidden z-[100] animate-in zoom-in-95 slide-in-from-top-2 duration-300">
+        <div className="p-5 space-y-4">
+           {/* ... existing modal content (Search Input, GPS Button, etc.) ... */}
+              
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-black uppercase tracking-widest text-slate-900">Change Location</h4>
+                <Globe size={14} className="text-indigo-600" />
+              </div>
+
+              {/* SEARCH INPUT AREA */}
+              <div className="relative group">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-900">
+                  <Search size={16} strokeWidth={3} />
+                </div>
+                <input 
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="SEARCH CITY..."
+                  className="w-full pl-11 pr-10 py-3.5 text-[11px] font-black uppercase tracking-widest bg-slate-50 border-[3px] border-slate-900 rounded-xl focus:bg-white focus:ring-0 outline-none transition-all placeholder:text-slate-300"
+                  autoFocus
+                />
+                {isSearching && (
+                    <Loader2 size={16} className="absolute right-4 top-1/2 -translate-y-1/2 animate-spin text-indigo-600" />
+                )}
+              </div>
+
+              {/* GPS BUTTON */}
+              {suggestions.length === 0 && (
+                <button 
+                    onClick={getCurrentLocation} 
+                    disabled={loading}
+                    className="w-full flex items-center justify-center gap-3 px-5 py-4 bg-indigo-600 text-white border-[3px] border-slate-900 rounded-xl shadow-[4px_4px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all disabled:opacity-70 group"
+                >
+                    {loading ? <Loader2 size={18} className="animate-spin" /> : <Navigation size={18} strokeWidth={3} className="group-hover:rotate-12 transition-transform" />}
+                    <span className="text-[10px] font-black uppercase tracking-widest">{loading ? "Locating..." : "Use Current GPS"}</span>
+                </button>
+              )}
+
+              {/* SUGGESTIONS LIST */}
+              <div className="max-h-52 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                {suggestions.map((loc, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handleSelectLocation(loc)}
+                        className="w-full flex items-center gap-3 p-3 bg-white border-[2px] border-slate-100 hover:border-slate-900 hover:bg-emerald-50 rounded-xl text-left transition-all group"
+                    >
+                        <div className="p-2 bg-slate-50 border-2 border-slate-900 rounded-lg group-hover:bg-white transition-colors">
+                          <MapPin size={14} strokeWidth={3} className="text-slate-400 group-hover:text-emerald-500" />
+                        </div>
+                        <div className="overflow-hidden">
+                            <p className="text-[11px] font-black text-slate-900 uppercase tracking-tight truncate leading-none mb-1">
+                                {loc.display_name.split(',')[0]}
+                            </p>
+                            <p className="text-[8px] font-bold text-slate-400 uppercase truncate tracking-tighter">
+                                {loc.display_name}
+                            </p>
+                        </div>
+                    </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+    {/* OVERLAY */}
+    {showLocationModal && (
+      <div className="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[1px]" onClick={() => setShowLocationModal(false)} />
+    )}
+  </div>
+);
+};
+
+export default LocationService;
+
+
+
+
+      
