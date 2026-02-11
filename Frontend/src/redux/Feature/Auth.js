@@ -17,10 +17,15 @@ const AuthSlice=createSlice({
       state.data=null,
       state.status=false
       removeFromStorage("auth")
+    },
+    setUserData:(state,action)=>{
+      state.data=action.payload,
+      state.status=true,
+      storeData("auth",state.data)
     }
   }
-})
+});
 
-export const {login,logout}=AuthSlice.actions;
+export const {login,logout,setUserData}=AuthSlice.actions;
 
 export default AuthSlice.reducer

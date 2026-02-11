@@ -354,25 +354,36 @@ const RefreshAccessToken=AsyncHandle(async(req,res)=>{
 const ChangeImage=AsyncHandle(async(req,res)=>{
 
 console.log("andar aa gaye")
-const newImageLocalPath=req.file?.path;
+
+const newImageLocalPath=req?.file?.path;
+
 console.log(newImageLocalPath)
-const user=await USER.findById(req.user?._id)
+
+const user=await USER.findById(req?.user?._id);
+
 if(!user){
   throw new ApiError(404,"User Not Found")
 }
+
 if(!newImageLocalPath){
   throw new ApiError(400,"New Image Are Missing");
 }
+
 const previousImage=user?.image;
- const deleteimage= await DeleteCloudinaryUpload(previousImage)
- if(deleteimage){
+
+if(previousImage){
+const deleteimage= await DeleteCloudinaryUpload(previousImage);
+if(deleteimage){
   console.log("image sucesssfully deleted")
  }
+}
 
 const newImage=await CLoudinaryUpload(newImageLocalPath);
+
 if(!newImage?.url){
   throw new ApiError(500,"Image Not Upload");
 }
+
 const newuploadedimageuser= await USER.findByIdAndUpdate(
   req.user?._id,
   {
@@ -387,7 +398,9 @@ const newuploadedimageuser= await USER.findByIdAndUpdate(
   if(!newuploadedimageuser){
     throw new ApiError(500,"image not upload")
   }
+
   console.log("change file sucessfully done")
+
   return res.status(200)
   .json(
     new ApiResponse(
@@ -410,6 +423,7 @@ const DeleteImage=AsyncHandle(async(req,res)=>{
 
   const currentimage=user?.image;
 
+  console.log("current image",currentimage)
   if(!currentimage){
     return res.status(200).json(
     new ApiResponse(

@@ -36,12 +36,12 @@ console.log("CLOUDINARY UPLOAD FILE :: ERROR ::",error)
 
 
 const DeleteCloudinaryUpload=async (localFilePath)=>{
-   console.log("inside file deletation")
+console.log("inside file deletation")
 try
 {
 if(!localFilePath) return null;
 console.log("1st phase of file deletation clear")
-const removeReferance=await cloudinary.uploader.destroy(localFilePath.publicid,{resource_type:localFilePath.resource_type});
+const removeReferance=await cloudinary.uploader.destroy(localFilePath.public_id,{resource_type:localFilePath.resource_type});
 console.log("file sucessfully deleted")
 return removeReferance;
 }catch(error){
