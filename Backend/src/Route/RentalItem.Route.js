@@ -25,7 +25,7 @@ RentItemRouter.post("/update-item-status/:itemId",VerifyUser,itemStatus)
 RentItemRouter.post("/feedback/:id",VerifyUser,FeedBack)
 RentItemRouter.get("/getfeedback/:itemid",VerifyUser,GetFeedBack)
 RentItemRouter.get("/getitem/:itemId",VerifyUser,GetItem);
-RentItemRouter.get("/getallitem",VerifyUser,GetAllItem);
+RentItemRouter.get("/getallitem",GetAllItem);
 RentItemRouter.get("/getyouritem",VerifyUser,GetYouritem);
 RentItemRouter.patch("/uploadimages/:itemId",VerifyUser,Multer.array("images",6),UploadMoreImage);
 RentItemRouter.delete("/deleteitem/:itemId",VerifyUser,DeleteItem);
