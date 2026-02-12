@@ -19,7 +19,7 @@ function LogoutPremissionComponent() {
     console.log("Logged out!")
     await axios.post('/api/user/logout-user',{}, { withCredentials: true })
     dispatch(logout())
-    dispatch(setIsLogoutConform(!IsLogoutConform));
+    dispatch(setLogoutStatus(!logoutComponentStatus));
     navigate("/")
    }
   return (
@@ -64,6 +64,7 @@ function LogoutPremissionComponent() {
           
           <button 
             onClick={onCancel}
+
             className="w-full py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl transition-all active:scale-95"
           >
             No, Stay logged in

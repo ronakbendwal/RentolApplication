@@ -336,7 +336,7 @@ const Header4 = () => {
               ) : (
                 <div className="flex items-center gap-2">
                   <Link to="/login" className="px-5 py-3 text-[10px] font-black uppercase tracking-widest text-slate-900">Login</Link>
-                  <Link to="/signup" className="px-7 py-3.5 bg-indigo-600 text-white border-[3px] border-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] shadow-[5px_5px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">Join_System</Link>
+                  <Link to="/signup" className="px-7 py-3.5 bg-indigo-600 text-white border-[3px] border-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] shadow-[5px_5px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">SignUp</Link>
                 </div>
               )}
             </div>
