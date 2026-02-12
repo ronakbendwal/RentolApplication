@@ -223,10 +223,12 @@ import axios from 'axios';
 import { useSelector, useDispatch } from "react-redux";
 import { setYourItemEditPageStatus } from "../../redux/Feature/Status.js";
 import { deleteYourItemApi } from "../../redux/Feature/YourItem.js";
+import {useNavigate} from 'react-router-dom'
 
 const YourItemCard = ({ data }) => {
   const { YIEPStatus } = useSelector((state) => state.componentstatus);
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const [itemStatus, setItemStatus] = useState(data.status);
 
   const switchStatus = async (itemId) => {
@@ -288,11 +290,11 @@ const YourItemCard = ({ data }) => {
         {/* ACTIONS */}
         <div className="flex gap-2">
           <button 
-            onClick={() => dispatch(setYourItemEditPageStatus(!YIEPStatus))} 
-            disabled={!isActive}
+            onClick={() => navigate(`/edititem/${data?._id}`)} 
+            // disabled={!isActive}
             className="flex-grow py-3.5 bg-slate-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.15em] flex items-center justify-center gap-2 hover:bg-indigo-600 transition-all shadow-[4px_4px_0px_#6366f1] active:translate-y-1 active:shadow-none disabled:opacity-30"
           >
-            <Edit3 size={14} /> Manage Asset
+            <Edit3 size={14} /> Edit Product
           </button>
           <button
             onClick={() => dispatch(deleteYourItemApi(data?._id))}

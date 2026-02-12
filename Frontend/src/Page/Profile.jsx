@@ -544,6 +544,7 @@ import React, { useState, useRef } from 'react';
 import { User, Mail, MessageCircle, MapPin, Camera, X, Edit3, Trash2, Home, Zap, Globe, Fingerprint } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData,logout } from '../redux/Feature/Auth';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const UserProfile = () => {
   const { data, status } = useSelector((state) => state.auth);
@@ -551,8 +552,8 @@ const UserProfile = () => {
   const [userimage,setUserImage]=useState(null)
   const { location } = useSelector((state) => state.location);
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const fileInputRef = useRef(null);
-
   if (!status) return null;
 
   const currentUserData = data?.data;
@@ -723,7 +724,9 @@ const UserProfile = () => {
                 </div>
 
                 <div className="mt-16 flex flex-wrap gap-4">
-                    <button className="flex-1 bg-slate-900 text-white border-4 border-slate-900 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[8px_8px_0px_#10B981] hover:translate-y-1 hover:shadow-none transition-all flex items-center justify-center gap-3">
+                    <button 
+                    onClick={()=>navigate('/editprofile')}
+                    className="flex-1 bg-slate-900 text-white border-4 border-slate-900 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[8px_8px_0px_#10B981] hover:translate-y-1 hover:shadow-none transition-all flex items-center justify-center gap-3">
                         <Edit3 size={18} /> Edit Profile
                     </button>
                     <button

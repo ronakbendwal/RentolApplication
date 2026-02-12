@@ -6,6 +6,8 @@ import YourItemEditPage from "./YourItemEditPage";
 import WishlistPage from "./WishListPage";
 import ViewItemPage from "./ViewItemPage";
 import ItemFeedbackPage from "./FeedBackPage";
+import EditProfilePage from "./EditProfilePage";
+import EditYourItemPage from "./EditYourItemPage";
 export {
   ItemCategoryPage3,
   UserProfile,
@@ -14,5 +16,7 @@ export {
   YourItemEditPage,
   WishlistPage,
   ViewItemPage,
-  ItemFeedbackPage
+  ItemFeedbackPage,
+  EditProfilePage,
+  EditYourItemPage
 }
