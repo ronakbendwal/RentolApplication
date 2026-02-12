@@ -80,8 +80,8 @@ const ViewItemPage = () => {
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 pb-20">
       
       {/* 1. NAV */}
-      <nav className={`fixed top-6 inset-x-6 z-[100] flex justify-between transition-all duration-500 ${isVisible ? 'translate-y-0' : '-translate-y-20'}`}>
-        <button onClick={() => navigate(-1)} className="px-17 py-3 bg-white border-2 border-slate-900 rounded-full font-black text-[10px] uppercase tracking-widest shadow-[4px_4px_0px_#000]">
+      <nav className={`fixed top-6 inset-x-10 z-[100] flex justify-between transition-all duration-500 ${isVisible ? 'translate-y-0' : '-translate-y-20'}`}>
+        <button onClick={() => navigate(-1)} className="px-24 pr-25 py-5 bg-white border-2 border-slate-900 rounded-full font-black text-[10px] uppercase tracking-widest shadow-[4px_4px_0px_#000]">
           Back
         </button>
       </nav>

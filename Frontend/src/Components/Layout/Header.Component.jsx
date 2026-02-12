@@ -262,8 +262,8 @@ const Header4 = () => {
             <SidebarLink onclick={() => { navigate('/userprofile'); dispatch(setSideBarStatus(false)); }} icon={<User size={18}/>} label="Profile" desc="Identity Config" />
             <SidebarLink onclick={() => { navigate('/youritem'); dispatch(setSideBarStatus(false)); }} icon={<Package size={18}/>} label="Your Item" desc="Inventory" />
             <SidebarLink onclick={() => { navigate('/wishlist'); dispatch(setSideBarStatus(false)); }} icon={<Heart size={18}/>} label="Wish List" desc="Saved Vault" />
-            <SidebarLink onclick={() => { dispatch(setIsThemeOpen(!isThemeOpen)); dispatch(setSideBarStatus(false)); }} icon={<Settings size={18}/>} label="Settings" desc="Preferences" />
-            <SidebarLink onclick={() => { dispatch(setSideBarStatus(false)); }} icon={<ShoppingCart size={18}/>} label="Orders" desc="Transactions" />
+            {/* <SidebarLink onclick={() => { dispatch(setIsThemeOpen(!isThemeOpen)); dispatch(setSideBarStatus(false)); }} icon={<Settings size={18}/>} label="Settings" desc="Preferences" />
+            <SidebarLink onclick={() => { dispatch(setSideBarStatus(false)); }} icon={<ShoppingCart size={18}/>} label="Orders" desc="Transactions" /> */}
           </nav>
 
           <div className="pt-6 mt-4 border-t-[3px] border-slate-900">

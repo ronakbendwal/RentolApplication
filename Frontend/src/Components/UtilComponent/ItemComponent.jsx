@@ -198,7 +198,7 @@ const ItemCard2 = ({ item }) => {
         <div className="absolute top-3 left-3 right-3 flex justify-between items-center">
           <div className="px-3 py-1 bg-white border-2 border-slate-900 rounded-full flex items-center gap-1.5 shadow-[3px_3px_0px_#000]">
             <Star size={12} className="fill-yellow-400 text-yellow-400" />
-            <span className="text-[11px] font-black text-slate-900">{item?.averageRating || "4.5" }</span>
+            <span className="text-[11px] font-black text-slate-900">{item?.averageRating  }</span>
           </div>
 
           <button
