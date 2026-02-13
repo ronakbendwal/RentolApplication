@@ -502,7 +502,7 @@ import {
   Globe
  } from 'lucide-react';
 import { setLocation } from '../redux/Feature/Location.js'
-
+import axios from "axios"
 const LocationService = () => {
   const [showLocationModal, setShowLocationModal] = useState(false)
   const [loading, setLoading] = useState(false);
@@ -511,7 +511,16 @@ const LocationService = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   const dispatch = useDispatch()
-  const { location } = useSelector((state) => state.location)
+  const { location} = useSelector((state) => state.location)
+  const updateLocation=async(data)=>{
+  try{
+    const locationResponse=await axios.patch('/api/user/update-location',{data})
+    const location=locationResponse?.data.data.fulllocation.address
+    dispatch(setLocation(`${location.city}, ${location.state}, ${location.country}`))
+  }catch(err){
+    console.log(err)
+  }
+  }
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -539,12 +548,9 @@ const LocationService = () => {
     }
   };
 
-  const handleSelectLocation = (loc) => {
-    const city = loc.address.city || loc.address.town || loc.address.village || loc.display_name.split(',')[0];
-    const state = loc.address.state ? `, ${loc.address.state}` : "";
-    const country=loc.address.country ? `${loc.address.country}` : "";
-    console.log("City",city, "Country",country, "State",state)
-    dispatch(setLocation(`${city}${state}`))
+  const handleSelectLocation = async(loc) => {
+    const data=loc;
+    await updateLocation({data})
     setShowLocationModal(false);
     setSearchQuery("");
     setSuggestions([]);
@@ -562,9 +568,7 @@ const LocationService = () => {
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
         );
         const data = await response.json();
-        const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
-        const country=data.address.country || "";
-        dispatch(setLocation(`${city}, ${data.address.state || ""}, ${country}`))
+        await updateLocation({data})
         setShowLocationModal(false); 
       } catch (error) {
         console.error("Error:", error);
