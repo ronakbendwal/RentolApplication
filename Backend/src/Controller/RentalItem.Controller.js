@@ -647,6 +647,50 @@ const GetFeedBack=AsyncHandle(async(req,res)=>{
   )
 })
 
+const GetNearestItem=AsyncHandle(async(req,res)=>{
+  const {lat,lng}=req.query
+
+  if(!lat || !lng){
+    throw new ApiError(400, "Latitude and Longitude required")
+  }
+
+  const latitude = Number(lat);
+  const longitude = Number(lng);
+
+  if(isNaN(latitude) || isNaN(longitude)){
+    throw new ApiError(400,"Invalid coordinates")
+  }
+
+  const items = await RENTALITEM.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates: [longitude, latitude]
+        },
+        key:"location",
+        distanceField: "distance",
+        maxDistance: 20000,
+        spherical: true,
+        distanceMultiplier: 0.001  // meters → km
+      }
+    }
+  ]);
+
+  if(items.length===0){
+    throw new ApiError(404,"No item near you")
+  }
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      items,
+      "Near Item Sucessfully Fatched"
+    )
+  )
+})
+
 export {
   rentOutItem,
   UpdateItem,
@@ -661,5 +705,6 @@ export {
   itemStatus,
   FeedBack,
   GetFeedBack,
-  DeleteFeedBack
+  DeleteFeedBack,
+  GetNearestItem
 }

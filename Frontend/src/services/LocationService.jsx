@@ -542,6 +542,8 @@ const LocationService = () => {
   const handleSelectLocation = (loc) => {
     const city = loc.address.city || loc.address.town || loc.address.village || loc.display_name.split(',')[0];
     const state = loc.address.state ? `, ${loc.address.state}` : "";
+    const country=loc.address.country ? `${loc.address.country}` : "";
+    console.log("City",city, "Country",country, "State",state)
     dispatch(setLocation(`${city}${state}`))
     setShowLocationModal(false);
     setSearchQuery("");
@@ -561,7 +563,8 @@ const LocationService = () => {
         );
         const data = await response.json();
         const city = data.address.city || data.address.town || data.address.village || data.address.suburb;
-        dispatch(setLocation(`${city}, ${data.address.state || ""}`))
+        const country=data.address.country || "";
+        dispatch(setLocation(`${city}, ${data.address.state || ""}, ${country}`))
         setShowLocationModal(false); 
       } catch (error) {
         console.error("Error:", error);

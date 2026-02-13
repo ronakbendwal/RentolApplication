@@ -14,8 +14,10 @@ import {
   itemStatus,
   FeedBack,
   GetFeedBack,
-  DeleteFeedBack
+  DeleteFeedBack,
+  GetNearestItem
  } from "../Controller/RentalItem.Controller.js";
+import { verify } from "jsonwebtoken";
 const RentItemRouter=Router();
 
 RentItemRouter.post("/rentoutitem",VerifyUser,Multer.array("images",6),rentOutItem);
@@ -26,6 +28,7 @@ RentItemRouter.post("/feedback/:id",VerifyUser,FeedBack)
 RentItemRouter.get("/getfeedback/:itemid",VerifyUser,GetFeedBack)
 RentItemRouter.get("/getitem/:itemId",VerifyUser,GetItem);
 RentItemRouter.get("/getallitem",GetAllItem);
+RentItemRouter.get("/getnearitem",verify,GetNearestItem)
 RentItemRouter.get("/getyouritem",VerifyUser,GetYouritem);
 RentItemRouter.patch("/uploadimages/:itemId",VerifyUser,Multer.array("images",6),UploadMoreImage);
 RentItemRouter.delete("/deleteitem/:itemId",VerifyUser,DeleteItem);
