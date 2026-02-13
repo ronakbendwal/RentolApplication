@@ -8,6 +8,17 @@ const UserSchema=new Schema({
     type:String,
     required:true
   },
+  location:{
+    type:{
+      type:String,
+      enum:["Point"],
+      default:"Point"
+    },
+    coordinated:{
+      type:[Number],
+      required:true
+    }
+  },
   passward:{
     type:String,
     required:true
@@ -37,8 +48,6 @@ const UserSchema=new Schema({
     ref:"RENTALITEM"
   }]
 },{timestamps:true})
-
-
 
 //it is an middleware hash the bassward before save and safe the passward from unuseal hashing
 UserSchema.pre("save", async function () {

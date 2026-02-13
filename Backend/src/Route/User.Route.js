@@ -13,9 +13,9 @@ import{
   RefreshAccessToken,
   RemoveAllWishItem,
   AddToWishList,
-  GetWishItem
+  GetWishItem,
+  UpdateLocation
 } from '../Controller/User.Controller.js';
-
 
 const UserRouter=Router();
 
@@ -30,6 +30,7 @@ UserRouter.delete("/deleteimage",VerifyUser,DeleteImage);
 UserRouter.get("/get-wish-list",VerifyUser,GetWishItem);
 UserRouter.get("/current-user",VerifyUser,GetCurrentUser);
 UserRouter.patch("/update-user",VerifyUser,UpdateUser);
+UserRouter.patch("/update-location",VerifyUser,UpdateLocation)
 UserRouter.patch("/change-passward",VerifyUser,ChangePassward);
 UserRouter.patch("/change-image",VerifyUser,Multer.single("image"),ChangeImage);
 

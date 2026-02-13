@@ -543,6 +543,46 @@ const GetWishItem = AsyncHandle(async(req,res)=>{
  );
 });
 
+const UpdateLocation=AsyncHandle(async(req,res)=>{
+  const {lat,lng}=req.body;
+  if(lat === undefined || lng === undefined){
+    throw new ApiError(400,"Latitude and Longitude required")
+  }
+
+  const latitude = Number(lat);
+  const longitude = Number(lng);
+
+  if(isNaN(latitude) || isNaN(longitude)){
+    throw new ApiError(400,"Invalid coordinates");
+  }
+
+
+  const locatoinUpdatedUser=await USER.findByIdAndUpdate(
+    req?.user?._id,
+    {
+      $set:{
+        location:{
+          type:"Point",
+         coordinates: [longitude,latitude]
+        }
+      }
+    },
+    {new:true}
+  )
+
+  if(!locatoinUpdatedUser){
+    throw new ApiError(404,"User not found")
+  }
+
+  return res.status(200)
+  .json(
+    new ApiResponse(
+      200,
+      locatoinUpdatedUser,
+      "User Location Sucessfully Updated"
+    )
+  )
+})
 
 
   export {
@@ -559,4 +599,5 @@ const GetWishItem = AsyncHandle(async(req,res)=>{
     AddToWishList,
     RemoveAllWishItem,
     GetWishItem,
+    UpdateLocation
   }
