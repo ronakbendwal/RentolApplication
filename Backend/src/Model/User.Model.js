@@ -8,13 +8,16 @@ const UserSchema=new Schema({
     type:String,
     required:true
   },
+  fulllocation:{
+    type:Object
+  },
   location:{
     type:{
       type:String,
       enum:["Point"],
       default:"Point"
     },
-    coordinated:{
+    coordinates:{
       type:[Number],
       required:true
     }

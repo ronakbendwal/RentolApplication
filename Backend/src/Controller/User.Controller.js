@@ -91,16 +91,12 @@ const CreateUser=AsyncHandle(async(req,res)=>{
 })
 
 const GetCurrentUser=AsyncHandle(async(req,res)=>{
-  console.log("aa raha he current user me " )
-const currentUser=await USER.findById(req.user?._id).select("-passward");
- console.log("current user gatted condition remaining");
+const currentUser=await USER.findById(req?.user?._id).select("-passward");
+
 if(!currentUser){
   console.log("condition failed")
   throw new ApiError(401,"User Not Authenticate")
-  
 }
-console.log("condition passed")
-
 return res.status(200).
 json(
   new ApiResponse(
@@ -544,26 +540,33 @@ const GetWishItem = AsyncHandle(async(req,res)=>{
 });
 
 const UpdateLocation=AsyncHandle(async(req,res)=>{
-  const {lat,lng}=req.body;
-  if(lat === undefined || lng === undefined){
+  console.log("inside set location controller ")
+  const {data}=req.body;
+  console.log(data)
+  console.log(data?.data?.lon)
+  console.log(data?.data.lat)
+  if(data?.data.lat === undefined || data?.data.lon === undefined){
     throw new ApiError(400,"Latitude and Longitude required")
   }
+  console.log("1st phase pass")
 
-  const latitude = Number(lat);
-  const longitude = Number(lng);
+  const latitude = Number(data?.data?.lat);
+  const longitude = Number(data?.data?.lon);
 
   if(isNaN(latitude) || isNaN(longitude)){
     throw new ApiError(400,"Invalid coordinates");
   }
+  console.log("2nd phase pass")
 
 
   const locatoinUpdatedUser=await USER.findByIdAndUpdate(
     req?.user?._id,
     {
       $set:{
+        fulllocation:data?.data,
         location:{
           type:"Point",
-         coordinates: [longitude,latitude]
+         coordinates: [parseFloat(longitude),parseFloat(latitude)]
         }
       }
     },
