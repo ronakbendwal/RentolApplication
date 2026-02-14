@@ -502,9 +502,11 @@ import {
   Globe
  } from 'lucide-react';
 import { setLocation } from '../redux/Feature/Location.js'
+import { setUserData } from '../redux/Feature/Auth.js';
+import { setShowLocationModal } from '../redux/Feature/Status.js';
 import axios from "axios"
 const LocationService = () => {
-  const [showLocationModal, setShowLocationModal] = useState(false)
+  const {showLocationModal} = useSelector((state)=>state.componentstatus)
   const [loading, setLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -513,10 +515,18 @@ const LocationService = () => {
   const dispatch = useDispatch()
   const { location} = useSelector((state) => state.location)
   const updateLocation=async(data)=>{
+    console.log("data from update location ",data)
   try{
     const locationResponse=await axios.patch('/api/user/update-location',{data})
-    const location=locationResponse?.data.data.fulllocation.address
-    dispatch(setLocation(`${location.city}, ${location.state}, ${location.country}`))
+    dispatch(setUserData(locationResponse.data))
+    console.log("location Response console.log",locationResponse.data)
+    const actualLocation=locationResponse?.data.data.fulllocation.address;
+    console.log("location from location ", actualLocation)
+    if(location){
+      dispatch(
+        setLocation(`${actualLocation.city || ""}, ${actualLocation.state || ""}, ${actualLocation.country || ""}`)
+      )
+    }
   }catch(err){
     console.log(err)
   }
@@ -551,7 +561,7 @@ const LocationService = () => {
   const handleSelectLocation = async(loc) => {
     const data=loc;
     await updateLocation({data})
-    setShowLocationModal(false);
+    dispatch(setShowLocationModal(false));
     setSearchQuery("");
     setSuggestions([]);
   };
@@ -586,7 +596,7 @@ return (
   <div className="relative h-full flex items-center">
     {/* TRIGGER BUTTON: Stylized to match Search Bar */}
     <div 
-      onClick={() => setShowLocationModal(!showLocationModal)}
+      onClick={() => dispatch(setShowLocationModal(!showLocationModal))}
       className={`group flex items-center gap-3 px-4 h-12 min-w-[180px] cursor-pointer transition-all duration-200 border-[3px] border-slate-900 rounded-2xl 
         ${showLocationModal 
           ? 'bg-indigo-50 translate-x-1 translate-y-1 shadow-none' 
@@ -677,7 +687,7 @@ return (
 
     {/* OVERLAY */}
     {showLocationModal && (
-      <div className="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[1px]" onClick={() => setShowLocationModal(false)} />
+      <div className="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[1px]" onClick={() => dispatch(setShowLocationModal(false))} />
     )}
   </div>
 );

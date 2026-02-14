@@ -166,12 +166,13 @@
 
 
 import React ,{useState,useEffect}from 'react';
-import { MapPin, Heart, Star, Zap } from 'lucide-react';
+import { MapPin, Heart, Star, Zap,ArrowLeft } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { wishlistapi } from '../../redux/Feature/WishList.js';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { setWishList } from '../../redux/Feature/WishList.js';
+import { setShowLocationModal } from '../../redux/Feature/Status.js';
 const ItemCard2 = ({ item }) => {
   const dispatch = useDispatch();
   const { wishlist } = useSelector((state) => state.wishlistitem);
@@ -260,55 +261,29 @@ const ItemCard2 = ({ item }) => {
     </div>
   );
 };
-
 export default ItemCard2;
-
-
-
-// const ItemsPreviewSection = () => {
-//   const [items,setItems]=useState([]);
-//   const {wishlist}=useSelector((state)=>state.wishlistitem)
-//   const dispatch=useDispatch()
-//   useEffect(()=>{
-
-//     const fetchFunction=async()=>{
-
-//     const itemResponse=await axios.get('/api/user/getallitem');
-//     const wishlistResponse=await axios.get('/api/user/get-wish-list')
-//     const itemdata=itemResponse?.data.data;
-//     const wishlistdata=wishlistResponse?.data.data;
-//     dispatch(setWishList(wishlistdata))
-//     setItems(itemdata)
-//     }
-//     fetchFunction();
-//   },[])
-//   return (
-//     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-//       <div className="mb-6">
-//         <h2 className="text-2xl font-bold text-gray-900">Featured Listings</h2>
-//       </div>
-
-//       {/* Grid: 1 col on mobile, 2 on tablet, 4 on desktop */}
-//       {items.length===0 ? ( <p>No items available</p>) : 
-//       (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
-//         {items?.map((item) => (
-//           <ItemCard2 key={item?._id} item={item} />
-//         ))}
-//       </div>)
-//       }
-//     </section>
-//   );
-// };
 
 const ItemsPreviewSection = () => {
   const [items, setItems] = useState([]);
-  const { wishlist } = useSelector((state) => state.wishlistitem);
+  const {data}=useSelector((state)=>state.auth);
+  const city =data?.data?.fulllocation?.address.city;
+  const {showLocationModal} = useSelector((state)=>state.componentstatus)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchFunction = async () => {
       try {
-        const itemResponse = await axios.get('/api/user/getallitem');
+      let itemResponse; 
+      if(!city){
+       itemResponse= await axios.get('/api/user/getallitem');
+      }else{
+        itemResponse=await axios.get('/api/user/getnearitem',{
+          params:{
+          city
+          }
+        })
+      }
         const wishlistResponse = await axios.get('/api/user/get-wish-list');
         const itemdata = itemResponse?.data.data;
         const wishlistdata = wishlistResponse?.data.data;
@@ -319,7 +294,7 @@ const ItemsPreviewSection = () => {
       }
     };
     fetchFunction();
-  }, [dispatch]);
+  }, [data,dispatch]);
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-16">
@@ -343,11 +318,19 @@ const ItemsPreviewSection = () => {
       </div>
 
       {/* ITEMS GRID */}
-      {items.length === 0 ? (
-        <div className="text-center py-32 border-4 border-dashed border-slate-200 rounded-[3rem]">
-          <p className="text-2xl font-black uppercase text-slate-300 tracking-widest">
+      {!items || items.length === 0 ? (
+        // Added flex-col, items-center aur justify-center for perfect centering
+        <div className="flex flex-col items-center justify-center text-center py-32 border-4 border-dashed border-slate-200 rounded-[3rem]">
+          <p className="text-2xl font-black uppercase text-slate-300 tracking-widest mb-8">
             No items available right now
           </p>
+          
+          <button 
+            onClick={() => dispatch(setShowLocationModal(!showLocationModal))}
+            className="px-12 py-5 bg-yellow-400 border-[3px] border-slate-900 rounded-[2rem] font-black uppercase text-xs tracking-widest shadow-[6px_6px_0px_#000] hover:translate-y-1 hover:shadow-none transition-all active:scale-95 flex items-center gap-3"
+          >
+            Change City <ArrowLeft size={16} strokeWidth={3} className="rotate-180" />
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">

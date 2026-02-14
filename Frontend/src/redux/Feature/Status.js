@@ -5,7 +5,8 @@ const ComponentStatusSlice=createSlice({
   initialState:{
     logoutComponentStatus:false,
     sideBarComponentStatus:false,
-    YIEPStatus:false
+    YIEPStatus:false,
+    showLocationModal:false
   },
   reducers:{
     setLogoutStatus:(state,action)=>{
@@ -16,11 +17,14 @@ const ComponentStatusSlice=createSlice({
     },
     setYourItemEditPageStatus:(state,action)=>{
       state.YIEPStatus=action.payload
+    },
+    setShowLocationModal:(state,action)=>{
+      state.showLocationModal=action.payload
     }
   }
 })
 
 
-export const {setSideBarStatus,setLogoutStatus,setYourItemEditPageStatus}=ComponentStatusSlice.actions
+export const {setSideBarStatus,setLogoutStatus,setYourItemEditPageStatus,setShowLocationModal}=ComponentStatusSlice.actions
 
 export default ComponentStatusSlice.reducer

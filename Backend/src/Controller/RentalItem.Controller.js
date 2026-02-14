@@ -72,7 +72,7 @@ const uploadedItemObject=await RENTALITEM.create({
   condition,
   price,
   contactNumber,
-  location,
+  location:location.toLowerCase(),
   address,
   images:imagearray,
   description,
@@ -648,37 +648,26 @@ const GetFeedBack=AsyncHandle(async(req,res)=>{
 })
 
 const GetNearestItem=AsyncHandle(async(req,res)=>{
-  const {lat,lng}=req.query
+  const {city}=req.query
 
-  if(!lat || !lng){
-    throw new ApiError(400, "Latitude and Longitude required")
+  if(!city){
+    throw new ApiError(400, "city required")
   }
 
-  const latitude = Number(lat);
-  const longitude = Number(lng);
+  const items = await RENTALITEM.find({
+    location: { $regex: `^${city}$`, $options: "i" },
+    status:"Active"
+  })
 
-  if(isNaN(latitude) || isNaN(longitude)){
-    throw new ApiError(400,"Invalid coordinates")
-  }
-
-  const items = await RENTALITEM.aggregate([
-    {
-      $geoNear: {
-        near: {
-          type: "Point",
-          coordinates: [longitude, latitude]
-        },
-        key:"location",
-        distanceField: "distance",
-        maxDistance: 20000,
-        spherical: true,
-        distanceMultiplier: 0.001  // meters → km
-      }
-    }
-  ]);
+  console.log(items)
 
   if(items.length===0){
-    throw new ApiError(404,"No item near you")
+    return res.status(200)
+    .json(
+      200,
+      items,
+      "no item fatched"
+    )
   }
 
   return res.status(200)

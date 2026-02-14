@@ -1,11 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit'
 import { getData } from '../../LocalStorage/localStorage';
 const data=getData("auth")
-const showlocation=`${data.data.fulllocation.address.city},${data.data.fulllocation.address.state},${data.data.fulllocation.address.country}`
+const showlocation=`${data?.data?.fulllocation?.address?.city || ''}`
 const LocationSlice=createSlice({
   name:'location',
   initialState:{
-    location: showlocation|| '',
+    location: showlocation
   },
   reducers:{
     setLocation:(state,action)=>{
@@ -16,4 +16,5 @@ const LocationSlice=createSlice({
 
 
 export const {setLocation}=LocationSlice.actions;
-export default LocationSlice.reducer;
+
+export default LocationSlice.reducer

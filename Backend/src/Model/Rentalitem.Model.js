@@ -33,15 +33,8 @@ const RentalItemSchema=new Schema({
     match:/^[0-9]{10}$/
   },
   location:{//for storing location
-  type:{
     type:String,
-    enum:["Point"],
-    default:"Point"
-  },
-  coordinates:{
-    type:[Number],
     required:true
-  }
   },
   address:{//for storing the address field data
     type:String,
@@ -107,6 +100,5 @@ const RentalItemSchema=new Schema({
 
 },{timestamps:true});
 
-RentalItemSchema.index({ location: "2dsphere" })
 
 export const RENTALITEM=model("RENTALITEM",RentalItemSchema)

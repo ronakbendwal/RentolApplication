@@ -9,7 +9,8 @@ const UserSchema=new Schema({
     required:true
   },
   fulllocation:{
-    type:Object
+    type:Object,
+    default:null
   },
   location:{
     type:{

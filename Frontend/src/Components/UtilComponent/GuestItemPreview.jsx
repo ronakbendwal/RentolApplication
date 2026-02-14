@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const GuestItemCard = ({ item }) => {
+  console.log(item)
   const navigate=useNavigate()
   if (item.status === 'Inactive') return null;
 
@@ -16,7 +17,7 @@ const GuestItemCard = ({ item }) => {
       <div className="relative aspect-[10/11] overflow-hidden rounded-[2rem] border-2 border-slate-900 bg-slate-100">
         <img 
           src={item.images?.[0]?.url} 
-          alt={item.itemName || item.itemname}
+          alt={item.itemName}
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         
@@ -41,12 +42,12 @@ const GuestItemCard = ({ item }) => {
       <div className="mt-5 px-1 pb-2">
         <div className="flex flex-col gap-1">
           <h3 className="text-xl font-black text-slate-900 tracking-tighter truncate uppercase leading-none">
-            {item.itemName || item.itemname}
+            {item.itemName}
           </h3>
           
           <div className="flex items-center gap-1 text-slate-500 mt-1">
             <MapPin size={13} className="text-emerald-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest">{item.location}</span>
+            <span className="text-[10px] font-black uppercase tracking-widest"></span>
           </div>
         </div>
 
