@@ -55,7 +55,7 @@ const SubmitButton = ({ innercolor, isSubmitting, name }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between gap-8 py-10 border-t-[3px] border-slate-900 border-dashed mt-10">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-40 py-10  mt-10">
       
       {/* Safety Notice - Brutalist Style */}
       <div className="flex items-center gap-4 group">
@@ -93,7 +93,7 @@ const SubmitButton = ({ innercolor, isSubmitting, name }) => {
           </>
         ) : (
           <>
-            LIST_{name?.toUpperCase() || "ASSET"}
+            {name ? (`List My ${name?.toUpperCase()}`) : "SAVE CHANGES"}
             <ArrowRight size={20} strokeWidth={3} />
           </>
         )}

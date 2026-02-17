@@ -15,6 +15,7 @@ import SkeletonCard from "./UtilComponent/SkeletonCard.jsx";
 import WishedItemCard from "./UtilComponent/WishListItemComponent.jsx";
 import FeedBackComponent from "./UtilComponent/FeedBack.jsx";
 import { GuestItemPreview } from "./UtilComponent/GuestItemPreview.jsx";
+import EditItemImages from "./UtilComponent/EditItemImagesComponent.jsx";
 export {
   HeaderComponent,
   FooterComponent,
@@ -33,5 +34,6 @@ export {
   SkeletonCard,
   WishedItemCard,
   FeedBackComponent,
-  GuestItemPreview
+  GuestItemPreview,
+  EditItemImages
 }

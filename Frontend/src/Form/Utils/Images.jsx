@@ -99,10 +99,10 @@
 // export default Images
 
 
-import React, { useState } from 'react'
-import { Camera, Home, ImageIcon, Upload, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import { Camera, Home, ImageIcon, Upload, Watch, X } from 'lucide-react';
 
-const Images = ({ register, innercolor, setValue }) => {
+const Images = ({ register, innercolor, setValue,watch }) => {
 
   const imageColorMap = {
     emerald: "bg-emerald-400 text-emerald-950",
@@ -115,28 +115,43 @@ const Images = ({ register, innercolor, setValue }) => {
   };
 
   const activeColor = imageColorMap[innercolor] || "bg-slate-400 text-slate-950";
+
   const [images, setImages] = useState([]);
   const [previews, setPreview] = useState([]);
+  const [initalize,setInitalize]=useState(false)
+
+  const formimages=watch ? watch("images") :[]
+  
+  useEffect(()=>{
+
+    if(!initalize && formimages?.length>0){
+
+      const urls=formimages.map(
+        object=> object.url);
+      setPreview(urls);
+      setImages(formimages)
+
+      setInitalize(true)
+      }
+  },[formimages,initalize])
+
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     const previewURL = files.map(file => URL.createObjectURL(file));
-
+  
+    const updatedImage=[...images,...files].slice(0,6);
     setPreview(prev => [...prev, ...previewURL].slice(0, 6));
-    setImages(prev => {
-      const updatedImage = [...prev, ...files].slice(0, 6);
-      setValue('images', updatedImage);
-      return updatedImage;
-    });
+    setImages(updatedImage);
+    setValue('images',updatedImage)
   };
 
   const removeImage = (index) => {
-    setPreview(prev => prev.filter((_, i) => i !== index));
-    setImages(prev => {
-      const updated = prev.filter((_, i) => i !== index);
-      setValue('images', updated);
-      return updated;
-    });
+    const updatedImage=images.filter((_,i)=>i!==index);
+    const updatedPreview=previews.filter((_,i)=>i!==index)
+    setPreview(updatedPreview);
+    setImages(updatedImage);
+    setValue('images',updatedImage)
   };
 
   return (
@@ -162,13 +177,13 @@ const Images = ({ register, innercolor, setValue }) => {
               alt="Preview" 
             />
             {/* Delete Button - Sharp Neo Style */}
-            <button 
+            {images.length>1 ? <button 
               type="button"
               onClick={() => removeImage(index)} 
               className="absolute top-0 right-0 bg-rose-500 border-l-[3px] border-b-[3px] border-slate-900 p-2 text-white hover:bg-rose-600 transition-colors shadow-none"
             >
               <X size={16} strokeWidth={3} />
-            </button>
+            </button> : null}
             <div className="absolute bottom-0 left-0 right-0 bg-slate-900/10 h-1 group-hover:bg-slate-900 transition-colors" />
           </div>
         ))}

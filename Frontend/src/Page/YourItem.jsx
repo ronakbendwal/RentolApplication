@@ -142,15 +142,14 @@ import { useNavigate } from 'react-router-dom';
 import { YourItemCard, SkeletonCard } from '../Components/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setYourItem } from '../redux/Feature/YourItem.js';
+import {EditItemImages} from '../Components/index.js';
 import axios from 'axios';
-
-
-
 
 const YourItem = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const {YIEPStatus} =useSelector((state)=>state.componentstatus)
   const { fetchedData, loading } = useSelector((state) => state.youritem);
 
   useEffect(() => {
@@ -164,11 +163,18 @@ const YourItem = () => {
       }
     };
     dataFetching();
-  }, [dispatch]);
+  }, [dispatch,YIEPStatus]);
 
   const filteredItem = fetchedData?.filter(item => 
     item.itemName.toLowerCase().includes(searchTerm?.toLowerCase())
   );
+
+  let data;
+  if(YIEPStatus){
+    data=fetchedData.filter((item)=>item._id ===YIEPStatus)
+  }
+
+  console.log(data, "from item component")
 
   return (
     <div className="min-h-screen bg-[#F0F0F0] flex flex-col font-sans selection:bg-yellow-400">
@@ -244,6 +250,11 @@ const YourItem = () => {
             ))}  
           </div>
         )}
+
+       {YIEPStatus===data?.[0]?._id && <EditItemImages
+        existingImages={data?.[0]?.images} // Yahan aapko wo item pass karna hoga jo edit ho raha hai
+        itemId={data?.[0]?._id}/>
+      }
       </main>
 
       {/* 4. FOOTER */}

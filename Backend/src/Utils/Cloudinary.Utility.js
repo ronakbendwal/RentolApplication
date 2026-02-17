@@ -1,6 +1,7 @@
 import "../env.js";
 import {v2 as cloudinary} from 'cloudinary';
 import fs from "fs";
+import { loadEnvFile } from "process";
 
 cloudinary.config({
    cloud_name :process.env.CLOUDINARY_CLOUD_NAME,
@@ -35,18 +36,37 @@ console.log("CLOUDINARY UPLOAD FILE :: ERROR ::",error)
 }
 
 
-const DeleteCloudinaryUpload=async (localFilePath)=>{
-console.log("inside file deletation")
-try
+   const DeleteCloudinaryUpload=async (localFilePath)=>{
+   console.log("inside file deletation")
+   try
 {
-if(!localFilePath) return null;
-console.log("1st phase of file deletation clear")
-const removeReferance=await cloudinary.uploader.destroy(localFilePath.public_id,{resource_type:localFilePath.resource_type});
-console.log("file sucessfully deleted")
-return removeReferance;
+   if(!localFilePath) return null;
+   const publicId =
+   typeof file === "string"
+   ? localFilePath
+   : localFilePath.publicid;
+
+   if(!publicId){
+   console.log("publicId not found");
+   return null;
+   }
+   console.log("Deleting publicId:", publicId);
+   const result = await cloudinary.uploader.destroy(
+   publicId,
+   {
+   resource_type: "image",
+   invalidate: true
+   }
+   );
+   if(result.result !== "ok"){
+      console.log("Cloudinary delete failed:", result);
+      return null;
+      }
+   console.log("File successfully deleted with result=>",result );
+   return result;
+
 }catch(error){
-console.log(" DELETING CLOUDINARY FILE :: ERROR :: ",error);
-}
-}
+      console.log(" DELETING CLOUDINARY FILE :: ERROR :: ",error);
+   }}
 
 export {CLoudinaryUpload, DeleteCloudinaryUpload}

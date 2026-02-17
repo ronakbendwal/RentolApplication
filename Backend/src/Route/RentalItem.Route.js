@@ -20,7 +20,6 @@ import {
 const RentItemRouter=Router();
 
 RentItemRouter.post("/rentoutitem",VerifyUser,Multer.array("images",6),rentOutItem);
-RentItemRouter.post("/updateitem/:itemId",VerifyUser,UpdateItem);
 RentItemRouter.post("/rate-item/:itemid",VerifyUser,RateItem)
 RentItemRouter.post("/update-item-status/:itemId",VerifyUser,itemStatus)
 RentItemRouter.post("/feedback/:id",VerifyUser,FeedBack)
@@ -29,6 +28,7 @@ RentItemRouter.get("/getitem/:itemId",VerifyUser,GetItem);
 RentItemRouter.get("/getallitem",GetAllItem);
 RentItemRouter.get("/getnearitem",VerifyUser,GetNearestItem)
 RentItemRouter.get("/getyouritem",VerifyUser,GetYouritem);
+RentItemRouter.patch("/updateitem/:itemId",VerifyUser,UpdateItem);
 RentItemRouter.patch("/uploadimages/:itemId",VerifyUser,Multer.array("images",6),UploadMoreImage);
 RentItemRouter.delete("/deleteitem/:itemId",VerifyUser,DeleteItem);
 RentItemRouter.delete("/deleteimage/:itemId/:imageId",VerifyUser,DeleteItemImage);

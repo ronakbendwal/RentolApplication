@@ -55,7 +55,7 @@
 
 import React from 'react'
 
-const Condition = ({ innercolor, register, setValue, watch }) => {
+const Condition = ({ innercolor, register, setValue, watch, registerValue }) => {
   // Neo-Brutalist Color Map for Active State
   const bgColorMap = {
     emerald: "bg-emerald-400",
@@ -107,7 +107,7 @@ const Condition = ({ innercolor, register, setValue, watch }) => {
       {/* Hidden input for React Hook Form registration */}
       <input
         type="hidden"
-        {...register("condition", { required: true })}
+        {...register( "condition", { required: true })}
       />
     </div>
   );

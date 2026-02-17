@@ -72,7 +72,7 @@ const uploadedItemObject=await RENTALITEM.create({
   condition,
   price,
   contactNumber,
-  location:location.toLowerCase(),
+  location,
   address,
   images:imagearray,
   description,
@@ -162,7 +162,7 @@ return res.status(200)
 })
 
 const UpdateItem=AsyncHandle(async(req,res)=>{
-  console.log("inside updateItem controller")
+console.log("inside updateItem controller")
 const {itemId}=req.params;
 if(!itemId){
   throw new ApiError(400,"Item Id Required")
@@ -180,55 +180,58 @@ if(item.owner?.toString() !== req.user?._id?.toString()){
 console.log("3rd phase of update item pass")
 
   const {
-    newitemname,
-    newprice,
-    newaddress,
-    newdescription,
-    newlocation,
-    newcontactnumber,
-    newcategory,
-    newspecs,
-    newcondition,
+    itemName,
+    price,
+    address,
+    description,
+    location,
+    contactNumber,
+    category,
+    // newspecs,
+    condition,
   } = req.body;
 
-  const updateData = {};
+  console.log("from update data req body", req.body)
 
-  if (typeof newitemname === "string" && newitemname.trim() !== "") {
-    updateData.itemName = newitemname.trim();
+  let updateData = {};
+
+  if (typeof itemName === "string" && itemName.trim() !== "") {
+    updateData.itemName = itemName.trim();
   }
 
-  if (typeof newcondition === "string" && newcondition.trim() !== "") {
-    updateData.condition = newcondition.trim();
+  if (typeof condition === "string" && condition.trim() !== "") {
+    updateData.condition = condition.trim();
   }
 
-  if(typeof specs ==="object"){
-    updateData.specs=newspecs;
+  // if(typeof specs ==="object"){
+  //   updateData.specs=newspecs;
+  // }
+
+  if (typeof description === "string" && description.trim() !== "") {
+    updateData.description = description.trim();
   }
 
-  if (typeof newdescription === "string" && newdescription.trim() !== "") {
-    updateData.description = newdescription.trim();
+  if (typeof location === "string" && location.trim() !== "") {
+    updateData.location = location.trim();
   }
 
-  if (typeof newlocation === "string" && newlocation.trim() !== "") {
-    updateData.location = newlocation.trim();
+  if (typeof category === "string" && category.trim() !== "") {
+    updateData.category = category.trim();
   }
 
-  if (typeof newcategory === "string" && newcategory.trim() !== "") {
-    updateData.category = newcategory.trim();
+  if (typeof price!=undefined && price>=0) {
+    updateData.price = Number(price);
   }
 
-  if (typeof newprice==="number" && newprice>=0) {
-    updateData.price = newprice;
+  if(typeof address==="string" && address.trim()!==""){
+    updateData.address=address.trim();
   }
 
-  if(typeof newaddress==="string" && newaddress.trim()!==""){
-    updateData.address=newaddress;
+  if (contactNumber ==="string" && contactNumber.trim()!=="") {
+    updateData.contactNumber = contactNumber.trim();
   }
 
-  if (newcontactnumber !== undefined) {
-    updateData.contactNumber = newcontactnumber.trim();
-  }
-
+  console.log(updateData);
 
   if (Object.keys(updateData).length === 0) {
     throw new ApiError(400, "Nothing To Update");
@@ -321,54 +324,109 @@ const GetYouritem=AsyncHandle(async(req,res)=>{
 })
 
 const UploadMoreImage=AsyncHandle(async(req,res)=>{
+
   console.log("inside the update image controller")
+
   const {itemId}=req.params;
+  const {oldImages}=req.body;
+  const parsedImages=JSON.parse(oldImages)
+
+  console.log("parsed IMages", parsedImages);
+
+  console.log("2nd phase of upload more images pass")
+
   if(!itemId){
     throw new ApiError(400,"item id required")
   }
 
+  console.log("3rd phase of upload more images pass")
+
   const item=await RENTALITEM.findById(itemId)
+
   if(!item){
     throw new ApiError(404,"item not found")
   }
+
+  console.log("4th phase of upload more images pass`")
 
   if(item.owner?.toString() !== req.user?._id?.toString()){
   throw new ApiError(403,"Not Allowed For Unauthorize User")
   }
 
-  if(item?.images.length>6){
-    throw new ApiError(500,"upload limit exceeded")
-  }
+  console.log("5th phase of upload more images pass")
 
-  if(!req.files || req.files.length===0){
-  throw new ApiError(400,"image required ")
-  }
+  
+  let oldImagesId=[];
+  parsedImages?.map((img)=>{
+    console.log(img.publicid)
+    oldImagesId.push(img.publicid)
+  })
 
-  const imagearray=[]
+  console.log("old images id" , oldImagesId);
 
-  for(const file of req.files){
-    const uploadedImageDetail=await CLoudinaryUpload(file.path)
+  console.log("6th phase of upload more images pass")
+
+  const deleteMissingImage=item.images.filter((img)=>!oldImagesId?.includes(img.publicid))
+
+  console.log("delete Missing Images", deleteMissingImage);
+
+  console.log("7th phase of upload more images pass")
+
+
+  let deleteResponse;
+  for(const img of deleteMissingImage){
+    deleteResponse=await DeleteCloudinaryUpload(img);
+  };
+
+  console.log("deleteResponse", deleteResponse);
+  console.log("8th phase of upload more images passs");
+
+
+  const imagearray=[];
+
+  if(req.files || req.files.length>0){
+    console.log("inside new file uplodation");
+    for(const file of req.files){
+    const uploadedImageDetail=await CLoudinaryUpload(file?.path)
     if(!uploadedImageDetail){
       throw new ApiError(500,"images not upload")
     }
     imagearray.push({
-      publicid:uploadedImageDetail.public_id,
-      url:uploadedImageDetail.secure_url
-  })}
+      publicid:uploadedImageDetail?.public_id,
+      url:uploadedImageDetail?.secure_url
+  })}}
+
+  console.log("imageArray", imagearray);
+
+  console.log("9th phase of upload more images pass");
+
+  const finalImages = [
+    ...parsedImages,
+  ...imagearray
+  ];
+
+  console.log("final images", finalImages);
+
+  console.log("10th phase of upload more images pass")
 
   const uploadmoreimageinfo=await RENTALITEM.findByIdAndUpdate(
     itemId,
     {
-      $push:{
-        images:imagearray
+      $set:{
+        images:finalImages
       }
     },
     {new:true}
   )
 
+  console.log("uploadmore images info", uploadmoreimageinfo);
+  console.log("11th phase of upload more imagess pass")
+
   if(!uploadmoreimageinfo){
     throw new ApiError(500,"image not update yet")
   }
+
+  console.log("12th phase of upload mor images pass");
 
   console.log("sucessfully update item images")
 
