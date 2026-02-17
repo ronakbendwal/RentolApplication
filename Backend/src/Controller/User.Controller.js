@@ -192,31 +192,41 @@ const LoginUser=AsyncHandle(async(req,res)=>{
 })
 
 const UpdateUser=AsyncHandle(async(req,res)=>{
-const {newusername,newemail}=req.body;
+console.log(req.body)
+const {username,email,fullname,address,phonenumber}=req.body;
+
 //check if theres field missing
-if(!newemail || !newusername){
+if(!email || !username || !fullname || !address){
   throw new ApiError(401,"All Field Are Required");
 }
 
+if(phonenumber===undefined){
+  throw new ApiError(401, "Phone number required")
+}
+
 //if theres no any fiels
-if(!newemail && !newusername){
+if(!email && !username){
   throw new ApiError(400,"Nothing To Update")
 }
 
 const duplicateUSer=await USER.findOne({
-  $or:[{newusername},{newemail}],
+  $or:[{username},{email}],
   _id:{$ne:req.user?._id}//current user ko chod ke bar karne ke liye ne is not equal
 })
 
 if(duplicateUSer){
-  throw new ApiError(409,"Username or Email Already Exist")
+  throw new ApiError(409,"Username or Email Already Exist Try Another")
 } 
 
 const updatedUser=await USER.findByIdAndUpdate(
   req.user?._id,
   {
-   $set:{ email:newemail,
-    username:newusername
+   $set:{ 
+    email,
+    username,
+    fullname,
+    phonenumber,
+    address
   }
   },
   {new :true}
