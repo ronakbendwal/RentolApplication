@@ -10,7 +10,6 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [oldImages, setOldImages]=useState(existingImages)
   const [newImages,setNewImages]=useState([])
-  // Jab YIEPStatus false ho toh component render nahi hoga (Open/Close Logic)
   if (YIEPStatus===null) return null;
 
 
@@ -39,15 +38,11 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
   const saveImages = async () => {
     try {
       setIsSyncing(true);
-      // form data
       const formData = new FormData();
       formData.append("itemId", itemId);
-      // old images send karo
       formData.append("oldImages",JSON.stringify(oldImages));
-      // new images send karo
       newImages.forEach((img) => {formData.append("images", img.file)})
 
-      //api call here
       const response=await axios.patch(`/api/user/uploadimages/${itemId}`,formData)
       console.log(response.data.data)
     dispatch(setYourItemEditPageStatus(null))
@@ -59,16 +54,13 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      {/* Backdrop: Aapke logout overlay jaisa solid dark effect */}
       <div 
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
         onClick={() => dispatch(setYourItemEditPageStatus(null))}
       ></div>
 
-      {/* OVERLAY CONTENT */}
       <div className="relative w-full max-w-2xl bg-white border-[6px] border-black shadow-[15px_15px_0px_#000] p-8 md:p-10 animate-in zoom-in duration-200">
         
-        {/* Header Section */}
         <div className="flex justify-between items-start mb-10">
           <div className="bg-yellow-400 border-[4px] border-black p-4 shadow-[6px_6px_0px_#000] -rotate-1">
             <h2 className="text-2xl font-[1000] uppercase tracking-tighter flex items-center gap-3">
@@ -85,14 +77,12 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
           </button>
         </div>
 
-        {/* IMAGE GRID */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10 overflow-y-auto max-h-[50vh] pr-2 custom-scrollbar">
           {oldImages?.map((img, index) => (
             <div key={index} className="relative group">
               <div className="aspect-square bg-slate-100 border-[4px] border-black shadow-[4px_4px_0px_#000] overflow-hidden">
                 <img src={img.url} alt="asset" className="w-full h-full object-cover" />
               </div>
-              {/* Delete Mini Button */} 
               <button 
               onClick={()=>removeOldImage(img.publicid)}
               className="absolute -top-2 -right-2 w-10 h-10 bg-rose-500 text-white border-[3px] border-black flex items-center justify-center shadow-[2px_2px_0px_#000] hover:translate-y-0.5 hover:shadow-none transition-all">
@@ -101,7 +91,6 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
             </div>
           ))}
 
-          {/* new images */}
           {newImages.map((img, index) => (
             <div key={index} className="relative">
               <img
@@ -119,7 +108,6 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
             </div>
           ))}
 
-          {/* Add New Slot */}
           <label className="aspect-square border-[4px] border-dashed border-slate-300 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-slate-50 transition-colors">
              <Plus size={32} className="text-slate-400" />
              <span className="text-[10px] uppercase font-black text-slate-400">Add New image</span>
@@ -127,7 +115,6 @@ const EditItemImages = ({ existingImages=[], itemId }) => {
           </label>
         </div>
 
-        {/* BOTTOM ACTION BAR */}
         <div className="flex flex-col md:flex-row gap-4 border-t-[4px] border-black border-dashed pt-8">
            <button
            onClick={saveImages}

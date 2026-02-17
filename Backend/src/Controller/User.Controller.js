@@ -88,7 +88,7 @@ const CreateUser=AsyncHandle(async(req,res)=>{
       "User Sucessfully Created"
     )
   )
-})
+})//complete
 
 const GetCurrentUser=AsyncHandle(async(req,res)=>{
 const currentUser=await USER.findById(req?.user?._id).select("-passward");
@@ -105,7 +105,7 @@ json(
     "User Geted Sucessfully"
   )
 )
-})
+})//complete
 
 const LogOutUser=AsyncHandle(async(req,res)=>{
   
@@ -136,7 +136,7 @@ const LogOutUser=AsyncHandle(async(req,res)=>{
         "User Sucessfully Logout"
       )
     )
-})
+})//complete
 
 const LoginUser=AsyncHandle(async(req,res)=>{
   //get user info
@@ -189,7 +189,7 @@ const LoginUser=AsyncHandle(async(req,res)=>{
       "User SucessFully Login" 
     )
   )
-})
+})//complete
 
 const UpdateUser=AsyncHandle(async(req,res)=>{
 console.log(req.body)
@@ -244,7 +244,7 @@ return res.status(200)
     "User Sucessfully Updated"
   )
 )
-})
+})//complete
 
 const ChangePassward=AsyncHandle(async(req,res)=>{
   const {newpassward,oldpassward}=req.body;
@@ -310,7 +310,7 @@ const DeleteUser=AsyncHandle(async(req,res)=>{
       "User Sucessfully Deleted"
     )
   )
-})
+})//complete
 
 const RefreshAccessToken=AsyncHandle(async(req,res)=>{
 
@@ -415,7 +415,7 @@ const newuploadedimageuser= await USER.findByIdAndUpdate(
     "image Sucessfully Uploaded"
   )
   )
-})
+})//complete
 
 const DeleteImage=AsyncHandle(async(req,res)=>{
   
@@ -457,7 +457,7 @@ const DeleteImage=AsyncHandle(async(req,res)=>{
       "Image Sucessfully Deleted"
     )
   )
-})
+})//complete
 
 const AddToWishList = AsyncHandle(async(req,res)=>{
 
@@ -504,7 +504,7 @@ const AddToWishList = AsyncHandle(async(req,res)=>{
      "Added To Favourites"
    )
  );
-});
+});//complete
 
 const RemoveAllWishItem = AsyncHandle(async(req,res)=>{
 
@@ -533,7 +533,7 @@ const RemoveAllWishItem = AsyncHandle(async(req,res)=>{
      "Wish List Empty Now"
    )
  );
-});
+});//complete
 
 const GetWishItem = AsyncHandle(async(req,res)=>{
 
@@ -547,7 +547,7 @@ const GetWishItem = AsyncHandle(async(req,res)=>{
      "Favourite Items"
    )
  );
-});
+});//complete
 
 const UpdateLocation=AsyncHandle(async(req,res)=>{
   console.log("inside set location controller ")
@@ -595,7 +595,7 @@ const UpdateLocation=AsyncHandle(async(req,res)=>{
       "User Location Sucessfully Updated"
     )
   )
-})
+})//complete
 
 
   export {

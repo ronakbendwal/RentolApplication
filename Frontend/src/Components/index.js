@@ -20,7 +20,6 @@ export {
   HeaderComponent,
   FooterComponent,
   Header4,
-  // SignupForm,
   LoginForm,
   ItemsPreviewSection,
   LogoutPremissionComponent,

@@ -13,7 +13,6 @@ const GuestItemCard = ({ item }) => {
       className="group relative bg-white border-2 border-slate-900 rounded-[2.5rem] p-4 transition-all duration-300 hover:-translate-y-2 shadow-[8px_8px_0px_#000] hover:shadow-[12px_12px_0px_#6366f1] cursor-pointer"
     >
       
-      {/* Image Container */}
       <div className="relative aspect-[10/11] overflow-hidden rounded-[2rem] border-2 border-slate-900 bg-slate-100">
         <img 
           src={item.images?.[0]?.url} 
@@ -21,7 +20,6 @@ const GuestItemCard = ({ item }) => {
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         
-        {/* Top Actions: Rating & Wishlist */}
         <div className="absolute top-3 left-3 right-3 flex justify-between items-center">
           <div className="px-3 py-1 bg-white border-2 border-slate-900 rounded-full flex items-center gap-1.5 shadow-[3px_3px_0px_#000]">
             <Star size={12} className="fill-yellow-400 text-yellow-400" />
@@ -30,7 +28,6 @@ const GuestItemCard = ({ item }) => {
 
         </div>
 
-        {/* Floating Category Tag */}
         <div className="absolute bottom-3 left-3">
           <div className="px-3 py-1 bg-emerald-400 border-2 border-slate-900 rounded-lg text-[9px] font-black text-slate-900 uppercase tracking-widest shadow-[3px_3px_0px_#000]">
             {item?.category}
@@ -38,7 +35,6 @@ const GuestItemCard = ({ item }) => {
         </div>
       </div>
 
-      {/* Item Details */}
       <div className="mt-5 px-1 pb-2">
         <div className="flex flex-col gap-1">
           <h3 className="text-xl font-black text-slate-900 tracking-tighter truncate uppercase leading-none">
@@ -51,7 +47,6 @@ const GuestItemCard = ({ item }) => {
           </div>
         </div>
 
-        {/* Pricing & CTA Section */}
         <div className="mt-6 flex items-center justify-between gap-3">
           <div className="flex flex-col">
             <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 leading-none">Per Day</span>
@@ -92,14 +87,12 @@ const GuestItemPreview = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-16">
-      {/* SECTION HEADER */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div className="relative inline-block">
           <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-slate-900 leading-none">
             Featured <br />
             <span className="text-indigo-600">Listings</span>
           </h2>
-          {/* Decorative underline/bar */}
           <div className="h-3 w-1/2 bg-yellow-400 border-2 border-slate-900 mt-2 shadow-[4px_4px_0px_#000]"></div>
         </div>
 
@@ -111,7 +104,6 @@ const GuestItemPreview = () => {
         </div>
       </div>
 
-      {/* ITEMS GRID */}
       {items.length === 0 ? (
         <div className="text-center py-32 border-4 border-dashed border-slate-200 rounded-[3rem]">
           <p className="text-2xl font-black uppercase text-slate-300 tracking-widest">

@@ -8,6 +8,7 @@ import ViewItemPage from "./ViewItemPage";
 import ItemFeedbackPage from "./FeedBackPage";
 import EditProfilePage from "./EditProfilePage";
 import EditYourItemPage from "./EditYourItemPage";
+import ChangePassword from "./ChangePassward";
 export {
   ItemCategoryPage3,
   UserProfile,
@@ -18,5 +19,6 @@ export {
   ViewItemPage,
   ItemFeedbackPage,
   EditProfilePage,
-  EditYourItemPage
+  EditYourItemPage,
+  ChangePassword
 }

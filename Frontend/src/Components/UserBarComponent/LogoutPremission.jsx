@@ -29,10 +29,8 @@ function LogoutPremissionComponent() {
         onClick={onCancel} // Close if they click outside the box
       />
 
-      {/* 2. Modal Square Component */}
       <div className="relative bg-white w-full max-w-sm rounded-3xl shadow-2xl p-8 text-center animate-in zoom-in-95 duration-200">
         
-        {/* Close Icon (Optional) */}
         <button 
           onClick={onCancel}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:bg-gray-100 rounded-full transition-colors"
@@ -45,7 +43,6 @@ function LogoutPremissionComponent() {
           <LogOut size={32} />
         </div>
 
-        {/* Text Content */}
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Do you want to logout?
         </h2>
@@ -53,7 +50,6 @@ function LogoutPremissionComponent() {
           You will need to enter your details again to access your account.
         </p>
 
-        {/* Buttons */}
         <div className="flex flex-col gap-3">
           <button 
             onClick={onConfirm}

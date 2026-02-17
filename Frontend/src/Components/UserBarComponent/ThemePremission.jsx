@@ -8,9 +8,6 @@ function ThemePermission() {
   const dispatch=useDispatch()  
   const {thememode,isThemeOpen}=useSelector((state)=>state.theme)
   if(!isThemeOpen) return null;
-
- 
-
   const onChangeBtn=(e)=>{
     const checked=e.target.checked;
     console.log(checked)
@@ -20,7 +17,6 @@ function ThemePermission() {
       dispatch(setThemeMode("light"))
     }
   }
-
   const onCancel=()=>{
     dispatch(setIsThemeOpen(!isThemeOpen))
   }
@@ -32,10 +28,8 @@ function ThemePermission() {
         onClick={onCancel} // Close if they click outside the box
       />
 
-      {/* 2. Modal Square Component */}
       <div className="relative bg-white w-full max-w-sm rounded-3xl shadow-2xl p-8 text-center animate-in zoom-in-95 duration-200">
         
-        {/* Close Icon (Optional) */}
         <button 
           onClick={onCancel}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:bg-gray-100 rounded-full transition-colors"
@@ -43,12 +37,10 @@ function ThemePermission() {
           <X size={20} />
         </button>
 
-        {/* Warning Icon */}
         <div className={`w-16 h-16  ${thememode==="dark"? " bg-red-50 text-red-500" : "bg-blue-50 text-blue-500"} rounded-full flex items-center justify-center mx-auto mb-6`}>
           {thememode==="dark" ? <SunMoon size={32} /> : <Sun size={32}/>}
         </div>
 
-        {/* Text Content */}
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Change the apperence
         </h2>
@@ -56,7 +48,6 @@ function ThemePermission() {
           You can change the apperence / theme here
         </p>
 
-        {/* Buttons */}
         <div className="flex flex-col gap-3">
           <label className="relative inline-flex items-center cursor-pointer">
             <input

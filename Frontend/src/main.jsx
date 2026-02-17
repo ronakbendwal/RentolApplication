@@ -23,7 +23,8 @@ import {
   ViewItemPage,
   ItemFeedbackPage,
   EditProfilePage,
-  EditYourItemPage
+  EditYourItemPage,
+  ChangePassword
 } from './Page/index.js'
 
 const router=createBrowserRouter(
@@ -40,6 +41,7 @@ const router=createBrowserRouter(
       <Route path='/comments/:id' element={<ItemFeedbackPage/>}/>
       <Route path='/editprofile' element={<EditProfilePage/>}/>
       <Route path='/edititem/:id' element={<EditYourItemPage/>}/>
+      <Route path='/changepassword' element={<ChangePassword/>}/>
     </Route>
   )
 )

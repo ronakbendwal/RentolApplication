@@ -31,7 +31,6 @@ function FeedBackComponent({data}) {
     <div className="flex justify-between items-start mb-3">
       <div className="flex items-center gap-3">
         
-        {/* Avatar */}
          <div className="w-10 h-10 rounded-full border-2 border-slate-900 overflow-hidden bg-emerald-500 flex items-center justify-center">
          {fb.user?.image?.secure_url ? (
             <img
@@ -46,7 +45,6 @@ function FeedBackComponent({data}) {
           )}
         </div>
 
-        {/* Name + Time */}
         <div>
           <p className="text-sm font-black uppercase">{fb.user?.fullname}</p>
           <p className="text-[9px] font-bold text-slate-400 uppercase">
@@ -57,7 +55,6 @@ function FeedBackComponent({data}) {
       </div>
     </div>
 
-    {/* Comment */}
     <p className="text-sm font-bold text-slate-600 leading-tight">
       “{fb.comment}”
     </p>
