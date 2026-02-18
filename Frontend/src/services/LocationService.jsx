@@ -460,8 +460,8 @@
 //                         onClick={() => handleSelectLocation(loc)}
 //                         className="w-full flex items-start gap-3 px-3 py-3 hover:bg-emerald-50 rounded-xl text-left transition-all group"
 //                     >
-//                         <MapPin size={16} className="mt-1 text-slate-300 group-hover:text-emerald-500 shrink-0" />
-//                         <div className="overflow-hidden">
+//                        <MapPin size={16} className="mt-1 text-slate-300 group-hover:text-emerald-500 shrink-0" />
+//                        <div className="overflow-hidden">
 //                             <p className="text-sm font-bold text-slate-800 truncate">
 //                                 {loc.display_name.split(',')[0]}
 //                             </p>
@@ -578,7 +578,9 @@ const LocationService = () => {
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
         );
         const data = await response.json();
-        await updateLocation({data})
+        
+        const responseLocation=await updateLocation({data})
+        console.log("response location insie get current location ", responseLocation)
         setShowLocationModal(false); 
       } catch (error) {
         console.error("Error:", error);
