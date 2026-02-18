@@ -27,58 +27,42 @@ try{
 }
 
 const CreateUser=AsyncHandle(async(req,res)=>{
-  console.log("req body me aa raha he")
+
   const {username,email,passward,fullname,phonenumber,address}=req.body;
 
-  console.log("1st path check")
   let uploadedfilepath="";
   if (!username || !email || !passward || !fullname || !phonenumber || !address) {
-  throw new ApiError(400, "All Fields Are Required");
-}
-
-  console.log("2nd path check")
-
+  throw new ApiError(401, "All Fields Are Required");
+  }
 
   const existedUser=await USER.findOne({
-    $or:[{email},{username:username.toLowerCase()}]
+    $or:[{email:email.toLowerCase()},{username:username.toLowerCase()}]
   })
 
   if(existedUser){
     throw new ApiError(400,"User Already Exist")
   }
 
-    console.log("3rd path check")
-
-
   if(req.file && req.file?.path){
-
     uploadedfilepath=await CLoudinaryUpload(req.file?.path);
-
   }
-
-    console.log("4th path check")
-
 
   const userObject=await USER.create({
     username:username.toLowerCase(),
-    email,
-    fullname,
+    email:email.toLowerCase(),
+    fullname:fullname.toLowerCase(),
     passward,
     phonenumber,
-    address,
+    address:address.toLowerCase(),
     image:uploadedfilepath?.url || ""
   })
-
-    console.log("5th path check")
-
 
   const userObjectReferance=await USER.findById(userObject._id)
   .select("-passward")
 
   if(!userObjectReferance){
-    throw new ApiError(500,"Error While Creating User")
+    throw new ApiError(500,"Server error While Creating User")
   }
-  console.log("final path check")
 
   return res.status(201)
   .json(
@@ -161,7 +145,8 @@ const LoginUser=AsyncHandle(async(req,res)=>{
 
   const checkPassward=await userInfo.IsPasswardCorrect(passward);
   if(!checkPassward){
-    throw new ApiError(401,"Enter Correct Passward")
+    throw new ApiError(401,"Invalid Password"
+    )
   }
 
   const {accessToken,refreshToken}=await GenerateAccessRefreshToken(userInfo?._id);

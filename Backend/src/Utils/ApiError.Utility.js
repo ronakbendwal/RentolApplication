@@ -1,18 +1,14 @@
 class ApiError extends Error{
-constructor({
-  message="Something Went Wrong",
+constructor(
   statuscode,
-  errors=[]
-}){
-super(message)
-
-this.statuscode=statuscode,
-this.errors=errors,
-this.data=null,
-this.success=false,
-this.message=message
-
-}
-}
+  message
+){
+super(message);
+this.statuscode=statuscode;
+this.data=null;
+this.success=false;
+// this.message=message
+// this.errors=errors,
+}}
 
 export default ApiError

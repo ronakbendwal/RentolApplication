@@ -5,6 +5,7 @@ import {
   RentItemRouter,
   CartItemRouter,
 } from './Route/index.js';
+import errorMiddleware from './Middleware/GLobalErrorMiddleware.js';
 
 import cors from 'cors'
 
@@ -25,6 +26,8 @@ app.use(
 app.use('/api/user',UserRouter);
 app.use('/api/user/',RentItemRouter);
 app.use('/api/user/',CartItemRouter)
+
+app.use(errorMiddleware)
 
 
 export default app
